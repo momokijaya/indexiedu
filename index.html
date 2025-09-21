@@ -78,6 +78,8 @@
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
             scrollbar-width: thin;
             scrollbar-color: #64748b #334155;
+            flex-shrink: 0;
+            width: 288px;
         }
 
         .premium-sidebar-item {
@@ -120,7 +122,13 @@
             position: relative;
             z-index: 1;
         }
-
+        
+        .content-section {
+            flex-shrink: 0;
+            width: 100%;
+            min-width: 0;
+        }
+        
         /* Content and Tab Visibility Logic */
         .content-section, .tab-content, .tab-content-nested {
             display: none;
@@ -323,7 +331,10 @@
             color: #334155;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .premium-ai-output::before {
@@ -416,14 +427,15 @@
         .error-state { background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #f87171; color: #991b1b; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 overflow-hidden premium-bg-pattern">
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 premium-bg-pattern">
 
-    <div class="relative flex h-screen">
+    <!-- Root Container -->
+    <div class="relative h-screen w-full">
         <!-- Backdrop for mobile sidebar -->
         <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-60 z-30 hidden md:hidden backdrop-blur-sm"></div>
 
         <!-- Premium Sidebar -->
-        <aside id="sidebar" class="w-72 premium-sidebar text-slate-200 flex flex-col h-full fixed inset-y-0 left-0 z-40 transform -translate-x-full transition-all duration-500 ease-in-out md:relative md:translate-x-0">
+        <aside id="sidebar" class="w-72 premium-sidebar text-slate-200 flex flex-col h-full fixed top-0 left-0 z-40 transform -translate-x-full transition-all duration-500 ease-in-out md:translate-x-0">
             <div class="p-6 border-b border-slate-600/30 flex-shrink-0 relative">
                 <button id="sidebar-close-btn" class="absolute top-6 right-6 text-slate-400 hover:text-white md:hidden z-50 transition-colors duration-200">
                     <i class="fas fa-times text-2xl"></i>
@@ -437,7 +449,6 @@
                             <i class="fas fa-crown text-yellow-400 mr-2"></i>Professional Edition
                         </div>
                     </a>
-                    
                 </div>
             </div>
             <nav class="flex-1 p-3 space-y-2 overflow-y-auto">
@@ -502,8 +513,8 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0">
+        <!-- Main Content Wrapper -->
+        <div class="absolute inset-0 md:left-72 flex flex-col">
             <!-- Mobile Header -->
             <header class="md:hidden flex items-center justify-between premium-mobile-header p-4 sticky top-0 z-20">
                 <button id="menu-toggle" class="text-slate-700 hover:text-primary-600 p-2 rounded-lg transition-colors">
@@ -515,6 +526,7 @@
                 <div class="w-8"></div>
             </header>
 
+            <!-- Scrollable Main Content -->
             <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
                 <!-- Premium Homepage -->
@@ -814,22 +826,22 @@
             
             function createPremiumFileUploaderHTML(prefix, label, helpText = '') {
                 return `
-                    <div class="mb-6">
-                        <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
-                        ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
-                        <div class="premium-file-upload">
-                            <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
-                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
-                                <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
-                                <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
-                                <p class="text-sm text-slate-500">atau drag & drop file</p>
+                        <div class="mb-6">
+                            <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
+                            ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
+                            <div class="premium-file-upload">
+                                <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
+                                <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
+                                    <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
+                                    <p class="text-sm text-slate-500">atau drag & drop file</p>
+                                </div>
+                            </div>
+                            <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
+                                <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
+                                <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
                             </div>
                         </div>
-                        <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
-                            <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
-                            <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
-                        </div>
-                    </div>
                 `;
             }
 
@@ -840,58 +852,58 @@
                     'premium-button';
 
                 return `
-                    <div class="max-w-6xl mx-auto">
-                    ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
-                        <div class="premium-card p-4 sm:p-8">
-                            <div class="mb-6">
-                                <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
-                                    <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
-                                    Pilih Cara Menentukan Topik
-                                    </h2>
-                                <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
-                                    <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
-                                        <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
-                                        Opsi 1: Kurikulum
-                                    </label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <select id="${prefix}-jenjang" class="premium-select w-full">
-                                            <option value="">Pilih Jenjang...</option>
-                                        </select>
-                                        <select id="${prefix}-kelas" class="premium-select w-full" disabled>
-                                            <option value="">Pilih Kelas...</option>
-                                        </select>
-                                        <select id="${prefix}-mapel" class="premium-select w-full" disabled>
-                                            <option value="">Pilih Mapel...</option>
-                                        </select>
-                                        <select id="${prefix}-bab" class="premium-select w-full" disabled>
-                                            <option value="">Pilih Bab...</option>
-                                        </select>
+                        <div class="max-w-6xl mx-auto">
+                        ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
+                            <div class="premium-card p-4 sm:p-8">
+                                <div class="mb-6">
+                                    <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
+                                        <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
+                                        Pilih Cara Menentukan Topik
+                                        </h2>
+                                    <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
+                                        <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
+                                            <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
+                                            Opsi 1: Kurikulum
+                                        </label>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                            <select id="${prefix}-jenjang" class="premium-select w-full">
+                                                <option value="">Pilih Jenjang...</option>
+                                            </select>
+                                            <select id="${prefix}-kelas" class="premium-select w-full" disabled>
+                                                <option value="">Pilih Kelas...</option>
+                                            </select>
+                                            <select id="${prefix}-mapel" class="premium-select w-full" disabled>
+                                                <option value="">Pilih Mapel...</option>
+                                            </select>
+                                            <select id="${prefix}-bab" class="premium-select w-full" disabled>
+                                                <option value="">Pilih Bab...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center my-6">
+                                        <hr class="flex-grow border-t-2 border-slate-300">
+                                        <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
+                                        <hr class="flex-grow border-t-2 border-slate-300">
+                                    </div>
+                                    <div>
+                                        <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
+                                            <i class="fas fa-edit text-primary-500 mr-3"></i>
+                                            Opsi 2: Tulis Topik
+                                        </label>
+                                        <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
+                                        ${optionsHTML}
                                     </div>
                                 </div>
-                                <div class="flex items-center my-6">
-                                    <hr class="flex-grow border-t-2 border-slate-300">
-                                    <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
-                                    <hr class="flex-grow border-t-2 border-slate-300">
+                                <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
+                                    <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
+                                </button>
+                                <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
+                                    <div class="premium-loader"></div>
+                                    <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
                                 </div>
-                                <div>
-                                    <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
-                                        <i class="fas fa-edit text-primary-500 mr-3"></i>
-                                        Opsi 2: Tulis Topik
-                                    </label>
-                                    <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
-                                </div>
-                                ${optionsHTML}
+                                <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
                             </div>
-                            <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
-                                <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
-                            </button>
-                            <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
-                                <div class="premium-loader"></div>
-                                <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
-                            </div>
-                            <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
                         </div>
-                    </div>
                 `;
             }
 
@@ -1565,8 +1577,12 @@
             }
 
             function renderPremiumAIOutput(rawText, outputElement) {
+                // Sanitize the raw text to prevent potential HTML injection issues if not intended
+                // For this app, we trust the AI to produce safe HTML, so we directly use innerHTML.
+                // In a production app with user input, consider using a sanitizer.
                 outputElement.innerHTML = rawText;
 
+                // Render LaTeX math expressions
                 if (window.renderMathInElement) {
                     try {
                         renderMathInElement(outputElement, {
