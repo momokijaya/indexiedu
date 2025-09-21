@@ -1219,7 +1219,7 @@
                 document.getElementById('btn-generate-materi')?.addEventListener('click', () => {
                     const topic = document.getElementById('materi-topik').value;
                     const isDifferentiated = document.getElementById('materi-diferensiasi').checked;
-                    let prompt = `Anda adalah guru ahli. Buatkan materi ajar lengkap untuk topik: "${topic}". Gunakan heading (h2, h3) untuk memisahkan bagian.`;
+                    let prompt = `Anda adalah guru ahli. Buatkan materi ajar lengkap format HTML untuk topik: "${topic}". Gunakan heading (<h2>, <h3>) untuk memisahkan bagian.`;
                     if (isDifferentiated) {
                         prompt += ` Buat juga 3 versi: disederhanakan, standar, dan pengayaan.`;
                     }
@@ -1229,7 +1229,7 @@
 
                 document.getElementById('btn-generate-glosarium')?.addEventListener('click', () => {
                     const text = document.getElementById('glosarium-teks').value;
-                    let prompt = `Analisis teks berikut dan identifikasi 5-7 istilah kunci. Untuk setiap istilah, berikan output:\n- <h3> untuk istilah.\n- <p> untuk definisi yang mudah dipahami.\n- <ul><li> berisi contoh kalimat.\n\nTeks: "${text}"`;
+                    let prompt = `Analisis teks berikut dan identifikasi 5-7 istilah kunci. Untuk setiap istilah, berikan output HTML:\n- <h3> untuk istilah.\n- <p> untuk definisi yang mudah dipahami.\n- <ul><li> berisi contoh kalimat.\n\nTeks: "${text}"`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'glosarium-hasil', 'glosarium-loader');
                 });
@@ -1237,7 +1237,7 @@
                 document.getElementById('btn-generate-konteks')?.addEventListener('click', async () => {
                     const imageFile = document.getElementById('konteks-gambar').files[0];
                     if (!imageFile) { alert("Silakan unggah sebuah gambar."); return; }
-                    let prompt = `Anda adalah kurator museum dan guru ahli. Analisis gambar ini. Berikan output yang mencakup:\n1. <h2>Deskripsi Detail</h2>\n2. <h2>Poin Diskusi & Pertanyaan HOTS</h2> (gunakan <ol>)\n3. <h2>Fakta Terkait</h2> (gunakan <ul>)`;
+                    let prompt = `Anda adalah kurator museum dan guru ahli. Analisis gambar ini. Berikan output HTML yang mencakup:\n1. <h2>Deskripsi Detail</h2>\n2. <h2>Poin Diskusi & Pertanyaan HOTS</h2> (gunakan <ol>)\n3. <h2>Fakta Terkait</h2> (gunakan <ul>)`;
                     prompt += latexInstruction;
                     const { base64, mimeType } = await fileToBase64(imageFile);
                     const promptParts = [{ text: prompt }, { inlineData: { mimeType: mimeType, data: base64 } }];
@@ -1249,7 +1249,7 @@
                     const type = document.getElementById('soal-tipe').value;
                     const count = document.getElementById('soal-jumlah').value;
                     const withExplanation = document.getElementById('soal-pembahasan').checked;
-                    let prompt = `Buatkan ${count} soal tipe "${type}" tentang "${topic}". Sertakan kunci jawaban. Format seluruh output yang rapi menggunakan <ol> untuk soal.`;
+                    let prompt = `Buatkan ${count} soal tipe "${type}" tentang "${topic}". Sertakan kunci jawaban. Format seluruh output dalam HTML yang rapi menggunakan <ol> untuk soal.`;
                     if (withExplanation) {
                         prompt += " Setelah kunci jawaban, tambahkan bagian 'Pembahasan' yang menjelaskan mengapa jawaban tersebut benar secara rinci untuk setiap soal.";
                     }
@@ -1266,7 +1266,7 @@
                         return;
                     }
 
-                    let prompt = `Anda adalah seorang tutor ahli. Jawab dan berikan pembahasan langkah-demi-langkah yang lengkap untuk soal berikut. Format jawaban, gunakan heading dan daftar jika perlu untuk kejelasan.`;
+                    let prompt = `Anda adalah seorang tutor ahli. Jawab dan berikan pembahasan langkah-demi-langkah yang lengkap untuk soal berikut. Format jawaban dalam HTML, gunakan heading dan daftar jika perlu untuk kejelasan.`;
                     prompt += latexInstruction;
                     const promptParts = [{ text: prompt }];
 
@@ -1283,7 +1283,7 @@
                 document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
                     const theme = document.getElementById('proyek-tema').value;
                     const duration = document.getElementById('proyek-durasi').value;
-                    let prompt = `Anda adalah seorang ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek dengan detail berikut:\n\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
+                    let prompt = `Anda adalah seorang ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek (format HTML) dengan detail berikut:\n\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'proyek-hasil', 'proyek-loader');
                 });
