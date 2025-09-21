@@ -1622,7 +1622,7 @@
                 loaderEl.classList.remove('hidden');
 
                 const hasImage = promptParts.some(part => part.inlineData);
-                const model = hasImage ? 'gemini-1.5-flash-latest' : 'gemini-pro';
+                const model = hasImage ? 'gemini-2.0-flash' : 'gemini-pro';
                 const apiKey = getNextApiKey(); 
 
                 if (!apiKey) {
@@ -2000,3 +2000,4 @@
     </script>
 </body>
 </html>
+
