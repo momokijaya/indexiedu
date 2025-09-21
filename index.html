@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- KaTeX for LaTeX Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMckDITrE3IsidIypkoOkRdflBKoidGbItJpZLomdcAivaxNE" crossorigin="anonymous">
@@ -21,43 +21,48 @@
         }
         body {
             font-family: 'Inter', sans-serif;
+            /* New: Subtle animated gradient background for a more dynamic feel */
+            background-color: #f8fafc; /* slate-50 */
+            background-image: linear-gradient(125deg, #f8fafc 0%, #f1f5f9 50%, #e0f2f1 100%);
+            background-size: 400% 400%;
+            animation: background-pan 15s ease infinite;
         }
-        
-        /* --- Enhanced Animated Gradient Text --- */
+
+        /* New: Background pan animation keyframes */
+        @keyframes background-pan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .animated-gradient-text {
             background: linear-gradient(90deg, #67e8f9, #2dd4bf, #a7f3d0, #2dd4bf, #67e8f9);
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
-            animation: gradient-flow 5s linear infinite;
+            animation: gradient-flow 3s linear infinite;
         }
 
         @keyframes gradient-flow {
             to { background-position: -200% center; }
         }
 
-        /* --- Sidebar Styling & Scrollbar --- */
         .sidebar {
             scrollbar-width: thin;
             scrollbar-color: #475569 #1e293b;
         }
         .sidebar-item {
-            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
         .sidebar-item.active {
-            background-color: #0f172a; /* slate-900 */
-            color: #5eead4; /* teal-300 */
-            font-weight: 600;
-            border-left: 4px solid #5eead4;
-        }
-        .sidebar-item:not(.active):hover {
             background-color: #334155; /* slate-700 */
             color: white;
-            padding-left: 1.25rem; /* Indent on hover */
         }
-        
-        /* --- Content Animation --- */
+        .sidebar-item:hover {
+            background-color: #475569; /* slate-600 */
+            color: white;
+        }
         .content-section {
             display: none;
         }
@@ -65,8 +70,6 @@
             display: block;
             animation: fadeInScaleUp 0.5s ease-in-out forwards;
         }
-        
-        /* --- Loader Animation --- */
         .loader {
             border: 4px solid #f1f5f9; /* slate-100 */
             border-top: 4px solid #14b8a6; /* teal-500 */
@@ -91,8 +94,8 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        /* --- Homepage Entrance & Card Animations --- */
+
+        /* Homepage entrance animations */
         #home h1, #home > p {
             animation: fadeInScaleUp 0.5s ease-out forwards;
             opacity: 0;
@@ -103,26 +106,23 @@
         .feature-card, .activity-choice-card {
             opacity: 0; /* Initially hidden for animation */
             animation: fadeInScaleUp 0.5s ease-out forwards;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-card:before, .activity-choice-card:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 4px;
-            background-color: #14b8a6; /* teal-500 */
-            transition: width 0.3s ease;
+            /* Updated: Smoother transition and added border transition */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border: 1px solid transparent;
         }
         .feature-card:hover, .activity-choice-card:hover {
+            /* Updated: More pronounced hover effect */
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border-color: #14b8a6; /* teal-500 */
         }
-        .feature-card:hover:before, .activity-choice-card:hover:before {
-            width: 100%;
+        /* New: Animate icon on card hover */
+        .feature-card:hover .feature-icon, .activity-choice-card:hover .feature-icon {
+            transform: scale(1.1) rotate(-5deg);
+            color: #0d9488; /* teal-600 */
+        }
+        .feature-icon {
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
         /* Staggered animation delays for feature cards */
@@ -139,29 +139,23 @@
         .feature-card:nth-child(11) { animation-delay: 0.7s; }
         .feature-card:nth-child(12) { animation-delay: 0.75s; }
 
-        /* Staggered animation delays for activity cards */
+         /* Staggered animation delays for activity cards */
         .activity-choice-card:nth-child(1) { animation-delay: 0.2s; }
         .activity-choice-card:nth-child(2) { animation-delay: 0.25s; }
         .activity-choice-card:nth-child(3) { animation-delay: 0.3s; }
         .activity-choice-card:nth-child(4) { animation-delay: 0.35s; }
         .activity-choice-card:nth-child(5) { animation-delay: 0.4s; }
         
-        /* --- General UI Element Styling --- */
         button {
-            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
         button:hover {
             transform: scale(1.02);
-        }
-        button:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.4);
         }
         textarea, input, select {
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        /* --- AI Output Styling --- */
         .gemini-output {
             line-height: 1.7;
             color: #334155;
@@ -170,9 +164,8 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 1rem;
-            border-bottom: 2px solid #14b8a6; /* teal-500 */
+            border-bottom: 1px solid #e2e8f0; /* slate-200 */
             padding-bottom: 0.5rem;
-            color: #0f766e; /* teal-700 */
         }
         .gemini-output h3 {
             font-size: 1.25rem;
@@ -181,7 +174,7 @@
             margin-bottom: 0.75rem;
             color: #0d9488; /* teal-600 */
         }
-        .gemini-output h4 {
+         .gemini-output h4 {
             font-size: 1.1rem;
             font-weight: bold;
             margin-top: 1rem;
@@ -193,7 +186,7 @@
             margin-bottom: 1rem;
         }
         .gemini-output p { margin-bottom: 1rem; }
-        .gemini-output strong { font-weight: 600; color: #1e293b; }
+        .gemini-output strong { font-weight: 600; }
         .gemini-output .code-block {
             background-color: #f1f5f9; /* slate-100 */
             border: 1px solid #e2e8f0; /* slate-200 */
@@ -207,24 +200,13 @@
             background-color: #f1f5f9; /* slate-100 */
             cursor: not-allowed;
         }
-
-        /* --- Tab Styling --- */
         .tab-button, .tab-button-nested {
             transition: all 0.3s ease;
-            position: relative;
         }
         .tab-button.active, .tab-button-nested.active {
+            border-color: #0d9488; /* teal-600 */
             color: #0d9488; /* teal-600 */
             font-weight: 600;
-        }
-        .tab-button.active::after, .tab-button-nested.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px; /* Adjust based on border */
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #0d9488;
         }
         .tab-content, .tab-content-nested {
             display: none;
@@ -241,8 +223,8 @@
             padding: 1rem;
             margin: 1rem 0;
             background-color: #f1f5f9; /* slate-100 */
-            border-left: 4px solid #14b8a6; /* teal-500 */
-            border-radius: 0.25rem;
+            border: 1px solid #e2e8f0; /* slate-200 */
+            border-radius: 0.5rem;
         }
         .gemini-output .katex {
             font-size: 1.125rem; /* text-lg */
@@ -250,160 +232,183 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800">
-
-    <div class="relative flex min-h-screen">
-        <!-- Backdrop for mobile sidebar -->
-        <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+<body class="text-slate-800">
+    <!-- Updated: Main container now controls height and scrolling behavior -->
+    <div class="flex h-screen bg-slate-50 overflow-hidden">
+        <!-- Overlay for mobile menu -->
+        <div id="menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="w-72 bg-slate-900 text-slate-200 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0">
-            <div class="p-5 border-b border-slate-700/50 flex-shrink-0">
-                <div class="flex flex-col items-center text-center">
-                    <h1 class="text-3xl font-extrabold mb-3">
-                        <span class="animated-gradient-text">INDEXIEDU</span>
-                    </h1>
-                    <div class="flex items-center">
-                        <i class="fas fa-graduation-cap text-2xl text-teal-400"></i>
-                        <div class="ml-3 text-left">
-                            <p class="text-sm text-white font-medium leading-tight">Asisten Guru Digital</p>
-                            <p class="text-xs text-slate-400 leading-tight">Developed by Apinakew</p>
+        <aside id="sidebar" class="w-72 bg-slate-800 text-white flex flex-col fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40">
+            <!-- New: Close button for mobile view -->
+            <button id="menu-close" class="md:hidden absolute top-3 right-3 text-slate-400 hover:text-white z-50">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <!-- Updated: Header is now a clickable link to home -->
+            <a href="#" id="header-home-link" class="cursor-pointer" data-target="home">
+                <div class="p-6 border-b border-slate-700 flex-shrink-0">
+                    <div class="flex flex-col items-center font-poppins text-center">
+                        <h1 class="text-3xl font-extrabold mb-3">
+                            <div class="inline-block px-4 py-2 bg-slate-900/50 border border-teal-400/30 rounded-lg">
+                                <span class="animated-gradient-text">INDEXIEDU</span>
+                            </div>
+                        </h1>
+                        <div class="flex items-center">
+                            <i class="fas fa-graduation-cap text-2xl text-teal-400"></i>
+                            <div class="ml-3 text-left">
+                                <p class="text-xm text-white font-medium leading-tight">Asisten Guru Digital</p>
+                                <p class="text-xs text-slate-400 leading-tight">Developed by Apinakew</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <nav class="flex-1 p-2 space-y-1 overflow-y-auto sidebar">
-                <a href="#" class="sidebar-item active flex items-center py-2.5 px-4 rounded-md" data-target="home">
-                    <i class="fas fa-home w-6 text-center"></i>
+            </a>
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto sidebar">
+                <a href="#" class="sidebar-item active flex items-center p-3 rounded-lg transition-colors" data-target="home">
+                    <i class="fas fa-home w-6"></i>
                     <span class="ml-4">Beranda</span>
                 </a>
                 
-                <p class="px-4 pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Pembuatan Materi</p>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="generator-materi">
-                    <i class="fas fa-book-open w-6 text-center"></i><span class="ml-4">Generator Materi</span>
+                <p class="px-3 pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase">Pembuatan Materi</p>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="generator-materi">
+                    <i class="fas fa-book-open w-6"></i>
+                    <span class="ml-4">Generator Materi</span>
                 </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="generator-glosarium">
-                    <i class="fas fa-spell-check w-6 text-center"></i><span class="ml-4">Generator Glosarium</span>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="generator-glosarium">
+                    <i class="fas fa-spell-check w-6"></i>
+                    <span class="ml-4">Generator Glosarium</span>
                 </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="konteks-visual">
-                    <i class="fas fa-image w-6 text-center"></i><span class="ml-4">Konteks Visual Cerdas</span>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="konteks-visual">
+                    <i class="fas fa-image w-6"></i>
+                    <span class="ml-4">Konteks Visual Cerdas</span>
                 </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="pembuat-soal">
-                    <i class="fas fa-lightbulb w-6 text-center"></i><span class="ml-4">Pembuat Soal</span>
-                </a>
-
-                <p class="px-4 pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Pelaksanaan Pembelajaran</p>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="penjawab-soal">
-                    <i class="fas fa-calculator w-6 text-center"></i><span class="ml-4">Penjawab Soal Cerdas</span>
-                </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="perancang-proyek">
-                    <i class="fas fa-sitemap w-6 text-center"></i><span class="ml-4">Perancang Proyek (PBL)</span>
-                </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="pustaka-aktivitas">
-                    <i class="fas fa-users w-6 text-center"></i><span class="ml-4">Pustaka Aktivitas</span>
-                </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="pembuat-kuis">
-                    <i class="fas fa-graduation-cap w-6 text-center"></i><span class="ml-4">Pembuat Kuis Cepat</span>
-                </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="asisten-pertanyaan">
-                    <i class="fas fa-question-circle w-6 text-center"></i><span class="ml-4">Asisten Pertanyaan</span>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="pembuat-soal">
+                    <i class="fas fa-lightbulb w-6"></i>
+                    <span class="ml-4">Pembuat Soal</span>
                 </a>
 
-                <p class="px-4 pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Evaluasi & Administrasi</p>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="penilaian-otomatis">
-                    <i class="fas fa-check-double w-6 text-center"></i><span class="ml-4">Pengecekan & Penilaian AI</span>
+                <p class="px-3 pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase">Pelaksanaan Pembelajaran</p>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="penjawab-soal">
+                    <i class="fas fa-calculator w-6"></i>
+                    <span class="ml-4">Penjawab Soal Cerdas</span>
                 </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="perencana-rpp">
-                    <i class="fas fa-file-alt w-6 text-center"></i><span class="ml-4">Perencana & Analisis RPP</span>
+                 <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="perancang-proyek">
+                    <i class="fas fa-sitemap w-6"></i>
+                    <span class="ml-4">Perancang Proyek (PBL)</span>
                 </a>
-                <a href="#" class="sidebar-item flex items-center py-2.5 px-4 rounded-md" data-target="komunikasi-ortu">
-                    <i class="fas fa-envelope w-6 text-center"></i><span class="ml-4">Komunikasi Orang Tua</span>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="pustaka-aktivitas">
+                    <i class="fas fa-users w-6"></i>
+                    <span class="ml-4">Pustaka Aktivitas</span>
+                </a>
+                 <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="pembuat-kuis">
+                    <i class="fas fa-graduation-cap w-6"></i>
+                    <span class="ml-4">Pembuat Kuis Cepat</span>
+                </a>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="asisten-pertanyaan">
+                    <i class="fas fa-question-circle w-6"></i>
+                    <span class="ml-4">Asisten Pertanyaan</span>
+                </a>
+
+                <p class="px-3 pt-4 pb-2 text-xs font-semibold text-slate-400 uppercase">Evaluasi & Administrasi</p>
+                 <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="penilaian-otomatis">
+                    <i class="fas fa-check-double w-6"></i>
+                    <span class="ml-4">Pengecekan & Penilaian AI</span>
+                </a>
+                 <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="perencana-rpp">
+                    <i class="fas fa-file-alt w-6"></i>
+                    <span class="ml-4">Perencana & Analisis RPP</span>
+                </a>
+                <a href="#" class="sidebar-item flex items-center p-3 rounded-lg transition-colors" data-target="komunikasi-ortu">
+                    <i class="fas fa-envelope w-6"></i>
+                    <span class="ml-4">Komunikasi Orang Tua</span>
                 </a>
             </nav>
-            <div class="p-4 mt-2 border-t border-slate-700/50 text-xs flex-shrink-0 text-slate-500 text-center">
+            <div class="p-4 border-t border-slate-700 text-xs flex-shrink-0 text-slate-500">
                 <p>&copy; 2025 INDEXIEDU</p>
             </div>
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
-            <!-- Mobile Header -->
-            <header class="md:hidden flex items-center justify-between bg-white/80 backdrop-blur-sm p-4 border-b sticky top-0 z-20">
-                <button id="menu-toggle" class="text-slate-700 hover:text-teal-600">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-                <h1 class="text-xl font-bold animated-gradient-text">INDEXIEDU</h1>
-                <div class="w-6"></div> <!-- Spacer -->
-            </header>
-
-            <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto bg-slate-50">
+        <main class="flex-1 overflow-y-auto">
+            <!-- Mobile Menu Button -->
+            <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-slate-800 text-white rounded-md">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="p-4 sm:p-6 md:p-8">
 
                 <!-- Beranda -->
                 <section id="home" class="content-section active">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-2">Selamat Datang, <span class="animated-gradient-text">Pendidik!</span></h1>
-                    <p class="text-lg text-slate-600 mb-8 max-w-2xl">Semua perangkat bantu mengajar canggih Anda ada di sini. Pilih fitur untuk memulai.</p>
+                    <!-- Updated: Responsive text size for mobile -->
+                    <h1 class="text-2xl sm:text-4xl font-bold mb-4">
+                        <span class="animated-gradient-text">Selamat Datang, Pendidik!</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 mb-8">Semua perangkat bantu mengajar Anda ada di sini. Pilih fitur untuk memulai.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- Card items remain unchanged -->
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="generator-materi">
-                            <i class="fas fa-book-open text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Generator Materi</h3>
-                            <p class="text-slate-600">Buat materi ajar dari topik kurikulum atau ide kustom Anda.</p>
+                        <!-- Updated: Smaller padding and fonts on mobile for cards -->
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="generator-materi">
+                             <i class="fas fa-book-open text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Generator Materi</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Buat materi ajar dari topik kurikulum atau ide kustom Anda.</p>
                         </div>
-                         <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="generator-glosarium">
-                            <i class="fas fa-spell-check text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Generator Glosarium</h3>
-                            <p class="text-slate-600">Ekstrak dan jelaskan istilah kunci dari materi bacaan.</p>
+                         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="generator-glosarium">
+                             <i class="fas fa-spell-check text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Generator Glosarium</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Ekstrak dan jelaskan istilah kunci dari materi bacaan.</p>
+                         </div>
+                         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="konteks-visual">
+                             <i class="fas fa-image text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Konteks Visual</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Analisis gambar untuk bahan diskusi dan pertanyaan HOTS.</p>
+                         </div>
+                         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="pembuat-soal">
+                             <i class="fas fa-lightbulb text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Pembuat Soal</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Rancang soal dengan pembahasan rinci secara otomatis.</p>
+                         </div>
+                        
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="penjawab-soal">
+                             <i class="fas fa-calculator text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Penjawab Soal Cerdas</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Dapatkan solusi dan pembahasan untuk soal teks atau gambar.</p>
                         </div>
-                         <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="konteks-visual">
-                            <i class="fas fa-image text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Konteks Visual</h3>
-                            <p class="text-slate-600">Analisis gambar untuk bahan diskusi dan pertanyaan HOTS.</p>
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="perancang-proyek">
+                             <i class="fas fa-sitemap text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Perancang Proyek (PBL)</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Susun kerangka kerja proyek pembelajaran yang terstruktur.</p>
                         </div>
-                         <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="pembuat-soal">
-                            <i class="fas fa-lightbulb text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Pembuat Soal</h3>
-                            <p class="text-slate-600">Rancang soal dengan pembahasan rinci secara otomatis.</p>
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="pustaka-aktivitas">
+                             <i class="fas fa-users text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Pustaka Aktivitas</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Temukan ide aktivitas kelas yang interaktif dan menarik.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="penjawab-soal">
-                            <i class="fas fa-calculator text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Penjawab Soal Cerdas</h3>
-                            <p class="text-slate-600">Dapatkan solusi dan pembahasan untuk soal teks atau gambar.</p>
+                         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="pembuat-kuis">
+                             <i class="fas fa-graduation-cap text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Pembuat Kuis Cepat</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Buat kuis formatif dengan beragam tipe soal secara instan.</p>
+                         </div>
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="asisten-pertanyaan">
+                             <i class="fas fa-question-circle text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Asisten Pertanyaan</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Dapatkan ide untuk menjawab pertanyaan sulit dari siswa.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="perancang-proyek">
-                            <i class="fas fa-sitemap text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Perancang Proyek (PBL)</h3>
-                            <p class="text-slate-600">Susun kerangka kerja proyek pembelajaran yang terstruktur.</p>
+
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="penilaian-otomatis">
+                             <i class="fas fa-magic text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Penilaian AI Otomatis</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Periksa lembar jawaban pilihan ganda & esai secara instan.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="pustaka-aktivitas">
-                            <i class="fas fa-users text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Pustaka Aktivitas</h3>
-                            <p class="text-slate-600">Temukan ide aktivitas kelas yang interaktif dan menarik.</p>
-                        </div>
-                         <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="pembuat-kuis">
-                            <i class="fas fa-graduation-cap text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Pembuat Kuis Cepat</h3>
-                            <p class="text-slate-600">Buat kuis formatif dengan beragam tipe soal secara instan.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="asisten-pertanyaan">
-                            <i class="fas fa-question-circle text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Asisten Pertanyaan</h3>
-                            <p class="text-slate-600">Dapatkan ide untuk menjawab pertanyaan sulit dari siswa.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="penilaian-otomatis">
-                            <i class="fas fa-magic text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Penilaian AI Otomatis</h3>
-                            <p class="text-slate-600">Periksa lembar jawaban pilihan ganda & esai secara instan.</p>
-                        </div>
-                         <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="perencana-rpp">
-                            <i class="fas fa-file-alt text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Perencana & Analisis RPP</h3>
-                            <p class="text-slate-600">Buat draf atau dapatkan umpan balik untuk RPP Anda.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer feature-card" data-target="komunikasi-ortu">
-                            <i class="fas fa-envelope text-4xl text-teal-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2 text-slate-800">Komunikasi Orang Tua</h3>
-                            <p class="text-slate-600">Buat draf pesan profesional untuk orang tua/wali siswa.</p>
+                         <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="perencana-rpp">
+                             <i class="fas fa-file-alt text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Perencana & Analisis RPP</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Buat draf atau dapatkan umpan balik untuk RPP Anda.</p>
+                         </div>
+                        <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl cursor-pointer feature-card" data-target="komunikasi-ortu">
+                             <i class="fas fa-envelope text-4xl text-teal-500 mb-4 feature-icon"></i>
+                             <h3 class="text-lg sm:text-xl font-semibold mb-2 text-slate-900">Komunikasi Orang Tua</h3>
+                             <p class="text-sm sm:text-base text-slate-600">Buat draf pesan profesional untuk orang tua/wali siswa.</p>
                         </div>
                     </div>
                 </section>
@@ -421,48 +426,37 @@
                 <section id="perencana-rpp" class="content-section"></section>
                 <section id="penilaian-otomatis" class="content-section"></section>
                 <section id="komunikasi-ortu" class="content-section"></section>
-
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Mobile Sidebar Toggle ---
-            const sidebar = document.getElementById('sidebar');
+            // --- Mobile Menu Logic ---
             const menuToggle = document.getElementById('menu-toggle');
-            const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-            
-            function openSidebar() {
-                sidebar.classList.remove('-translate-x-full');
-                sidebarBackdrop.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
+            const menuClose = document.getElementById('menu-close'); // New close button
+            const sidebar = document.getElementById('sidebar');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const headerHomeLink = document.getElementById('header-home-link'); // New header link
 
-            function closeSidebar() {
+            function closeMobileMenu() {
                 sidebar.classList.add('-translate-x-full');
-                sidebarBackdrop.classList.add('hidden');
-                document.body.style.overflow = '';
+                menuOverlay.classList.add('hidden');
             }
 
-            if (menuToggle && sidebar && sidebarBackdrop) {
-                menuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openSidebar();
+            if (menuToggle && menuClose && sidebar && menuOverlay) {
+                menuToggle.addEventListener('click', () => {
+                    sidebar.classList.remove('-translate-x-full');
+                    menuOverlay.classList.remove('hidden');
                 });
-                
-                sidebarBackdrop.addEventListener('click', closeSidebar);
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
-                        closeSidebar();
-                    }
-                });
-            }
-            // --- End Mobile Sidebar ---
 
+                menuClose.addEventListener('click', closeMobileMenu);
+                menuOverlay.addEventListener('click', closeMobileMenu);
+            }
+            
             // --- Rolling API Key Logic ---
+            // This entire section is unchanged to preserve functionality
             const apiKeys = [
-                // Kunci API Anda tetap di sini
                 'AIzaSyDE-eC4Z5sLoyLb-gfufWybfq5FDfQ8eJA', 'AIzaSyCJCLcOLSxNzAo7Yj2OkFrvBCmriMWWY4A', 'AIzaSyBCN3QCP0JAlh8T0A4I_bnYO8dRJaxgllc',
                 'AIzaSyB7ZflQgfuCdAwCdJqy5ls1mGoVQCK0Ghg', 'AIzaSyBk5rAPyic400shgKO1PAAPJYbnoYj7IqA', 'AIzaSyCEgpllq7leaQTBVE-f75plyvxVGR5W_ao',
                 'AIzaSyALljReS1FmyIo97G8jTSrsxzg_Cso17Cg', 'AIzaSyD5Pnxdj4ZOAr3xAd6BiaO4IG8SG0nWGp4', 'AIzaSyDKnnXW9NA7uyMMAVG9uYUvJ4hxqcDi6_o',
@@ -495,37 +489,152 @@
 
 
             // --- Database Kurikulum ---
+            // Unchanged
             const kurikulumData = {
-                // Data kurikulum tetap sama
-                "TK": { "Kelompok A (4-5 Tahun)": { "Tematik": ["Diri Sendiri", "Lingkunganku", "Kebutuhanku", "Binatang", "Tanaman", "Alam Semesta"] }, "Kelompok B (5-6 Tahun)": { "Tematik": ["Keluarga, Sekolah, Masyarakat", "Pekerjaan", "Air, Udara, Api", "Alat Komunikasi", "Tanah Airku", "Gejala Alam"] } },
-                "SD": { "Kelas 1": { "Pendidikan Pancasila": ["Simbol dan Sila Pancasila", "Aturan di Rumah dan Sekolah", "Menjaga Kebersihan Lingkungan"], "Bahasa Indonesia": ["Mengenal Huruf dan Suku Kata", "Membaca Kalimat Sederhana", "Menulis Nama Diri dan Objek"], "Matematika": ["Membilang Angka 1-20", "Penjumlahan dan Pengurangan Sederhana", "Mengenal Bangun Datar"] }, "Kelas 2": { "Pendidikan Pancasila": ["Hidup Rukun", "Sikap Sesuai Sila Pancasila", "Tata Tertib dan Aturan"], "Bahasa Indonesia": ["Kata Sapaan dan Kalimat Tanya", "Puisi Anak", "Membaca Dongeng"], "Matematika": ["Bilangan sampai 500", "Perkalian dan Pembagian Dasar", "Satuan Waktu (Jam) dan Panjang (cm, m)"] }, "Kelas 3": { "Pendidikan Pancasila": ["Makna Sumpah Pemuda", "Keberagaman Karakteristik Individu", "Hak dan Kewajiban di Rumah dan Sekolah"], "Bahasa Indonesia": ["Ciri-ciri Makhluk Hidup", "Perkembangan Teknologi Produksi", "Surat untuk Teman"], "Matematika": ["Operasi Hitung Campuran", "Pecahan Sederhana", "Luas dan Keliling Persegi dan Persegi Panjang"] }, "Kelas 4": { "Pendidikan Pancasila": ["Makna Sila-Sila Pancasila", "Hak dan Kewajiban sebagai Warga", "Keberagaman Suku dan Budaya"], "Bahasa Indonesia": ["Ide Pokok dan Kalimat Utama", "Teks Petunjuk Penggunaan", "Teks Deskripsi dan Narasi"], "Matematika": ["Bilangan Cacah Besar", "FPB dan KPK", "Pecahan", "Bangun Datar", "Statistika (Diagram Batang)"], "IPAS": ["Bagian Tumbuhan dan Fungsinya", "Wujud Zat", "Gaya dan Pengaruhnya", "Energi dan Perubahannya"] }, "Kelas 5": { "Pendidikan Pancasila": ["Gotong Royong", "Keberagaman Suku, Agama, dan Budaya", "Cinta Tanah Air"], "Bahasa Indonesia": ["Iklan Media Cetak dan Elektronik", "Teks Narasi Sejarah", "Surat Undangan"], "Matematika": ["Operasi Hitung Pecahan", "Kecepatan dan Debit", "Skala", "Volume Kubus dan Balok"], "IPAS": ["Sistem Organ Manusia", "Ekosistem dan Rantai Makanan", "Siklus Air", "Sistem Tata Surya"] }, "Kelas 6": { "Pendidikan Pancasila": ["Penerapan Nilai-nilai Pancasila", "Sistem Pemerintahan", "Peran Indonesia di ASEAN"], "Bahasa Indonesia": ["Teks Laporan Hasil Pengamatan", "Menyampaikan Pidato", "Mengisi Formulir"], "Matematika": ["Bilangan Bulat", "Lingkaran", "Bangun Ruang Campuran", "Statistika (Mean, Median, Modus)"], "IPAS": ["Perkembangbiakan Makhluk Hidup", "Pubertas", "Listrik dan Magnet", "Gerhana"] } },
-                "SMP": { "Kelas 7": { "Pendidikan Pancasila": ["Sejarah Perumusan Pancasila", "Norma dan Keadilan", "Keberagaman dalam Bingkai Bhinneka Tunggal Ika"], "Bahasa Indonesia": ["Teks Deskripsi", "Teks Cerita Fantasi", "Teks Prosedur", "Surat Pribadi dan Surat Dinas"], "Matematika": ["Bilangan", "Himpunan", "Bentuk Aljabar", "Persamaan dan Pertidaksamaan Linear Satu Variabel"], "IPA": ["Objek IPA dan Pengamatannya", "Klasifikasi Makhluk Hidup", "Suhu dan Kalor", "Energi dalam Sistem Kehidupan"], "IPS": ["Manusia, Tempat, dan Lingkungan", "Interaksi Sosial", "Kegiatan Ekonomi", "Masa Praaksara, Hindu-Buddha, dan Islam"], "Bahasa Inggris": ["Greeting and Introduction", "Describing People", "Telling Time, Day, and Date"] }, "Kelas 8": { "Pendidikan Pancasila": ["Kedudukan dan Fungsi Pancasila", "Menumbuhkan Kesadaran terhadap UUD 1945", "Semangat Kebangkitan Nasional 1908"], "Bahasa Indonesia": ["Teks Berita", "Iklan, Slogan, dan Poster", "Teks Eksplanasi", "Teks Ulasan/Resensi"], "Matematika": ["Pola Bilangan", "Sistem Koordinat", "Relasi dan Fungsi", "Persamaan Garis Lurus", "Teorema Pythagoras", "Lingkaran"], "IPA": ["Gerak Benda dan Makhluk Hidup", "Pesawat Sederhana", "Sistem Pencernaan Manusia", "Getaran, Gelombang, dan Bunyi", "Cahaya dan Alat Optik"], "IPS": ["Pengaruh Interaksi Sosial", "Perdagangan Antardaerah", "Kolonialisme dan Imperialisme Barat"], "Bahasa Inggris": ["Asking for and Giving Opinion", "Simple Past Tense", "Recount Text"] }, "Kelas 9": { "Pendidikan Pancasila": ["Dinamika Perwujudan Pancasila", "Kedaulatan Negara Kesatuan Republik Indonesia", "Bela Negara"], "Bahasa Indonesia": ["Teks Laporan Percobaan", "Teks Pidato Persuasif", "Teks Cerpen", "Teks Tanggapan"], "Matematika": ["Bilangan Berpangkat dan Bentuk Akar", "Persamaan Kuadrat", "Fungsi Kuadrat", "Transformasi Geometri", "Bangun Ruang Sisi Lengkung"], "IPA": ["Sistem Reproduksi", "Pewarisan Sifat", "Listrik Statis dan Dinamis", "Kemagnetan", "Bioteknologi"], "IPS": ["Perubahan Sosial Budaya dan Globalisasi", "Perdagangan Internasional", "Sejarah Masa Kemerdekaan hingga Reformasi"], "Bahasa Inggris": ["Procedure Text", "Report Text", "Narrative Text"] } },
-                "SMA": { "Kelas 10": { "Pendidikan Pancasila": ["Pancasila dalam Konteks Sejarah", "Lembaga-lembaga Negara", "Warga Negara Indonesia"], "Bahasa Indonesia": ["Teks Laporan Hasil Observasi", "Teks Eksposisi", "Teks Anekdot", "Debat"], "Matematika Wajib": ["Persamaan Nilai Mutlak", "Sistem Persamaan Linear Tiga Variabel", "Fungsi", "Trigonometri Dasar"], "Sejarah Indonesia": ["Konsep Berpikir Sejarah", "Manusia Purba di Indonesia", "Kerajaan Hindu-Buddha dan Islam"], "Biologi": ["Ruang Lingkup Biologi", "Keanekaragaman Hayati", "Virus, Bakteri, Protista, Fungi"], "Fisika": ["Pengukuran dan Vektor", "Gerak Lurus dan Parabola", "Dinamika Partikel (Hukum Newton)"], "Kimia": ["Hakikat Ilmu Kimia", "Struktur Atom dan Sistem Periodik", "Ikatan Kimia"], "Geografi": ["Dasar Geografi dan Pemetaan", "Litosfer dan Pedosfer", "Atmosfer", "Hidrosfer"], "Ekonomi": ["Konsep Dasar Ilmu Ekonomi", "Masalah dan Sistem Ekonomi", "Permintaan dan Penawaran"], "Sosiologi": ["Fungsi Sosiologi", "Individu, Kelompok, dan Hubungan Sosial"] }, "Kelas 11": { "Pendidikan Pancasila": ["Harmonisasi Hak dan Kewajiban Asasi Manusia", "Sistem Demokrasi Pancasila", "Ancaman terhadap Negara"], "Bahasa Indonesia": ["Teks Prosedur", "Teks Eksplanasi", "Teks Ceramah", "Karya Ilmiah"], "Matematika Wajib": ["Program Linear", "Matriks", "Transformasi Geometri", "Limit dan Turunan Fungsi Aljabar"], "Sejarah Indonesia": ["Kolonialisme dan Imperialisme", "Pergerakan Nasional", "Pendudukan Jepang dan Proklamasi"], "Biologi": ["Sel", "Jaringan Tumbuhan dan Hewan", "Sistem Organ Manusia (Gerak, Sirkulasi, Pencernaan, dll.)"], "Fisika": ["Dinamika Rotasi", "Fluida", "Suhu dan Kalor", "Termodinamika", "Gelombang"], "Kimia": ["Hidrokarbon dan Minyak Bumi", "Termokimia", "Laju Reaksi", "Kesetimbangan Kimia", "Larutan Asam Basa"], "Geografi": ["Biosfer", "Antroposfer", "Sumber Daya Alam", "Ketahanan Pangan"], "Ekonomi": ["Pendapatan Nasional", "Pertumbuhan Ekonomi", "Ketenagakerjaan", "Inflasi", "Kebijakan Moneter dan Fiskal"], "Sosiologi": ["Kelompok Sosial", "Permasalahan Sosial", "Perbedaan dan Kesetaraan", "Konflik dan Integrasi"] }, "Kelas 12": { "Pendidikan Pancasila": ["Kasus Pelanggaran Hak", "Peran Pers", "Peran Indonesia dalam Perdamaian Dunia"], "Bahasa Indonesia": ["Surat Lamaran Pekerjaan", "Teks Cerita Sejarah", "Teks Editorial", "Kritik dan Esai"], "Matematika Wajib": ["Geometri Ruang (Dimensi Tiga)", "Statistika Inferensial", "Kaidah Pencacahan", "Peluang"], "Sejarah Indonesia": ["Perjuangan Pasca Kemerdekaan", "Demokrasi Liberal dan Terpimpin", "Orde Baru dan Reformasi"], "Biologi": ["Pertumbuhan dan Perkembangan", "Metabolisme Sel", "Genetika dan Hereditas", "Evolusi", "Bioteknologi"], "Fisika": ["Listrik Arus Searah dan Bolak-balik", "Medan Magnet", "Fisika Kuantum", "Fisika Inti"], "Kimia": ["Sifat Koligatif Larutan", "Elektrokimia", "Kimia Unsur", "Senyawa Karbon", "Makromolekul"], "Geografi": ["Konsep Wilayah dan Tata Ruang", "Interaksi Desa-Kota", "Negara Maju dan Berkembang"], "Ekonomi": ["Akuntansi Perusahaan Jasa", "Jurnal Umum", "Laporan Keuangan"], "Sosiologi": ["Perubahan Sosial", "Globalisasi", "Ketimpangan Sosial", "Pemberdayaan Komunitas"] } },
-                "Universitas": { "S1 (Sarjana)": { "Teknik Informatika": ["Kalkulus I", "Dasar Pemrograman", "Logika Informatika", "Sistem Digital", "Struktur Data & Algoritma"], "Ekonomi & Bisnis": ["Pengantar Ekonomi Mikro", "Pengantar Ekonomi Makro", "Matematika Ekonomi", "Akuntansi Dasar", "Pengantar Manajemen"], "Ilmu Hukum": ["Pengantar Ilmu Hukum", "Pengantar Hukum Indonesia", "Ilmu Negara", "Hukum Perdata", "Hukum Pidana"], "Ilmu Komunikasi": ["Pengantar Ilmu Komunikasi", "Teori Komunikasi", "Komunikasi Massa", "Psikologi Komunikasi", "Public Speaking"], "Psikologi": ["Psikologi Umum", "Biopsikologi", "Statistika Psikologi", "Psikologi Perkembangan", "Psikologi Sosial"] }, "S2 (Magister)": { "Manajemen": ["Manajemen Strategis", "Manajemen Pemasaran Lanjutan", "Manajemen Keuangan Korporat", "Metodologi Penelitian Bisnis"], "Teknik Informatika": ["Kecerdasan Buatan Lanjutan", "Rekayasa Perangkat Lunak Skala Besar", "Keamanan Siber", "Analisis Big Data"], "Hukum": ["Filsafat Hukum", "Teori Hukum", "Politik Hukum", "Metodologi Penelitian Hukum"] }, "S3 (Doktor)": { "Studi Pembangunan": ["Teori Pembangunan Lanjutan", "Metodologi Penelitian Kualitatif Lanjutan", "Metodologi Penelitian Kuantitatif Lanjutan", "Disertasi"], "Ilmu Ekonomi": ["Teori Mikroekonomi Lanjutan", "Teori Makroekonomi Lanjutan", "Ekonometrika", "Disertasi"], "Ilmu Komputer": ["Topik Khusus dalam AI", "Jaringan Komputer Lanjutan", "Penelitian Mandiri", "Disertasi"] } }
+                "TK": {
+                    "Kelompok A (4-5 Tahun)": {
+                        "Tematik": ["Diri Sendiri", "Lingkunganku", "Kebutuhanku", "Binatang", "Tanaman", "Alam Semesta"],
+                    },
+                    "Kelompok B (5-6 Tahun)": {
+                        "Tematik": ["Keluarga, Sekolah, Masyarakat", "Pekerjaan", "Air, Udara, Api", "Alat Komunikasi", "Tanah Airku", "Gejala Alam"],
+                    }
+                },
+                "SD": {
+                    "Kelas 1": {
+                        "Pendidikan Pancasila": ["Simbol dan Sila Pancasila", "Aturan di Rumah dan Sekolah", "Menjaga Kebersihan Lingkungan"],
+                        "Bahasa Indonesia": ["Mengenal Huruf dan Suku Kata", "Membaca Kalimat Sederhana", "Menulis Nama Diri dan Objek"],
+                        "Matematika": ["Membilang Angka 1-20", "Penjumlahan dan Pengurangan Sederhana", "Mengenal Bangun Datar"]
+                    },
+                    "Kelas 2": {
+                        "Pendidikan Pancasila": ["Hidup Rukun", "Sikap Sesuai Sila Pancasila", "Tata Tertib dan Aturan"],
+                        "Bahasa Indonesia": ["Kata Sapaan dan Kalimat Tanya", "Puisi Anak", "Membaca Dongeng"],
+                        "Matematika": ["Bilangan sampai 500", "Perkalian dan Pembagian Dasar", "Satuan Waktu (Jam) dan Panjang (cm, m)"]
+                    },
+                    "Kelas 3": {
+                        "Pendidikan Pancasila": ["Makna Sumpah Pemuda", "Keberagaman Karakteristik Individu", "Hak dan Kewajiban di Rumah dan Sekolah"],
+                        "Bahasa Indonesia": ["Ciri-ciri Makhluk Hidup", "Perkembangan Teknologi Produksi", "Surat untuk Teman"],
+                        "Matematika": ["Operasi Hitung Campuran", "Pecahan Sederhana", "Luas dan Keliling Persegi dan Persegi Panjang"]
+                    },
+                    "Kelas 4": {
+                        "Pendidikan Pancasila": ["Makna Sila-Sila Pancasila", "Hak dan Kewajiban sebagai Warga", "Keberagaman Suku dan Budaya"],
+                        "Bahasa Indonesia": ["Ide Pokok dan Kalimat Utama", "Teks Petunjuk Penggunaan", "Teks Deskripsi dan Narasi"],
+                        "Matematika": ["Bilangan Cacah Besar", "FPB dan KPK", "Pecahan", "Bangun Datar", "Statistika (Diagram Batang)"],
+                        "IPAS": ["Bagian Tumbuhan dan Fungsinya", "Wujud Zat", "Gaya dan Pengaruhnya", "Energi dan Perubahannya"]
+                    },
+                    "Kelas 5": {
+                        "Pendidikan Pancasila": ["Gotong Royong", "Keberagaman Suku, Agama, dan Budaya", "Cinta Tanah Air"],
+                        "Bahasa Indonesia": ["Iklan Media Cetak dan Elektronik", "Teks Narasi Sejarah", "Surat Undangan"],
+                        "Matematika": ["Operasi Hitung Pecahan", "Kecepatan dan Debit", "Skala", "Volume Kubus dan Balok"],
+                        "IPAS": ["Sistem Organ Manusia", "Ekosistem dan Rantai Makanan", "Siklus Air", "Sistem Tata Surya"]
+                    },
+                    "Kelas 6": {
+                        "Pendidikan Pancasila": ["Penerapan Nilai-nilai Pancasila", "Sistem Pemerintahan", "Peran Indonesia di ASEAN"],
+                        "Bahasa Indonesia": ["Teks Laporan Hasil Pengamatan", "Menyampaikan Pidato", "Mengisi Formulir"],
+                        "Matematika": ["Bilangan Bulat", "Lingkaran", "Bangun Ruang Campuran", "Statistika (Mean, Median, Modus)"],
+                        "IPAS": ["Perkembangbiakan Makhluk Hidup", "Pubertas", "Listrik dan Magnet", "Gerhana"]
+                    }
+                },
+                "SMP": {
+                    "Kelas 7": {
+                        "Pendidikan Pancasila": ["Sejarah Perumusan Pancasila", "Norma dan Keadilan", "Keberagaman dalam Bingkai Bhinneka Tunggal Ika"],
+                        "Bahasa Indonesia": ["Teks Deskripsi", "Teks Cerita Fantasi", "Teks Prosedur", "Surat Pribadi dan Surat Dinas"],
+                        "Matematika": ["Bilangan", "Himpunan", "Bentuk Aljabar", "Persamaan dan Pertidaksamaan Linear Satu Variabel"],
+                        "IPA": ["Objek IPA dan Pengamatannya", "Klasifikasi Makhluk Hidup", "Suhu dan Kalor", "Energi dalam Sistem Kehidupan"],
+                        "IPS": ["Manusia, Tempat, dan Lingkungan", "Interaksi Sosial", "Kegiatan Ekonomi", "Masa Praaksara, Hindu-Buddha, dan Islam"],
+                        "Bahasa Inggris": ["Greeting and Introduction", "Describing People", "Telling Time, Day, and Date"]
+                    },
+                    "Kelas 8": {
+                         "Pendidikan Pancasila": ["Kedudukan dan Fungsi Pancasila", "Menumbuhkan Kesadaran terhadap UUD 1945", "Semangat Kebangkitan Nasional 1908"],
+                        "Bahasa Indonesia": ["Teks Berita", "Iklan, Slogan, dan Poster", "Teks Eksplanasi", "Teks Ulasan/Resensi"],
+                        "Matematika": ["Pola Bilangan", "Sistem Koordinat", "Relasi dan Fungsi", "Persamaan Garis Lurus", "Teorema Pythagoras", "Lingkaran"],
+                        "IPA": ["Gerak Benda dan Makhluk Hidup", "Pesawat Sederhana", "Sistem Pencernaan Manusia", "Getaran, Gelombang, dan Bunyi", "Cahaya dan Alat Optik"],
+                        "IPS": ["Pengaruh Interaksi Sosial", "Perdagangan Antardaerah", "Kolonialisme dan Imperialisme Barat"],
+                        "Bahasa Inggris": ["Asking for and Giving Opinion", "Simple Past Tense", "Recount Text"]
+                    },
+                    "Kelas 9": {
+                         "Pendidikan Pancasila": ["Dinamika Perwujudan Pancasila", "Kedaulatan Negara Kesatuan Republik Indonesia", "Bela Negara"],
+                        "Bahasa Indonesia": ["Teks Laporan Percobaan", "Teks Pidato Persuasif", "Teks Cerpen", "Teks Tanggapan"],
+                        "Matematika": ["Bilangan Berpangkat dan Bentuk Akar", "Persamaan Kuadrat", "Fungsi Kuadrat", "Transformasi Geometri", "Bangun Ruang Sisi Lengkung"],
+                        "IPA": ["Sistem Reproduksi", "Pewarisan Sifat", "Listrik Statis dan Dinamis", "Kemagnetan", "Bioteknologi"],
+                        "IPS": ["Perubahan Sosial Budaya dan Globalisasi", "Perdagangan Internasional", "Sejarah Masa Kemerdekaan hingga Reformasi"],
+                        "Bahasa Inggris": ["Procedure Text", "Report Text", "Narrative Text"]
+                    }
+                },
+                "SMA": {
+                    "Kelas 10": {
+                        "Pendidikan Pancasila": ["Pancasila dalam Konteks Sejarah", "Lembaga-lembaga Negara", "Warga Negara Indonesia"],
+                        "Bahasa Indonesia": ["Teks Laporan Hasil Observasi", "Teks Eksposisi", "Teks Anekdot", "Debat"],
+                        "Matematika Wajib": ["Persamaan Nilai Mutlak", "Sistem Persamaan Linear Tiga Variabel", "Fungsi", "Trigonometri Dasar"],
+                        "Sejarah Indonesia": ["Konsep Berpikir Sejarah", "Manusia Purba di Indonesia", "Kerajaan Hindu-Buddha dan Islam"],
+                        "Biologi": ["Ruang Lingkup Biologi", "Keanekaragaman Hayati", "Virus, Bakteri, Protista, Fungi"],
+                        "Fisika": ["Pengukuran dan Vektor", "Gerak Lurus dan Parabola", "Dinamika Partikel (Hukum Newton)"],
+                        "Kimia": ["Hakikat Ilmu Kimia", "Struktur Atom dan Sistem Periodik", "Ikatan Kimia"],
+                        "Geografi": ["Dasar Geografi dan Pemetaan", "Litosfer dan Pedosfer", "Atmosfer", "Hidrosfer"],
+                        "Ekonomi": ["Konsep Dasar Ilmu Ekonomi", "Masalah dan Sistem Ekonomi", "Permintaan dan Penawaran"],
+                        "Sosiologi": ["Fungsi Sosiologi", "Individu, Kelompok, dan Hubungan Sosial"]
+                    },
+                    "Kelas 11": {
+                        "Pendidikan Pancasila": ["Harmonisasi Hak dan Kewajiban Asasi Manusia", "Sistem Demokrasi Pancasila", "Ancaman terhadap Negara"],
+                        "Bahasa Indonesia": ["Teks Prosedur", "Teks Eksplanasi", "Teks Ceramah", "Karya Ilmiah"],
+                        "Matematika Wajib": ["Program Linear", "Matriks", "Transformasi Geometri", "Limit dan Turunan Fungsi Aljabar"],
+                        "Sejarah Indonesia": ["Kolonialisme dan Imperialisme", "Pergerakan Nasional", "Pendudukan Jepang dan Proklamasi"],
+                        "Biologi": ["Sel", "Jaringan Tumbuhan dan Hewan", "Sistem Organ Manusia (Gerak, Sirkulasi, Pencernaan, dll.)"],
+                        "Fisika": ["Dinamika Rotasi", "Fluida", "Suhu dan Kalor", "Termodinamika", "Gelombang"],
+                        "Kimia": ["Hidrokarbon dan Minyak Bumi", "Termokimia", "Laju Reaksi", "Kesetimbangan Kimia", "Larutan Asam Basa"],
+                        "Geografi": ["Biosfer", "Antroposfer", "Sumber Daya Alam", "Ketahanan Pangan"],
+                        "Ekonomi": ["Pendapatan Nasional", "Pertumbuhan Ekonomi", "Ketenagakerjaan", "Inflasi", "Kebijakan Moneter dan Fiskal"],
+                        "Sosiologi": ["Kelompok Sosial", "Permasalahan Sosial", "Perbedaan dan Kesetaraan", "Konflik dan Integrasi"]
+                    },
+                    "Kelas 12": {
+                        "Pendidikan Pancasila": ["Kasus Pelanggaran Hak", "Peran Pers", "Peran Indonesia dalam Perdamaian Dunia"],
+                        "Bahasa Indonesia": ["Surat Lamaran Pekerjaan", "Teks Cerita Sejarah", "Teks Editorial", "Kritik dan Esai"],
+                        "Matematika Wajib": ["Geometri Ruang (Dimensi Tiga)", "Statistika Inferensial", "Kaidah Pencacahan", "Peluang"],
+                        "Sejarah Indonesia": ["Perjuangan Pasca Kemerdekaan", "Demokrasi Liberal dan Terpimpin", "Orde Baru dan Reformasi"],
+                        "Biologi": ["Pertumbuhan dan Perkembangan", "Metabolisme Sel", "Genetika dan Hereditas", "Evolusi", "Bioteknologi"],
+                        "Fisika": ["Listrik Arus Searah dan Bolak-balik", "Medan Magnet", "Fisika Kuantum", "Fisika Inti"],
+                        "Kimia": ["Sifat Koligatif Larutan", "Elektrokimia", "Kimia Unsur", "Senyawa Karbon", "Makromolekul"],
+                        "Geografi": ["Konsep Wilayah dan Tata Ruang", "Interaksi Desa-Kota", "Negara Maju dan Berkembang"],
+                        "Ekonomi": ["Akuntansi Perusahaan Jasa", "Jurnal Umum", "Laporan Keuangan"],
+                        "Sosiologi": ["Perubahan Sosial", "Globalisasi", "Ketimpangan Sosial", "Pemberdayaan Komunitas"]
+                    }
+                },
+                "Universitas": {
+                    "S1 (Sarjana)": {
+                        "Teknik Informatika": ["Kalkulus I", "Dasar Pemrograman", "Logika Informatika", "Sistem Digital", "Struktur Data & Algoritma"],
+                        "Ekonomi & Bisnis": ["Pengantar Ekonomi Mikro", "Pengantar Ekonomi Makro", "Matematika Ekonomi", "Akuntansi Dasar", "Pengantar Manajemen"],
+                        "Ilmu Hukum": ["Pengantar Ilmu Hukum", "Pengantar Hukum Indonesia", "Ilmu Negara", "Hukum Perdata", "Hukum Pidana"],
+                        "Ilmu Komunikasi": ["Pengantar Ilmu Komunikasi", "Teori Komunikasi", "Komunikasi Massa", "Psikologi Komunikasi", "Public Speaking"],
+                        "Psikologi": ["Psikologi Umum", "Biopsikologi", "Statistika Psikologi", "Psikologi Perkembangan", "Psikologi Sosial"]
+                    },
+                    "S2 (Magister)": {
+                        "Manajemen": ["Manajemen Strategis", "Manajemen Pemasaran Lanjutan", "Manajemen Keuangan Korporat", "Metodologi Penelitian Bisnis"],
+                        "Teknik Informatika": ["Kecerdasan Buatan Lanjutan", "Rekayasa Perangkat Lunak Skala Besar", "Keamanan Siber", "Analisis Big Data"],
+                        "Hukum": ["Filsafat Hukum", "Teori Hukum", "Politik Hukum", "Metodologi Penelitian Hukum"]
+                    },
+                    "S3 (Doktor)": {
+                        "Studi Pembangunan": ["Teori Pembangunan Lanjutan", "Metodologi Penelitian Kualitatif Lanjutan", "Metodologi Penelitian Kuantitatif Lanjutan", "Disertasi"],
+                        "Ilmu Ekonomi": ["Teori Mikroekonomi Lanjutan", "Teori Makroekonomi Lanjutan", "Ekonometrika", "Disertasi"],
+                        "Ilmu Komputer": ["Topik Khusus dalam AI", "Jaringan Komputer Lanjutan", "Penelitian Mandiri", "Disertasi"]
+                    }
+                }
             };
             
             // --- UI TEMPLATE FUNCTIONS ---
-            // Sisa dari JavaScript, termasuk semua fungsi dan event listener, tetap sama.
-            // ... (Kode JavaScript sebelumnya dari baris 1084 hingga akhir disalin di sini)
-            
-            // --- UI TEMPLATE FUNCTIONS ---
-
-            // Generates a consistent file uploader component with a preview and a remove button.
+            // Unchanged
             function createFileUploaderHTML(prefix, label, helpText = '') {
                 return `
-                    <div>
-                        <label for="${prefix}-gambar" class="block text-sm font-medium text-slate-700 mb-1">${label}</label>
-                        ${helpText ? `<p class="text-xs text-slate-500 mb-2">${helpText}</p>` : ''}
-                        <input type="file" id="${prefix}-gambar" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer"/>
-                        <div id="${prefix}-preview" class="mt-4 hidden relative inline-block">
-                            <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-600 text-white rounded-full h-6 w-6 flex items-center justify-center text-sm font-bold z-10 hover:bg-red-800 transition-colors">&times;</button>
-                            <img id="${prefix}-preview-img" class="max-h-48 rounded-lg border bg-slate-100"/>
+                        <div>
+                            <label for="${prefix}-gambar" class="block text-sm font-medium text-slate-700 mb-1">${label}</label>
+                            ${helpText ? `<p class="text-xs text-slate-500 mb-2">${helpText}</p>` : ''}
+                            <input type="file" id="${prefix}-gambar" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer"/>
+                            <div id="${prefix}-preview" class="mt-4 hidden relative inline-block">
+                                <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-600 text-white rounded-full h-6 w-6 flex items-center justify-center text-sm font-bold z-10 hover:bg-red-800 transition-colors">&times;</button>
+                                <img id="${prefix}-preview-img" class="max-h-48 rounded-lg border bg-slate-100"/>
+                            </div>
                         </div>
-                    </div>
                 `;
             }
 
-            // Template for sections with topic selectors
             function createTopicSelectorHTML(prefix, title, optionsHTML = '', buttonText = 'Generate', buttonIcon = 'fa-cogs') {
                 const colorVariants = {
                     teal: `bg-teal-600 hover:bg-teal-700 focus:ring-teal-500`,
@@ -534,69 +643,70 @@
                 const buttonColorClass = prefix === 'rpp-analisis' ? colorVariants.slate : colorVariants.teal;
 
                 return `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">${title}</h1>
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <p class="font-semibold text-slate-700 mb-3">Pilih Salah Satu Cara untuk Menentukan Topik:</p>
-                        <div class="border rounded-lg p-4 bg-slate-50">
-                            <label class="font-medium text-slate-800 mb-2 block">Opsi 1: Pilih dari Kurikulum (Disarankan)</label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <select id="${prefix}-jenjang" class="w-full p-2 border border-slate-300 rounded-md bg-white"></select>
-                                <select id="${prefix}-kelas" class="w-full p-2 border border-slate-300 rounded-md bg-white" disabled></select>
-                                <select id="${prefix}-mapel" class="w-full p-2 border border-slate-300 rounded-md bg-white" disabled></select>
-                                <select id="${prefix}-bab" class="w-full p-2 border border-slate-300 rounded-md bg-white" disabled></select>
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">${title}</h1>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <p class="font-semibold text-slate-700 mb-3">Pilih Salah Satu Cara untuk Menentukan Topik:</p>
+                            <div class="border rounded-lg p-4 bg-slate-50">
+                                <label class="font-medium text-slate-800 mb-2 block">Opsi 1: Pilih dari Kurikulum (Disarankan)</label>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <select id="${prefix}-jenjang" class="w-full p-2 border border-slate-300 rounded-md bg-white"></select>
+                                    <select id="${prefix}-kelas" class="w-full p-2 border border-slate-300 rounded-md bg-white" disabled></select>
+                                    <select id="${prefix}-mapel" class="w-full p-2 border border-slate-300 rounded-md bg-white" disabled></select>
+                                    <select id="${prefix}-bab" class="w-full p-2 border border-slate-300 rounded-md bg-white" disabled></select>
+                                </div>
                             </div>
+                            <div class="flex items-center my-4">
+                                <hr class="flex-grow border-t border-slate-300">
+                                <span class="mx-4 text-slate-500 font-semibold">ATAU</span>
+                                <hr class="flex-grow border-t border-slate-300">
+                            </div>
+                            <div>
+                                <label for="${prefix}-topik" class="font-medium text-slate-800 mb-2 block">Opsi 2: Tulis Topik Sendiri</label>
+                                <textarea id="${prefix}-topik" rows="2" class="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
+                            </div>
+                            ${optionsHTML}
+                            <button id="btn-generate-${prefix}" class="mt-6 w-full ${buttonColorClass} text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <i class="fas ${buttonIcon} mr-2"></i> ${buttonText}
+                            </button>
+                            <div id="${prefix}-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang bekerja...</p></div>
+                            <div id="${prefix}-hasil" class="mt-8 hidden gemini-output"></div>
                         </div>
-                        <div class="flex items-center my-4">
-                            <hr class="flex-grow border-t border-slate-300">
-                            <span class="mx-4 text-slate-500 font-semibold text-sm">ATAU</span>
-                            <hr class="flex-grow border-t border-slate-300">
-                        </div>
-                        <div>
-                            <label for="${prefix}-topik" class="font-medium text-slate-800 mb-2 block">Opsi 2: Tulis Topik Sendiri</label>
-                            <textarea id="${prefix}-topik" rows="2" class="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
-                        </div>
-                        ${optionsHTML}
-                        <button id="btn-generate-${prefix}" class="mt-6 w-full ${buttonColorClass} text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center">
-                            <i class="fas ${buttonIcon} mr-2"></i> ${buttonText}
-                        </button>
-                        <div id="${prefix}-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang bekerja...</p></div>
-                        <div id="${prefix}-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                    </div>
                 `;
             }
 
             // --- UI Injection on Load ---
+            // Unchanged
             function buildUI() {
                 // Generator Materi
                 const materiOptions = `
-                    <div class="mt-6 border-t pt-6">
-                        <label for="materi-diferensiasi" class="flex items-center cursor-pointer">
-                            <input type="checkbox" id="materi-diferensiasi" class="h-4 w-4 text-teal-600 border-slate-300 rounded focus:ring-teal-500">
-                            <span class="ml-2 text-sm font-medium text-slate-700">Aktifkan Diferensiasi Materi</span>
-                        </label>
-                    </div>`;
+                        <div class="mt-6 border-t pt-6">
+                            <label for="materi-diferensiasi" class="flex items-center">
+                                <input type="checkbox" id="materi-diferensiasi" class="h-4 w-4 text-teal-600 border-slate-300 rounded focus:ring-teal-500">
+                                <span class="ml-2 text-sm font-medium text-slate-700">Aktifkan Diferensiasi Materi</span>
+                            </label>
+                        </div>`;
                 document.getElementById('generator-materi').innerHTML = createTopicSelectorHTML('materi', 'Generator Materi Ajar', materiOptions, 'Buat Materi', 'fa-cogs');
 
                 // Pembuat Soal
                 const soalOptions = `
-                    <div class="mt-6 border-t pt-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="soal-tipe" class="block text-sm font-medium text-slate-700 mb-1">Tipe Soal</label>
-                                <select id="soal-tipe" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option>Pilihan Ganda</option><option>Esai Singkat</option><option>Benar/Salah</option><option>Studi Kasus</option></select>
+                        <div class="mt-6 border-t pt-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                 <div>
+                                     <label for="soal-tipe" class="block text-sm font-medium text-slate-700 mb-1">Tipe Soal</label>
+                                     <select id="soal-tipe" class="w-full p-2 border border-slate-300 rounded-md bg-white"><option>Pilihan Ganda</option><option>Esai Singkat</option><option>Benar/Salah</option><option>Studi Kasus</option></select>
+                                 </div>
+                                <div>
+                                    <label for="soal-jumlah" class="block text-sm font-medium text-slate-700 mb-1">Jumlah Soal</label>
+                                    <input type="number" id="soal-jumlah" class="w-full p-2 border border-slate-300 rounded-md" value="5">
+                                </div>
                             </div>
-                            <div>
-                                <label for="soal-jumlah" class="block text-sm font-medium text-slate-700 mb-1">Jumlah Soal</label>
-                                <input type="number" id="soal-jumlah" class="w-full p-2 border border-slate-300 rounded-md" value="5" min="1" max="20">
+                            <div class="mt-4">
+                                 <label for="soal-pembahasan" class="flex items-center">
+                                     <input type="checkbox" id="soal-pembahasan" class="h-4 w-4 text-teal-600 border-slate-300 rounded focus:ring-teal-500">
+                                     <span class="ml-2 text-sm font-medium text-slate-700">Sertakan Pembahasan Jawaban Rinci</span>
+                                 </label>
                             </div>
-                        </div>
-                        <div class="mt-4">
-                            <label for="soal-pembahasan" class="flex items-center cursor-pointer">
-                                <input type="checkbox" id="soal-pembahasan" class="h-4 w-4 text-teal-600 border-slate-300 rounded focus:ring-teal-500" checked>
-                                <span class="ml-2 text-sm font-medium text-slate-700">Sertakan Pembahasan Jawaban Rinci</span>
-                            </label>
-                        </div>
-                    </div>`;
+                        </div>`;
                 document.getElementById('pembuat-soal').innerHTML = createTopicSelectorHTML('soal', 'Pembuat Soal Otomatis', soalOptions, 'Buat Soal', 'fa-lightbulb');
                 
                 // Pustaka Aktivitas (Card based)
@@ -608,21 +718,21 @@
                     { type: 'Galeri Walk', title: 'Galeri Walk', icon: 'fa-images', desc: 'Sajikan dan evaluasi hasil karya secara interaktif.' }
                 ];
                 let activityCardsHTML = a_activities.map(activity => `
-                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-xl transition-all cursor-pointer activity-choice-card" data-activity-type="${activity.type}" data-activity-title="${activity.title}">
-                        <i class="fas ${activity.icon} text-4xl text-teal-500 mb-4"></i>
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">${activity.title}</h3>
-                        <p class="text-slate-600">${activity.desc}</p>
-                    </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer activity-choice-card" data-activity-type="${activity.type}" data-activity-title="${activity.title}">
+                            <i class="fas ${activity.icon} text-4xl text-teal-600 mb-4 feature-icon"></i>
+                            <h3 class="text-xl font-semibold mb-2 text-slate-900">${activity.title}</h3>
+                            <p class="text-slate-600">${activity.desc}</p>
+                        </div>
                 `).join('');
                 document.getElementById('pustaka-aktivitas').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Pustaka Aktivitas Interaktif</h1>
-                    <p class="text-lg text-slate-600 mb-8">Pilih tipe aktivitas di bawah ini untuk memulai perancangan.</p>
-                    <div id="aktivitas-card-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        ${activityCardsHTML}
-                    </div>
-                    <div id="aktivitas-form-container" class="hidden">
-                        <!-- Form will be injected here -->
-                    </div>
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Pustaka Aktivitas Interaktif</h1>
+                        <p class="text-lg text-slate-600 mb-8">Pilih tipe aktivitas di bawah ini untuk memulai perancangan.</p>
+                        <div id="aktivitas-card-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            ${activityCardsHTML}
+                        </div>
+                        <div id="aktivitas-form-container" class="hidden">
+                            <!-- Form will be injected here -->
+                        </div>
                 `;
 
 
@@ -631,31 +741,32 @@
                 
                 // Perencana RPP & Analisis RPP (Tabbed Interface)
                 document.getElementById('perencana-rpp').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Perencana & Analisis RPP</h1>
-                    <div class="bg-white p-2 rounded-lg shadow-md">
-                        <div class="border-b border-slate-200">
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Perencana & Analisis RPP</h1>
+                        <div class="mb-6 border-b border-slate-200">
                             <nav class="-mb-px flex space-x-4" aria-label="Tabs">
-                                <button class="tab-button active whitespace-nowrap py-3 px-4 font-medium text-sm" data-target="tab-buat-rpp">Buat Draf RPP Baru</button>
-                                <button class="tab-button whitespace-nowrap py-3 px-4 font-medium text-sm text-slate-500 hover:text-slate-700" data-target="tab-analisis-rpp">Analisis RPP Saya</button>
+                                <button class="tab-button active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="tab-buat-rpp">Buat Draf RPP Baru</button>
+                                <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="tab-analisis-rpp">Analisis RPP Saya</button>
                             </nav>
                         </div>
-                        <div id="tab-buat-rpp" class="tab-content active p-4">
+
+                        <div id="tab-buat-rpp" class="tab-content active">
                             ${createTopicSelectorHTML('rpp', '', `
-                            <div class="mt-6 border-t pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="rpp-durasi" class="block text-sm font-medium text-slate-700 mb-1">Durasi (menit)</label>
-                                    <input type="number" id="rpp-durasi" class="w-full p-2 border border-slate-300 rounded-md" value="90">
-                                </div>
-                                <div>
-                                    <label for="rpp-tujuan" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Pembelajaran Utama</label>
-                                    <input type="text" id="rpp-tujuan" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: Siswa mampu menjelaskan kronologi...">
-                                </div>
-                            </div>`, 'Buat Draf RPP', 'fa-file-alt')}
+                               <div class="mt-6 border-t pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                   <div>
+                                       <label for="rpp-durasi" class="block text-sm font-medium text-slate-700 mb-1">Durasi (menit)</label>
+                                       <input type="number" id="rpp-durasi" class="w-full p-2 border border-slate-300 rounded-md" value="90">
+                                   </div>
+                                   <div>
+                                       <label for="rpp-tujuan" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Pembelajaran Utama</label>
+                                        <input type="text" id="rpp-tujuan" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: Siswa mampu menjelaskan kronologi...">
+                                   </div>
+                               </div>`, 'Buat Draf RPP', 'fa-file-alt')}
                         </div>
-                        <div id="tab-analisis-rpp" class="tab-content p-4">
-                            <div class="bg-white p-6 rounded-lg">
-                                <h2 class="text-2xl font-bold mb-4 text-slate-900">Analisis & Refleksi RPP</h2>
-                                <p class="text-slate-600 mb-4">Tempelkan draf RPP yang sudah Anda buat untuk mendapatkan umpan balik dan saran perbaikan berdasarkan prinsip pedagogi.</p>
+
+                        <div id="tab-analisis-rpp" class="tab-content">
+                             <div class="bg-white p-6 rounded-lg shadow-md">
+                                 <h2 class="text-2xl font-bold mb-4 text-slate-900">Analisis & Refleksi RPP</h2>
+                                 <p class="text-slate-600 mb-4">Tempelkan draf RPP yang sudah Anda buat untuk mendapatkan umpan balik dan saran perbaikan berdasarkan prinsip pedagogi.</p>
                                 <label for="analisis-rpp-teks" class="block text-sm font-medium text-slate-700 mb-1">Tempel Draf RPP Anda di Sini</label>
                                 <textarea id="analisis-rpp-teks" rows="15" class="w-full p-2 border border-slate-300 rounded-md focus:ring-slate-800 focus:border-slate-800" placeholder="Salin dan tempel seluruh isi RPP Anda di sini..."></textarea>
                                 <button id="btn-generate-analisis-rpp" class="mt-6 w-full bg-slate-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center">
@@ -665,286 +776,298 @@
                                 <div id="analisis-rpp-hasil" class="mt-8 hidden gemini-output"></div>
                             </div>
                         </div>
-                    </div>`;
+                `;
 
                 // Sections without topic selector
                 document.getElementById('generator-glosarium').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Generator Glosarium & Konteks Kata</h1>
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <label for="glosarium-teks" class="block text-sm font-medium text-slate-700 mb-1">Tempel Teks Materi Anda</label>
-                        <textarea id="glosarium-teks" rows="10" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Tempelkan artikel, bab buku, atau materi bacaan di sini..."></textarea>
-                        <button id="btn-generate-glosarium" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700">Buat Glosarium</button>
-                        <div id="glosarium-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang memindai istilah penting...</p></div>
-                        <div id="glosarium-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                    </div>`;
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Generator Glosarium & Konteks Kata</h1>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <label for="glosarium-teks" class="block text-sm font-medium text-slate-700 mb-1">Tempel Teks Materi Anda</label>
+                            <textarea id="glosarium-teks" rows="10" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Tempelkan artikel, bab buku, atau materi bacaan di sini..."></textarea>
+                            <button id="btn-generate-glosarium" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700">Buat Glosarium</button>
+                            <div id="glosarium-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang memindai istilah penting...</p></div>
+                            <div id="glosarium-hasil" class="mt-8 hidden gemini-output"></div>
+                        </div>`;
 
                 document.getElementById('konteks-visual').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Konteks Visual Cerdas</h1>
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        ${createFileUploaderHTML('konteks', 'Unggah Gambar', 'Unggah foto bersejarah, diagram, karya seni, atau grafik untuk dianalisis.')}
-                        <button id="btn-generate-konteks" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                            <i class="fas fa-search-plus mr-2"></i> Analisis Gambar
-                        </button>
-                        <div id="konteks-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang mempelajari konteks gambar...</p></div>
-                        <div id="konteks-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                    </div>`;
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Konteks Visual Cerdas</h1>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            ${createFileUploaderHTML('konteks', 'Unggah Gambar', 'Unggah foto bersejarah, diagram, karya seni, atau grafik untuk dianalisis.')}
+                            <button id="btn-generate-konteks" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                <i class="fas fa-search-plus mr-2"></i> Analisis Gambar
+                            </button>
+                            <div id="konteks-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang mempelajari konteks gambar...</p></div>
+                            <div id="konteks-hasil" class="mt-8 hidden gemini-output"></div>
+                        </div>`;
                 
                 document.getElementById('penjawab-soal').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Penjawab Soal Cerdas</h1>
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <p class="text-slate-600 mb-6">Dapatkan solusi dan pembahasan lengkap untuk soal apapun. Anda bisa memasukkan soal dalam bentuk teks atau mengunggah gambar.</p>
-                        <div>
-                            <label for="penjawab-soal-teks" class="font-medium text-slate-800 mb-2 block">Masukkan Soal (Teks)</label>
-                            <textarea id="penjawab-soal-teks" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Ketik atau tempel soal di sini..."></textarea>
-                        </div>
-                        <div class="flex items-center my-4">
-                            <hr class="flex-grow border-t border-slate-300">
-                            <span class="mx-4 text-slate-500 font-semibold text-sm">ATAU</span>
-                            <hr class="flex-grow border-t border-slate-300">
-                        </div>
-                        ${createFileUploaderHTML('penjawab-soal', 'Unggah Gambar Soal')}
-                        <button id="btn-generate-penjawab-soal" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                            <i class="fas fa-calculator mr-2"></i> Jawab & Bahas Soal
-                        </button>
-                        <div id="penjawab-soal-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang mengerjakan soal...</p></div>
-                        <div id="penjawab-soal-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                    </div>`;
-
-                document.getElementById('perancang-proyek').innerHTML = `
-                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Perancang Proyek Kolaboratif (PBL)</h1>
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Penjawab Soal Cerdas</h1>
                         <div class="bg-white p-6 rounded-lg shadow-md">
-                            <p class="text-slate-600 mb-6">Otomatiskan perencanaan Project-Based Learning (PBL) yang memakan waktu. Cukup masukkan tema besar dan durasi, dan biarkan AI menyusun kerangka kerja yang solid untuk Anda.</p>
+                             <p class="text-slate-600 mb-6">Dapatkan solusi dan pembahasan lengkap untuk soal apapun. Anda bisa memasukkan soal dalam bentuk teks atau mengunggah gambar.</p>
                             <div>
-                                <label for="proyek-tema" class="block text-sm font-medium text-slate-700 mb-1">Tema / Masalah Utama Proyek</label>
-                                <input type="text" id="proyek-tema" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: Mengatasi Masalah Sampah Plastik di Lingkungan Sekolah">
+                                <label for="penjawab-soal-teks" class="font-medium text-slate-800 mb-2 block">Masukkan Soal (Teks)</label>
+                                <textarea id="penjawab-soal-teks" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Ketik atau tempel soal di sini..."></textarea>
                             </div>
-                            <div class="mt-4">
-                                <label for="proyek-durasi" class="block text-sm font-medium text-slate-700 mb-1">Estimasi Durasi Proyek</label>
-                                <input type="text" id="proyek-durasi" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: 2 minggu">
+                            <div class="flex items-center my-4">
+                                <hr class="flex-grow border-t border-slate-300">
+                                <span class="mx-4 text-slate-500 font-semibold">ATAU</span>
+                                <hr class="flex-grow border-t border-slate-300">
                             </div>
-                            <button id="btn-generate-proyek" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                                <i class="fas fa-sitemap mr-2"></i> Rancang Kerangka Proyek
+                            ${createFileUploaderHTML('penjawab-soal', 'Unggah Gambar Soal')}
+                            <button id="btn-generate-penjawab-soal" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                <i class="fas fa-calculator mr-2"></i> Jawab & Bahas Soal
                             </button>
-                            <div id="proyek-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang merancang proyek pembelajaran...</p></div>
-                            <div id="proyek-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
+                            <div id="penjawab-soal-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang mengerjakan soal...</p></div>
+                            <div id="penjawab-soal-hasil" class="mt-8 hidden gemini-output"></div>
                         </div>`;
+
+                 document.getElementById('perancang-proyek').innerHTML = `
+                               <h1 class="text-3xl font-bold mb-6 text-slate-900">Perancang Proyek Kolaboratif (PBL)</h1>
+                                 <div class="bg-white p-6 rounded-lg shadow-md">
+                                       <p class="text-slate-600 mb-6">Otomatiskan perencanaan Project-Based Learning (PBL) yang memakan waktu. Cukup masukkan tema besar dan durasi, dan biarkan AI menyusun kerangka kerja yang solid untuk Anda.</p>
+                                       <div>
+                                           <label for="proyek-tema" class="block text-sm font-medium text-slate-700 mb-1">Tema / Masalah Utama Proyek</label>
+                                           <input type="text" id="proyek-tema" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: Mengatasi Masalah Sampah Plastik di Lingkungan Sekolah">
+                                       </div>
+                                       <div class="mt-4">
+                                           <label for="proyek-durasi" class="block text-sm font-medium text-slate-700 mb-1">Estimasi Durasi Proyek</label>
+                                           <input type="text" id="proyek-durasi" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: 2 minggu">
+                                       </div>
+                                       <button id="btn-generate-proyek" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                           <i class="fas fa-sitemap mr-2"></i> Rancang Kerangka Proyek
+                                       </button>
+                                       <div id="proyek-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang merancang proyek pembelajaran...</p></div>
+                                       <div id="proyek-hasil" class="mt-8 hidden gemini-output"></div>
+                                 </div>`;
 
                 document.getElementById('asisten-pertanyaan').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Asisten Pertanyaan Siswa</h1>
-                        <div class="bg-white p-6 rounded-lg shadow-md">
-                            <label for="pertanyaan-siswa" class="block text-sm font-medium text-slate-700 mb-1">Masukkan Pertanyaan Sulit dari Siswa</label>
-                            <textarea id="pertanyaan-siswa" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: Bu, kenapa kita tidak merasakan bumi berputar?"></textarea>
-                            <button id="btn-generate-jawaban" class="mt-4 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                                <i class="fas fa-hands-helping mr-2"></i> Dapatkan Ide Jawaban
-                            </button>
-                            <div id="jawaban-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang mencari cara terbaik untuk menjelaskan...</p></div>
-                            <div id="jawaban-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                        </div>`;
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Asisten Pertanyaan Siswa</h1>
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <label for="pertanyaan-siswa" class="block text-sm font-medium text-slate-700 mb-1">Masukkan Pertanyaan Sulit dari Siswa</label>
+                                <textarea id="pertanyaan-siswa" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: Bu, kenapa kita tidak merasakan bumi berputar?"></textarea>
+                                <button id="btn-generate-jawaban" class="mt-4 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                    <i class="fas fa-hands-helping mr-2"></i> Dapatkan Ide Jawaban
+                                </button>
+                                <div id="jawaban-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang mencari cara terbaik untuk menjelaskan...</p></div>
+                                <div id="jawaban-hasil" class="mt-8 hidden gemini-output"></div>
+                            </div>`;
                 
                 document.getElementById('penilaian-otomatis').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Pengecekan & Penilaian AI</h1>
-                    <div id="penilaian-tabs-container" class="bg-white p-2 rounded-lg shadow-md">
-                        <div class="border-b border-slate-200">
-                            <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto" aria-label="Tabs">
-                                <button class="tab-button active whitespace-nowrap py-3 px-4 font-medium text-sm" data-target="tab-penilaian-terpadu">Penilaian Terpadu</button>
-                                <button class="tab-button whitespace-nowrap py-3 px-4 font-medium text-sm text-slate-500 hover:text-slate-700" data-target="tab-penilaian-pg">Mode PG</button>
-                                <button class="tab-button whitespace-nowrap py-3 px-4 font-medium text-sm text-slate-500 hover:text-slate-700" data-target="tab-penilaian-esai">Mode Esai</button>
-                            </nav>
-                        </div>
-
-                        <!-- Tab: Penilaian Lembar Terpadu -->
-                        <div id="tab-penilaian-terpadu" class="tab-content active p-4">
-                            <div class="bg-white rounded-lg">
-                                <h2 class="text-2xl font-bold mb-2 text-slate-900">Penilaian Lembar Jawaban Terpadu</h2>
-                                <p class="text-slate-600 mb-6">Mode paling fleksibel. Unggah foto lembar soal yang telah dijawab langsung oleh siswa (bisa campuran PG dan esai singkat). AI akan mencoba menilai secara otomatis.</p>
-                                
-                                ${createFileUploaderHTML('penilaian-terpadu', 'Unggah Lembar Jawaban Siswa')}
-                                <div class="mt-4 border-t pt-4">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Kunci Jawaban (Opsional)</label>
-                                    <p class="text-xs text-slate-500 mb-2">Berikan kunci jawaban (teks/gambar) untuk akurasi maksimal. Jika kosong, AI akan menentukan jawaban benar sendiri.</p>
-                                    <textarea id="penilaian-terpadu-kunci-teks" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Contoh: 1. A, 2. C, 3. B ... atau poin-poin esai"></textarea>
-                                    ${createFileUploaderHTML('penilaian-terpadu-kunci', '')}
-                                </div>
-                                <div class="mt-4">
-                                    <label for="penilaian-terpadu-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
-                                    <select id="penilaian-terpadu-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
-                                        <option>1 - 100</option><option>1 - 10</option><option>A - E</option>
-                                    </select>
-                                </div>
-                                <button id="btn-generate-penilaian-terpadu" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                                    <i class="fas fa-magic mr-2"></i> Periksa Lembar Jawaban
-                                </button>
-                                <div id="penilaian-terpadu-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang memeriksa lembar jawaban...</p></div>
-                                <div id="penilaian-terpadu-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Pengecekan & Penilaian AI</h1>
+                        <div id="penilaian-tabs-container">
+                            <div class="mb-6 border-b border-slate-200">
+                                <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                                    <button class="tab-button active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="tab-penilaian-terpadu">Penilaian Lembar Terpadu</button>
+                                    <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="tab-penilaian-pg">Mode PG Spesifik</button>
+                                    <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="tab-penilaian-esai">Mode Esai Spesifik</button>
+                                </nav>
                             </div>
-                        </div>
 
-                        <!-- Tab Content for Pilihan Ganda -->
-                        <div id="tab-penilaian-pg" class="tab-content p-4">
-                                <h2 class="text-2xl font-bold mb-2 text-slate-900">Mode PG Spesifik</h2>
-                                <p class="text-slate-600 mb-6">Gunakan mode ini jika Anda hanya ingin menilai lembar jawaban Pilihan Ganda.</p>
-                                <div id="penilaian-pg-content-wrapper"></div>
-                        </div>
-                        
-                        <!-- Tab Content for Esai -->
-                        <div id="tab-penilaian-esai" class="tab-content p-4">
-                                <h2 class="text-2xl font-bold mb-2 text-slate-900">Mode Esai Spesifik</h2>
-                                <p class="text-slate-600 mb-6">Gunakan mode ini untuk penilaian esai yang lebih mendalam, baik secara otomatis penuh atau dengan kunci jawaban Anda.</p>
-                                <div id="penilaian-esai-content-wrapper"></div>
-                        </div>
-                    </div>`;
+                            <!-- Tab: Penilaian Lembar Terpadu -->
+                            <div id="tab-penilaian-terpadu" class="tab-content active">
+                                <div class="bg-white p-6 rounded-lg shadow-md">
+                                    <h2 class="text-2xl font-bold mb-2 text-slate-900">Penilaian Lembar Jawaban Terpadu</h2>
+                                    <p class="text-slate-600 mb-6">Mode paling fleksibel. Unggah foto lembar soal yang telah dijawab langsung oleh siswa (bisa campuran PG dan esai singkat). AI akan mencoba menilai secara otomatis.</p>
+                                    
+                                    ${createFileUploaderHTML('penilaian-terpadu', 'Unggah Lembar Jawaban Siswa')}
+                                    <div class="mt-4 border-t pt-4">
+                                         <label class="block text-sm font-medium text-slate-700 mb-1">Kunci Jawaban (Opsional)</label>
+                                         <p class="text-xs text-slate-500 mb-2">Berikan kunci jawaban (teks/gambar) untuk akurasi maksimal. Jika kosong, AI akan menentukan jawaban benar sendiri.</p>
+                                         <textarea id="penilaian-terpadu-kunci-teks" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Contoh: 1. A, 2. C, 3. B ... atau poin-poin esai"></textarea>
+                                         ${createFileUploaderHTML('penilaian-terpadu-kunci', '')}
+                                    </div>
+                                     <div class="mt-4">
+                                         <label for="penilaian-terpadu-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
+                                         <select id="penilaian-terpadu-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
+                                             <option>1 - 100</option>
+                                             <option>1 - 10</option>
+                                             <option>A - E</option>
+                                         </select>
+                                     </div>
+                                    <button id="btn-generate-penilaian-terpadu" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                        <i class="fas fa-magic mr-2"></i> Periksa Lembar Jawaban
+                                    </button>
+                                    <div id="penilaian-terpadu-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang memeriksa lembar jawaban...</p></div>
+                                    <div id="penilaian-terpadu-hasil" class="mt-8 hidden gemini-output"></div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content for Pilihan Ganda -->
+                            <div id="tab-penilaian-pg" class="tab-content">
+                                 <div class="bg-white p-6 rounded-lg shadow-md">
+                                     <h2 class="text-2xl font-bold mb-2 text-slate-900">Mode PG Spesifik</h2>
+                                     <p class="text-slate-600 mb-6">Gunakan mode ini jika Anda hanya ingin menilai lembar jawaban Pilihan Ganda.</p>
+                                     <div id="penilaian-pg-content-wrapper"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tab Content for Esai -->
+                            <div id="tab-penilaian-esai" class="tab-content">
+                               <div class="bg-white p-6 rounded-lg shadow-md">
+                                     <h2 class="text-2xl font-bold mb-2 text-slate-900">Mode Esai Spesifik</h2>
+                                     <p class="text-slate-600 mb-6">Gunakan mode ini untuk penilaian esai yang lebih mendalam, baik secara otomatis penuh atau dengan kunci jawaban Anda.</p>
+                                     <div id="penilaian-esai-content-wrapper"></div>
+                                </div>
+                            </div>
+                        </div>`;
 
                 document.getElementById('komunikasi-ortu').innerHTML = `
-                    <h1 class="text-3xl font-bold mb-6 text-slate-900">Generator Komunikasi Orang Tua</h1>
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="komunikasi-nama" class="block text-sm font-medium text-slate-700 mb-1">Nama Siswa</label>
-                                <input type="text" id="komunikasi-nama" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: Budi">
+                        <h1 class="text-3xl font-bold mb-6 text-slate-900">Generator Komunikasi Orang Tua</h1>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="komunikasi-nama" class="block text-sm font-medium text-slate-700 mb-1">Nama Siswa</label>
+                                    <input type="text" id="komunikasi-nama" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="Contoh: Budi">
+                                </div>
+                                <div>
+                                    <label for="komunikasi-tujuan" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Komunikasi</label>
+                                    <select id="komunikasi-tujuan" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500 bg-white">
+                                        <option>Memberi apresiasi atas pencapaian</option>
+                                        <option>Menyampaikan kendala belajar</option>
+                                        <option>Mendiskusikan perkembangan perilaku</option>
+                                        <option>Informasi kegiatan sekolah</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div>
-                                <label for="komunikasi-tujuan" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Komunikasi</label>
-                                <select id="komunikasi-tujuan" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500 bg-white">
-                                    <option>Memberi apresiasi atas pencapaian</option>
-                                    <option>Menyampaikan kendala belajar</option>
-                                    <option>Mendiskusikan perkembangan perilaku</option>
-                                    <option>Informasi kegiatan sekolah</option>
-                                </select>
+                            <div class="mt-4">
+                                 <label for="komunikasi-poin" class="block text-sm font-medium text-slate-700 mb-1">Poin-Poin Kunci</label>
+                                 <textarea id="komunikasi-poin" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="- Aktif bertanya di kelas&#10;- Belum mengumpulkan 3 PR terakhir&#10;- Mengajak diskusi mencari solusi"></textarea>
                             </div>
-                        </div>
-                        <div class="mt-4">
-                            <label for="komunikasi-poin" class="block text-sm font-medium text-slate-700 mb-1">Poin-Poin Kunci</label>
-                            <textarea id="komunikasi-poin" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:ring-teal-500 focus:border-teal-500" placeholder="- Aktif bertanya di kelas&#10;- Belum mengumpulkan 3 PR terakhir&#10;- Mengajak diskusi mencari solusi"></textarea>
-                        </div>
-                        <button id="btn-generate-komunikasi" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                            <i class="fas fa-paper-plane mr-2"></i> Buat Draf Pesan
-                        </button>
-                        <div id="komunikasi-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang menyusun kata-kata...</p></div>
-                        <div id="komunikasi-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                    </div>`;
+                            <button id="btn-generate-komunikasi" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                <i class="fas fa-paper-plane mr-2"></i> Buat Draf Pesan
+                            </button>
+                            <div id="komunikasi-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang menyusun kata-kata...</p></div>
+                            <div id="komunikasi-hasil" class="mt-8 hidden gemini-output"></div>
+                        </div>`;
                 
                 // Inject the specific grading UIs into the new wrappers
                 const pgContentWrapper = document.getElementById('penilaian-pg-content-wrapper');
                 if(pgContentWrapper) {
                     pgContentWrapper.innerHTML = `
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="penilaian-otomatis-nama" class="block text-sm font-medium text-slate-700 mb-1">Nama Siswa (Opsional)</label>
-                                <input type="text" id="penilaian-otomatis-nama" class="w-full p-2 border border-slate-300 rounded-md" placeholder="AI akan coba mendeteksi dari gambar">
-                            </div>
-                            <div>
-                                <label for="penilaian-otomatis-kelas" class="block text-sm font-medium text-slate-700 mb-1">Kelas (Opsional)</label>
-                                <input type="text" id="penilaian-otomatis-kelas" class="w-full p-2 border border-slate-300 rounded-md" placeholder="AI akan coba mendeteksi dari gambar">
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <label for="penilaian-otomatis-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
-                            <select id="penilaian-otomatis-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
-                                <option>1 - 100</option><option>1 - 10</option><option>A - E</option>
-                            </select>
-                        </div>
-                        <div class="mt-4 border-t pt-4">
-                            ${createFileUploaderHTML('penilaian-otomatis', 'Unggah Lembar Jawaban Siswa')}
-                        </div>
-                        <div class="mt-4 border-t pt-4">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Kunci Jawaban (Opsional)</label>
-                            <p class="text-xs text-slate-500 mb-2">Berikan kunci jawaban (teks/gambar) untuk akurasi maksimal. Jika kosong, AI akan menentukan jawaban benar sendiri.</p>
-                            <textarea id="penilaian-otomatis-kunci-teks" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Contoh: 1. A, 2. C, 3. B ..."></textarea>
-                            ${createFileUploaderHTML('penilaian-otomatis-kunci', '')}
-                        </div>
-                        <button id="btn-generate-penilaian-otomatis" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                            <i class="fas fa-magic mr-2"></i> Periksa Secara Otomatis
-                        </button>
-                        <div id="penilaian-otomatis-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang memeriksa jawaban...</p></div>
-                        <div id="penilaian-otomatis-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
+                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                     <div>
+                                         <label for="penilaian-otomatis-nama" class="block text-sm font-medium text-slate-700 mb-1">Nama Siswa (Opsional)</label>
+                                         <input type="text" id="penilaian-otomatis-nama" class="w-full p-2 border border-slate-300 rounded-md" placeholder="AI akan coba mendeteksi dari gambar">
+                                     </div>
+                                     <div>
+                                         <label for="penilaian-otomatis-kelas" class="block text-sm font-medium text-slate-700 mb-1">Kelas (Opsional)</label>
+                                         <input type="text" id="penilaian-otomatis-kelas" class="w-full p-2 border border-slate-300 rounded-md" placeholder="AI akan coba mendeteksi dari gambar">
+                                     </div>
+                                 </div>
+                                 <div class="mt-4">
+                                    <label for="penilaian-otomatis-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
+                                    <select id="penilaian-otomatis-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
+                                        <option>1 - 100</option>
+                                        <option>1 - 10</option>
+                                        <option>A - E</option>
+                                    </select>
+                                </div>
+                                <div class="mt-4 border-t pt-4">
+                                     ${createFileUploaderHTML('penilaian-otomatis', 'Unggah Lembar Jawaban Siswa')}
+                                </div>
+                                <div class="mt-4 border-t pt-4">
+                                     <label class="block text-sm font-medium text-slate-700 mb-1">Kunci Jawaban (Opsional)</label>
+                                     <p class="text-xs text-slate-500 mb-2">Berikan kunci jawaban (teks/gambar) untuk akurasi maksimal. Jika kosong, AI akan menentukan jawaban benar sendiri.</p>
+                                     <textarea id="penilaian-otomatis-kunci-teks" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Contoh: 1. A, 2. C, 3. B ..."></textarea>
+                                     ${createFileUploaderHTML('penilaian-otomatis-kunci', '')}
+                                </div>
+                                <button id="btn-generate-penilaian-otomatis" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                    <i class="fas fa-magic mr-2"></i> Periksa Secara Otomatis
+                                </button>
+                                <div id="penilaian-otomatis-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang memeriksa jawaban...</p></div>
+                                <div id="penilaian-otomatis-hasil" class="mt-8 hidden gemini-output"></div>
                     `;
                 }
 
                 const esaiContentWrapper = document.getElementById('penilaian-esai-content-wrapper');
                 if(esaiContentWrapper) {
                     esaiContentWrapper.innerHTML = `
-                        <div id="penilaian-esai-nested-tabs-container">
-                            <nav class="mb-6 -mb-px flex space-x-4 border-b border-slate-200" aria-label="Nested Tabs">
-                                <button class="tab-button-nested active whitespace-nowrap pb-2 px-1 font-medium text-sm" data-target="tab-esai-otomatis">Mode Otomatis</button>
-                                <button class="tab-button-nested whitespace-nowrap pb-2 px-1 font-medium text-sm text-slate-500 hover:text-slate-700" data-target="tab-esai-manual">Mode dengan Kunci</button>
-                            </nav>
+                                 <div id="penilaian-esai-nested-tabs-container">
+                                     <nav class="mb-6 -mb-px flex space-x-4 border-b border-slate-200" aria-label="Nested Tabs">
+                                         <button class="tab-button-nested active whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-sm" data-target="tab-esai-otomatis">Mode Otomatis Penuh</button>
+                                         <button class="tab-button-nested whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="tab-esai-manual">Mode dengan Kunci Jawaban</button>
+                                     </nav>
 
-                            <!-- Nested Tab: Esai Otomatis -->
-                            <div id="tab-esai-otomatis" class="tab-content-nested active">
-                                <div class="rounded-lg">
-                                    <h3 class="text-xl font-bold mb-2 text-slate-900">Mode Otomatis Penuh (Esai)</h3>
-                                    <p class="text-slate-600 mb-6">Hanya perlu unggah soal dan jawaban esai siswa. AI akan menganalisis, mendeteksi nama/kelas, dan memberikan nilai secara otomatis.</p>
-                                    <div class="mt-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Soal Esai</label>
-                                        <textarea id="penilaian-esai-otomatis-soal" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel soal esai di sini..."></textarea>
-                                    </div>
-                                    <div class="mt-4 border-t pt-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Unggah Jawaban Esai Siswa</label>
-                                        <textarea id="penilaian-esai-otomatis-jawaban-teks" rows="5" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel jawaban siswa di sini..."></textarea>
-                                        ${createFileUploaderHTML('penilaian-esai-otomatis-jawaban', '')}
-                                    </div>
-                                    <div class="mt-4">
-                                        <label for="penilaian-esai-otomatis-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
-                                        <select id="penilaian-esai-otomatis-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
-                                            <option>1 - 100</option><option>1 - 10</option><option>A - E</option>
-                                        </select>
-                                    </div>
-                                    <button id="btn-generate-penilaian-esai-otomatis" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
-                                        <i class="fas fa-magic mr-2"></i> Nilai Esai Otomatis
-                                    </button>
-                                    <div id="penilaian-esai-otomatis-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang menganalisis dan menilai esai...</p></div>
-                                    <div id="penilaian-esai-otomatis-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Nested Tab: Esai Manual -->
-                            <div id="tab-esai-manual" class="tab-content-nested">
-                                <div class="rounded-lg">
-                                    <h3 class="text-xl font-bold mb-2 text-slate-900">Mode dengan Kunci Jawaban (Esai)</h3>
-                                    <p class="text-slate-600 mb-6">Gunakan mode ini untuk esai kompleks di mana Anda ingin memberikan pedoman atau kunci jawaban spesifik.</p>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label for="penilaian-manual-nama" class="block text-sm font-medium text-slate-700 mb-1">Nama Siswa</label>
-                                            <input type="text" id="penilaian-manual-nama" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: Ani">
-                                        </div>
-                                        <div>
-                                            <label for="penilaian-manual-kelas" class="block text-sm font-medium text-slate-700 mb-1">Kelas</label>
-                                            <input type="text" id="penilaian-manual-kelas" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: 8B">
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 border-t pt-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Soal Esai</label>
-                                        <textarea id="penilaian-manual-soal-teks" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel soal di sini..."></textarea>
-                                    </div>
-                                    <div class="mt-4 border-t pt-4">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Jawaban Esai Siswa</label>
-                                        <textarea id="penilaian-manual-jawaban-teks" rows="5" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel jawaban siswa di sini..."></textarea>
-                                        ${createFileUploaderHTML('penilaian-manual-jawaban', '')}
-                                    </div>
-                                    <div class="mt-4 border-t pt-4">
-                                        <label for="penilaian-manual-kunci" class="block text-sm font-medium text-slate-700 mb-1">Kunci Jawaban / Pedoman</label>
-                                        <textarea id="penilaian-manual-kunci" rows="4" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Masukkan poin-poin penting yang harus ada dalam jawaban..."></textarea>
-                                    </div>
-                                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label for="penilaian-manual-rubrik" class="block text-sm font-medium text-slate-700 mb-1">Rubrik Tambahan (Opsional)</label>
-                                            <input type="text" id="penilaian-manual-rubrik" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: Ketepatan 60%, Penalaran 40%">
-                                        </div>
-                                        <div>
-                                            <label for="penilaian-manual-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
-                                            <select id="penilaian-manual-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
-                                                <option>1 - 100</option><option>1 - 10</option><option>A - E</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button id="btn-generate-penilaian-manual" class="mt-6 w-full bg-slate-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center">
-                                        <i class="fas fa-check-double mr-2"></i> Periksa & Nilai Esai
-                                    </button>
-                                    <div id="penilaian-manual-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang menganalisis dan menilai esai...</p></div>
-                                    <div id="penilaian-manual-hasil" class="mt-8 hidden gemini-output bg-white p-6 rounded-lg shadow-inner"></div>
-                                </div>
-                            </div>
-                        </div>
+                                     <!-- Nested Tab: Esai Otomatis -->
+                                     <div id="tab-esai-otomatis" class="tab-content-nested active">
+                                          <div class="bg-white p-6 rounded-lg">
+                                                <h3 class="text-xl font-bold mb-2 text-slate-900">Mode Otomatis Penuh (Esai)</h3>
+                                                <p class="text-slate-600 mb-6">Hanya perlu unggah soal dan jawaban esai siswa. AI akan menganalisis, mendeteksi nama/kelas, dan memberikan nilai secara otomatis.</p>
+                                                <div class="mt-4">
+                                                     <label class="block text-sm font-medium text-slate-700 mb-1">Soal Esai</label>
+                                                     <textarea id="penilaian-esai-otomatis-soal" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel soal esai di sini..."></textarea>
+                                                </div>
+                                                <div class="mt-4 border-t pt-4">
+                                                     <label class="block text-sm font-medium text-slate-700 mb-1">Unggah Jawaban Esai Siswa</label>
+                                                     <textarea id="penilaian-esai-otomatis-jawaban-teks" rows="5" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel jawaban siswa di sini..."></textarea>
+                                                     ${createFileUploaderHTML('penilaian-esai-otomatis-jawaban', '')}
+                                                </div>
+                                                <div class="mt-4">
+                                                 <label for="penilaian-esai-otomatis-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
+                                                 <select id="penilaian-esai-otomatis-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
+                                                     <option>1 - 100</option>
+                                                     <option>1 - 10</option>
+                                                     <option>A - E</option>
+                                                 </select>
+                                               </div>
+                                                <button id="btn-generate-penilaian-esai-otomatis" class="mt-6 w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center">
+                                                    <i class="fas fa-magic mr-2"></i> Nilai Esai Otomatis
+                                                </button>
+                                                <div id="penilaian-esai-otomatis-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang menganalisis dan menilai esai...</p></div>
+                                                <div id="penilaian-esai-otomatis-hasil" class="mt-8 hidden gemini-output"></div>
+                                          </div>
+                                     </div>
+                                    
+                                     <!-- Nested Tab: Esai Manual -->
+                                     <div id="tab-esai-manual" class="tab-content-nested">
+                                         <div class="bg-white p-6 rounded-lg">
+                                                <h3 class="text-xl font-bold mb-2 text-slate-900">Mode dengan Kunci Jawaban (Esai)</h3>
+                                                <p class="text-slate-600 mb-6">Gunakan mode ini untuk esai kompleks di mana Anda ingin memberikan pedoman atau kunci jawaban spesifik.</p>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                     <div>
+                                                         <label for="penilaian-manual-nama" class="block text-sm font-medium text-slate-700 mb-1">Nama Siswa</label>
+                                                         <input type="text" id="penilaian-manual-nama" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: Ani">
+                                                     </div>
+                                                     <div>
+                                                         <label for="penilaian-manual-kelas" class="block text-sm font-medium text-slate-700 mb-1">Kelas</label>
+                                                         <input type="text" id="penilaian-manual-kelas" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: 8B">
+                                                     </div>
+                                                </div>
+                                                <div class="mt-4 border-t pt-4">
+                                                    <label class="block text-sm font-medium text-slate-700 mb-1">Soal Esai</label>
+                                                    <textarea id="penilaian-manual-soal-teks" rows="3" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel soal di sini..."></textarea>
+                                                </div>
+                                                <div class="mt-4 border-t pt-4">
+                                                    <label class="block text-sm font-medium text-slate-700 mb-1">Jawaban Esai Siswa</label>
+                                                    <textarea id="penilaian-manual-jawaban-teks" rows="5" class="w-full p-2 border border-slate-300 rounded-md mb-2" placeholder="Ketik atau tempel jawaban siswa di sini..."></textarea>
+                                                    ${createFileUploaderHTML('penilaian-manual-jawaban', '')}
+                                                </div>
+                                                <div class="mt-4 border-t pt-4">
+                                                 <label for="penilaian-manual-kunci" class="block text-sm font-medium text-slate-700 mb-1">Kunci Jawaban / Pedoman</label>
+                                                 <textarea id="penilaian-manual-kunci" rows="4" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Masukkan poin-poin penting yang harus ada dalam jawaban..."></textarea>
+                                                </div>
+                                                 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                     <div>
+                                                         <label for="penilaian-manual-rubrik" class="block text-sm font-medium text-slate-700 mb-1">Rubrik Tambahan (Opsional)</label>
+                                                         <input type="text" id="penilaian-manual-rubrik" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Contoh: Ketepatan 60%, Penalaran 40%">
+                                                     </div>
+                                                     <div>
+                                                         <label for="penilaian-manual-skala" class="block text-sm font-medium text-slate-700 mb-1">Skala Nilai</label>
+                                                         <select id="penilaian-manual-skala" class="w-full p-2 border border-slate-300 rounded-md bg-white">
+                                                             <option>1 - 100</option>
+                                                             <option>1 - 10</option>
+                                                             <option>A - E</option>
+                                                         </select>
+                                                     </div>
+                                                </div>
+                                                <button id="btn-generate-penilaian-manual" class="mt-6 w-full bg-slate-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center">
+                                                    <i class="fas fa-check-double mr-2"></i> Periksa & Nilai Esai
+                                                </button>
+                                                <div id="penilaian-manual-loader" class="hidden mt-6 flex flex-col items-center"><div class="loader"></div><p class="mt-2 text-slate-600">AI sedang menganalisis dan menilai esai...</p></div>
+                                                <div id="penilaian-manual-hasil" class="mt-8 hidden gemini-output"></div>
+                                          </div>
+                                     </div>
+                                 </div>
                     `;
                 }
             }
@@ -963,9 +1086,9 @@
                 sidebarItems.forEach(item => {
                     item.classList.toggle('active', item.dataset.target === targetId);
                 });
-                // Close sidebar on navigation in mobile view
+                
                 if (window.innerWidth < 768) {
-                    closeSidebar();
+                    closeMobileMenu();
                 }
             }
 
@@ -975,21 +1098,29 @@
             featureCards.forEach(card => {
                 card.addEventListener('click', () => switchTab(card.dataset.target));
             });
+
+            // New: Event listener for the header link
+            if (headerHomeLink) {
+                headerHomeLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchTab(headerHomeLink.dataset.target);
+                });
+            }
             
             // --- Helper Functions ---
+            // Unchanged
             function fileToBase64(file) {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onload = () => resolve({ 
-                            base64: reader.result.split(',')[1],
-                            mimeType: file.type
-                        });
-                        reader.onerror = error => reject(error);
+                 return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve({ 
+                        base64: reader.result.split(',')[1],
+                        mimeType: file.type
                     });
+                    reader.onerror = error => reject(error);
+                });
             }
 
-            // Sets up the preview and remove functionality for a file uploader.
             function setupImageUploader(prefix) {
                 const inputId = `${prefix}-gambar`;
                 const previewId = `${prefix}-preview`;
@@ -1027,6 +1158,7 @@
             }
             
             // --- Topic Selector Logic ---
+            // Unchanged
             function initializeTopicSelector(prefix) {
                 const jenjangEl = document.getElementById(`${prefix}-jenjang`);
                 const kelasEl = document.getElementById(`${prefix}-kelas`);
@@ -1110,20 +1242,7 @@
 
             // Renders the AI's response as formatted HTML and processes LaTeX.
             function renderAIOutput(rawText, outputElement) {
-                // Sanitize raw text by replacing markdown with HTML tags
-                let htmlText = rawText
-                    .replace(/\*\*\*(.*?)\*\*\*/g, '<h3><strong>$1</strong></h3>')
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                    .replace(/^- (.*$)/gm, '<ul><li>$1</li></ul>') // Basic unordered list
-                    .replace(/^\d+\. (.*$)/gm, '<ol><li>$1</li></ol>') // Basic ordered list
-                    .replace(/\n/g, '<br>'); // Replace newlines with <br>
-                
-                // Consolidate adjacent lists
-                htmlText = htmlText.replace(/<\/ul><br><ul>/g, '');
-                htmlText = htmlText.replace(/<\/ol><br><ol>/g, '');
-
-                outputElement.innerHTML = htmlText;
+                outputElement.innerHTML = rawText;
 
                 // Check if KaTeX's auto-render function is available and render math
                 if (window.renderMathInElement) {
@@ -1142,24 +1261,26 @@
             }
 
             // --- API Call Logic ---
+            // Unchanged
             async function callGeminiApi(promptParts, resultElId, loaderElId) {
                 const resultEl = document.getElementById(resultElId);
                 const loaderEl = document.getElementById(loaderElId);
+                const resultContainer = resultEl.parentElement.id.includes('container') ? resultEl.parentElement : resultEl;
                 
                 resultEl.innerHTML = '';
-                resultEl.classList.add('hidden');
+                resultContainer.classList.add('hidden');
                 loaderEl.classList.remove('hidden');
 
                 const apiKey = getNextApiKey(); 
 
                 if (!apiKey) {
                     resultEl.innerHTML = `<div class="p-4 bg-red-100 text-red-700 border border-red-300 rounded-md"><strong>Error:</strong> Tidak ada API Key yang tersedia.</div>`;
-                    resultEl.classList.remove('hidden');
+                    resultContainer.classList.remove('hidden');
                     loaderEl.classList.add('hidden');
                     return;
                 }
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: promptParts }] };
 
                 try {
@@ -1185,11 +1306,12 @@
                     resultEl.innerHTML = `<div class="p-4 bg-red-100 text-red-700 border border-red-300 rounded-md"><strong>Error:</strong> ${error.message}</div>`;
                 } finally {
                     loaderEl.classList.add('hidden');
-                    resultEl.classList.remove('hidden');
+                    resultContainer.classList.remove('hidden');
                 }
             }
             
             // --- Attach Event Listeners ---
+            // Unchanged
             function attachEventListeners() {
                 
                 const latexInstruction = `\n\n**PENTING**: Setiap kali Anda menulis rumus, persamaan, atau ekspresi matematika, WAJIB gunakan format LaTeX. Untuk matematika inline, bungkus dengan satu tanda dolar (contoh: $E=mc^2$). Untuk matematika dalam blok display terpisah, bungkus dengan dua tanda dolar (contoh: $$ y = \\frac{a}{b+c} $$). Ini sangat penting untuk rendering yang benar.`;
@@ -1197,7 +1319,7 @@
                 document.getElementById('btn-generate-materi')?.addEventListener('click', () => {
                     const topic = document.getElementById('materi-topik').value;
                     const isDifferentiated = document.getElementById('materi-diferensiasi').checked;
-                    let prompt = `Anda adalah guru ahli. Buatkan materi ajar lengkap untuk topik: "${topic}". Gunakan heading (h2, h3) untuk memisahkan bagian.`;
+                    let prompt = `Anda adalah guru ahli. Buatkan materi ajar lengkap format HTML untuk topik: "${topic}". Gunakan heading (<h2>, <h3>) untuk memisahkan bagian.`;
                     if (isDifferentiated) {
                         prompt += ` Buat juga 3 versi: disederhanakan, standar, dan pengayaan.`;
                     }
@@ -1207,7 +1329,7 @@
 
                 document.getElementById('btn-generate-glosarium')?.addEventListener('click', () => {
                     const text = document.getElementById('glosarium-teks').value;
-                    let prompt = `Analisis teks berikut dan identifikasi 5-7 istilah kunci. Untuk setiap istilah, berikan output:\n- <h3> untuk istilah.\n- <p> untuk definisi yang mudah dipahami.\n- <ul><li> berisi contoh kalimat.\n\nTeks: "${text}"`;
+                    let prompt = `Analisis teks berikut dan identifikasi 5-7 istilah kunci. Untuk setiap istilah, berikan output HTML:\n- <h3> untuk istilah.\n- <p> untuk definisi yang mudah dipahami.\n- <ul><li> berisi contoh kalimat.\n\nTeks: "${text}"`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'glosarium-hasil', 'glosarium-loader');
                 });
@@ -1215,7 +1337,7 @@
                 document.getElementById('btn-generate-konteks')?.addEventListener('click', async () => {
                     const imageFile = document.getElementById('konteks-gambar').files[0];
                     if (!imageFile) { alert("Silakan unggah sebuah gambar."); return; }
-                    let prompt = `Anda adalah kurator museum dan guru ahli. Analisis gambar ini. Berikan output yang mencakup:\n1. <h2>Deskripsi Detail</h2>\n2. <h2>Poin Diskusi & Pertanyaan HOTS</h2> (gunakan <ol>)\n3. <h2>Fakta Terkait</h2> (gunakan <ul>)`;
+                    let prompt = `Anda adalah kurator museum dan guru ahli. Analisis gambar ini. Berikan output HTML yang mencakup:\n1. <h2>Deskripsi Detail</h2>\n2. <h2>Poin Diskusi & Pertanyaan HOTS</h2> (gunakan <ol>)\n3. <h2>Fakta Terkait</h2> (gunakan <ul>)`;
                     prompt += latexInstruction;
                     const { base64, mimeType } = await fileToBase64(imageFile);
                     const promptParts = [{ text: prompt }, { inlineData: { mimeType: mimeType, data: base64 } }];
@@ -1227,7 +1349,7 @@
                     const type = document.getElementById('soal-tipe').value;
                     const count = document.getElementById('soal-jumlah').value;
                     const withExplanation = document.getElementById('soal-pembahasan').checked;
-                    let prompt = `Buatkan ${count} soal tipe "${type}" tentang "${topic}". Sertakan kunci jawaban. Format seluruh output yang rapi menggunakan <ol> untuk soal.`;
+                    let prompt = `Buatkan ${count} soal tipe "${type}" tentang "${topic}". Sertakan kunci jawaban. Format seluruh output dalam HTML yang rapi menggunakan <ol> untuk soal.`;
                     if (withExplanation) {
                         prompt += " Setelah kunci jawaban, tambahkan bagian 'Pembahasan' yang menjelaskan mengapa jawaban tersebut benar secara rinci untuk setiap soal.";
                     }
@@ -1244,7 +1366,7 @@
                         return;
                     }
 
-                    let prompt = `Anda adalah seorang tutor ahli. Jawab dan berikan pembahasan langkah-demi-langkah yang lengkap untuk soal berikut. Format jawaban, gunakan heading dan daftar jika perlu untuk kejelasan.`;
+                    let prompt = `Anda adalah seorang tutor ahli. Jawab dan berikan pembahasan langkah-demi-langkah yang lengkap untuk soal berikut. Format jawaban dalam HTML, gunakan heading dan daftar jika perlu untuk kejelasan.`;
                     prompt += latexInstruction;
                     const promptParts = [{ text: prompt }];
 
@@ -1258,10 +1380,10 @@
                     callGeminiApi(promptParts, 'penjawab-soal-hasil', 'penjawab-soal-loader');
                 });
 
-                document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
                     const theme = document.getElementById('proyek-tema').value;
                     const duration = document.getElementById('proyek-durasi').value;
-                    let prompt = `Anda adalah seorang ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek dengan detail berikut:\n\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
+                    let prompt = `Anda adalah seorang ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek (format HTML) dengan detail berikut:\n\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'proyek-hasil', 'proyek-loader');
                 });
@@ -1302,7 +1424,7 @@
                             const topic = document.getElementById('aktivitas-topik').value;
                             const selectedActivity = generateBtn.dataset.activityType;
                             
-                            let prompt = `Rancang paket materi lengkap untuk aktivitas kelas "${selectedActivity}" dengan topik "${topic}". Sertakan tujuan, persiapan, langkah-langkah, dan materi siswa.`;
+                            let prompt = `Rancang paket materi lengkap (format HTML) untuk aktivitas kelas "${selectedActivity}" dengan topik "${topic}". Sertakan tujuan, persiapan, langkah-langkah, dan materi siswa.`;
                             prompt += latexInstruction;
                             callGeminiApi([{text: prompt}], 'aktivitas-hasil', 'aktivitas-loader');
                         });
@@ -1311,19 +1433,19 @@
 
                 document.getElementById('btn-generate-kuis')?.addEventListener('click', () => {
                     const topic = document.getElementById('kuis-topik').value;
-                    let prompt = `Buat kuis formatif 10 pertanyaan tentang "${topic}". Campur 5 Pilihan Ganda (tandai jawaban benar), 3 Benar/Salah, dan 2 Isian Singkat. Format dalam <ol>.`;
+                    let prompt = `Buat kuis formatif 10 pertanyaan tentang "${topic}". Campur 5 Pilihan Ganda (tandai jawaban benar dengan <strong>), 3 Benar/Salah, dan 2 Isian Singkat. Format dalam HTML <ol>.`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'kuis-hasil', 'kuis-loader');
                 });
 
                 document.getElementById('btn-generate-jawaban')?.addEventListener('click', () => {
                     const question = document.getElementById('pertanyaan-siswa').value;
-                    let prompt = `Saya guru mendapat pertanyaan dari siswa: "${question}". Berikan 3 opsi cara menjawab:\n1. <h3>Penjelasan Sederhana</h3>\n2. <h3>Analogi atau Perumpamaan</h3>\n3. <h3>Ide Demonstrasi Cepat</h3>`;
+                    let prompt = `Saya guru mendapat pertanyaan dari siswa: "${question}". Berikan 3 opsi cara menjawab (format HTML):\n1. <h3>Penjelasan Sederhana</h3>\n2. <h3>Analogi atau Perumpamaan</h3>\n3. <h3>Ide Demonstrasi Cepat</h3>`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'jawaban-hasil', 'jawaban-loader');
                 });
 
-                document.getElementById('btn-generate-penilaian-terpadu')?.addEventListener('click', async () => {
+                 document.getElementById('btn-generate-penilaian-terpadu')?.addEventListener('click', async () => {
                     const answerSheetImageFile = document.getElementById('penilaian-terpadu-gambar').files[0];
                     const answerKeyText = document.getElementById('penilaian-terpadu-kunci-teks').value;
                     const answerKeyImageFile = document.getElementById('penilaian-terpadu-kunci-gambar').files[0];
@@ -1339,26 +1461,26 @@
                     const promptParts = [];
 
                     if (answerKeyText || answerKeyImageFile) {
-                        prompt = `Anda adalah AI pemeriksa ulangan. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa (gambar 1) dan membandingkannya dengan kunci jawaban yang saya berikan (teks atau gambar 2).
-                          - Skala Penilaian: "${gradingScale}"
-                          
-                          Instruksi: Deteksi nama dan kelas dari lembar jawaban. Cocokkan jawaban siswa (PG dan esai singkat) dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap.`;
+                         prompt = `Anda adalah AI pemeriksa ulangan. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa (gambar 1) dan membandingkannya dengan kunci jawaban yang saya berikan (teks atau gambar 2).
+                                  - Skala Penilaian: "${gradingScale}"
+                                 
+                                  Instruksi: Deteksi nama dan kelas dari lembar jawaban. Cocokkan jawaban siswa (PG dan esai singkat) dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap dalam format HTML.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                         if (answerKeyText) {
-                            promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+                             promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
                         }
                         if(answerKeyImageFile) {
                             const keyImg = await fileToBase64(answerKeyImageFile);
                             promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
                         }
                     } else {
-                        prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
-                          1. Analisis gambar untuk mendeteksi nama dan kelas siswa.
-                          2. Identifikasi semua soal (PG, esai singkat, dll.) dan jawaban yang diberikan siswa.
-                          3. Gunakan pengetahuan Anda untuk menentukan jawaban yang benar untuk setiap soal.
-                          4. Bandingkan jawaban siswa dengan jawaban yang benar, nilai esai singkat berdasarkan relevansi.
-                          5. Hitung skor total dan berikan nilai akhir berdasarkan skala penilaian: "${gradingScale}".
-                          6. Buat ringkasan penilaian yang jelas.`;
+                         prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
+                                  1. Analisis gambar untuk mendeteksi nama dan kelas siswa.
+                                  2. Identifikasi semua soal (PG, esai singkat, dll.) dan jawaban yang diberikan siswa.
+                                  3. Gunakan pengetahuan Anda untuk menentukan jawaban yang benar untuk setiap soal.
+                                  4. Bandingkan jawaban siswa dengan jawaban yang benar, nilai esai singkat berdasarkan relevansi.
+                                  5. Hitung skor total dan berikan nilai akhir berdasarkan skala penilaian: "${gradingScale}".
+                                  6. Buat ringkasan penilaian yang jelas dalam format HTML.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                     }
 
@@ -1383,12 +1505,12 @@
                     }
 
                     let prompt = `Anda adalah asisten penilai guru yang sangat teliti. Tugas Anda adalah menilai jawaban esai siswa berdasarkan kunci jawaban dan kriteria yang diberikan.
-                          - Nama Siswa: "${studentName || 'Tidak disebutkan'}"
-                          - Kelas: "${studentClass || 'Tidak disebutkan'}"
-                          - Kunci Jawaban / Pedoman: "${answerKey}"
-                          - Rubrik Penilaian Tambahan: "${rubric || 'Tidak ada'}"
-                          - Skala Penilaian yang digunakan: "${gradingScale}"
-                          - Soal Esai: "${questionText}"`;
+                                  - Nama Siswa: "${studentName || 'Tidak disebutkan'}"
+                                  - Kelas: "${studentClass || 'Tidak disebutkan'}"
+                                  - Kunci Jawaban / Pedoman: "${answerKey}"
+                                  - Rubrik Penilaian Tambahan: "${rubric || 'Tidak ada'}"
+                                  - Skala Penilaian yang digunakan: "${gradingScale}"
+                                  - Soal Esai: "${questionText}"`;
                     
                     const promptParts = [{ text: prompt }];
                     
@@ -1398,7 +1520,7 @@
                         promptParts.push({ text: "\nJawaban Siswa (gambar):" }, { inlineData: { mimeType, data: base64 } });
                     }
 
-                    promptParts.push({ text: `\nInstruksi Final: Berikan nilai sesuai skala, dan berikan umpan balik konstruktif. Format output: <h2>Hasil Penilaian Esai</h2>, <h4>Nama Siswa & Kelas</h4>, <h3>Nilai</h3>, dan <h3>Umpan Balik & Analisis</h3>.` + latexInstruction });
+                    promptParts.push({ text: `\nInstruksi Final: Berikan nilai sesuai skala, dan berikan umpan balik konstruktif. Format output dalam HTML yang rapi: <h2>Hasil Penilaian Esai</h2>, <h4>Nama Siswa & Kelas</h4>, <h3>Nilai</h3>, dan <h3>Umpan Balik & Analisis</h3>.` + latexInstruction });
 
                     callGeminiApi(promptParts, 'penilaian-manual-hasil', 'penilaian-manual-loader');
                 });
@@ -1415,9 +1537,9 @@
                     }
 
                     const prompt = `Anda adalah seorang guru ahli yang menilai esai. Tugas Anda adalah menilai jawaban esai siswa secara otomatis tanpa kunci jawaban.
-                          - Skala Penilaian yang digunakan: "${gradingScale}"
-                          - Soal Esai: "${questionText}"
-                          - Nilai esai ini berdasarkan kriteria: Kejelasan argumen, struktur penulisan, akurasi faktual, dan kedalaman analisis. Coba deteksi nama dan kelas siswa dari gambar/teks jawaban jika ada.`;
+                                  - Skala Penilaian yang digunakan: "${gradingScale}"
+                                  - Soal Esai: "${questionText}"
+                                  - Nilai esai ini berdasarkan kriteria: Kejelasan argumen, struktur penulisan, akurasi faktual, dan kedalaman analisis. Coba deteksi nama dan kelas siswa dari gambar/teks jawaban jika ada.`;
 
                     const promptParts = [{ text: prompt }];
 
@@ -1427,7 +1549,7 @@
                         promptParts.push({ text: "\nJawaban Siswa (gambar):" }, { inlineData: { mimeType, data: base64 } });
                     }
 
-                    promptParts.push({ text: `\nInstruksi Final: Berikan nilai sesuai skala, dan umpan balik konstruktif. Format output: <h2>Hasil Penilaian Esai Otomatis</h2>, <h4>Nama Siswa: [Nama terdeteksi], Kelas: [Kelas terdeteksi]</h4>, <h3>Nilai</h3>, dan <h3>Umpan Balik & Analisis</h3>.` + latexInstruction });
+                    promptParts.push({ text: `\nInstruksi Final: Berikan nilai sesuai skala, dan umpan balik konstruktif. Format output dalam HTML: <h2>Hasil Penilaian Esai Otomatis</h2>, <h4>Nama Siswa: [Nama terdeteksi], Kelas: [Kelas terdeteksi]</h4>, <h3>Nilai</h3>, dan <h3>Umpan Balik & Analisis</h3>.` + latexInstruction });
 
                     callGeminiApi(promptParts, 'penilaian-esai-otomatis-hasil', 'penilaian-esai-otomatis-loader');
                 });
@@ -1452,14 +1574,14 @@
                     if (answerKeyText || answerKeyImageFile) {
                         // Mode dengan Kunci Jawaban
                         prompt = `Anda adalah AI pemeriksa ulangan. Tugas Anda adalah memeriksa lembar jawaban siswa (gambar 1) dan membandingkannya dengan kunci jawaban yang saya berikan (teks atau gambar 2).
-                          - Skala Penilaian: "${gradingScale}"
-                          - Nama Siswa (jika ada di input): "${studentName}"
-                          - Kelas (jika ada di input): "${studentClass}"
-                          
-                          Instruksi: Cocokkan jawaban siswa dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap. Jika nama/kelas tidak diisi, coba deteksi dari gambar lembar jawaban.`;
+                                  - Skala Penilaian: "${gradingScale}"
+                                  - Nama Siswa (jika ada di input): "${studentName}"
+                                  - Kelas (jika ada di input): "${studentClass}"
+                                 
+                                  Instruksi: Cocokkan jawaban siswa dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap dalam format HTML. Jika nama/kelas tidak diisi, coba deteksi dari gambar lembar jawaban.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                         if (answerKeyText) {
-                            promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+                             promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
                         }
                         if(answerKeyImageFile) {
                             const keyImg = await fileToBase64(answerKeyImageFile);
@@ -1468,12 +1590,12 @@
 
                     } else {
                         // Mode Otomatis Penuh
-                        prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
-                          1. Analisis gambar untuk mengidentifikasi semua soal dan jawaban yang diberikan oleh siswa (perhatikan lingkaran atau tanda centang pada pilihan ganda). Jika ada nama dan kelas, deteksi juga.
-                          2. Gunakan pengetahuan Anda untuk menentukan jawaban yang benar untuk setiap soal.
-                          3. Bandingkan jawaban siswa dengan jawaban yang benar.
-                          4. Hitung jumlah jawaban yang benar dan berikan nilai akhir berdasarkan skala penilaian: "${gradingScale}".
-                          5. Buat ringkasan penilaian yang jelas.`;
+                         prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
+                                  1. Analisis gambar untuk mengidentifikasi semua soal dan jawaban yang diberikan oleh siswa (perhatikan lingkaran atau tanda centang pada pilihan ganda). Jika ada nama dan kelas, deteksi juga.
+                                  2. Gunakan pengetahuan Anda untuk menentukan jawaban yang benar untuk setiap soal.
+                                  3. Bandingkan jawaban siswa dengan jawaban yang benar.
+                                  4. Hitung jumlah jawaban yang benar dan berikan nilai akhir berdasarkan skala penilaian: "${gradingScale}".
+                                  5. Buat ringkasan penilaian yang jelas dalam format HTML.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                     }
                     
@@ -1482,26 +1604,26 @@
                     callGeminiApi(promptParts, 'penilaian-otomatis-hasil', 'penilaian-otomatis-loader');
                 });
                 
-                document.getElementById('btn-generate-komunikasi')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-komunikasi')?.addEventListener('click', () => {
                     const studentName = document.getElementById('komunikasi-nama').value;
                     const purpose = document.getElementById('komunikasi-tujuan').value;
                     const keyPoints = document.getElementById('komunikasi-poin').value;
-                    const prompt = `Buatkan draf pesan singkat (email/WA) kepada orang tua dari siswa bernama "${studentName}".\nTujuan: "${purpose}".\nPoin kunci:\n- ${keyPoints.replace(/\n/g, "\n- ")}\n\nGunakan bahasa sopan dan kolaboratif.`;
+                    const prompt = `Buatkan draf pesan singkat (email/WA) kepada orang tua dari siswa bernama "${studentName}".\nTujuan: "${purpose}".\nPoin kunci:\n- ${keyPoints.replace(/\n/g, "\n- ")}\n\nGunakan bahasa sopan dan kolaboratif. Format dalam HTML <p> dan <strong>.`;
                     callGeminiApi([{text: prompt}], 'komunikasi-hasil', 'komunikasi-loader');
                 });
                 
-                document.getElementById('btn-generate-rpp')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-rpp')?.addEventListener('click', () => {
                     const topic = document.getElementById('rpp-topik').value;
                     const duration = document.getElementById('rpp-durasi').value;
                     const objective = document.getElementById('rpp-tujuan').value;
-                    let prompt = `Buatkan draf RPP untuk topik: "${topic}". Durasi: ${duration} menit. Tujuan Pembelajaran: "${objective}". Sertakan komponen RPP standar: pendahuluan, inti, dan penutup.`;
+                    let prompt = `Buatkan draf RPP (format HTML) untuk topik: "${topic}". Durasi: ${duration} menit. Tujuan Pembelajaran: "${objective}". Sertakan komponen RPP standar: pendahuluan, inti, dan penutup.`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'rpp-hasil', 'rpp-loader');
                 });
 
-                document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
                     const rppText = document.getElementById('analisis-rpp-teks').value;
-                    let prompt = `Anda adalah seorang "coach" pedagogis AI. Analisis draf RPP berikut dan berikan umpan balik konstruktif. Fokus pada:\n1. <h3>Kesesuaian Asesmen</h3>\n2. <h3>Saran Kegiatan Pembuka</h3>\n3. <h3>Peluang Diferensiasi</h3>\n\nBerikut RPP-nya:\n"${rppText}"`;
+                    let prompt = `Anda adalah seorang "coach" pedagogis AI. Analisis draf RPP berikut dan berikan umpan balik konstruktif dalam format HTML. Fokus pada:\n1. <h3>Kesesuaian Asesmen</h3>\n2. <h3>Saran Kegiatan Pembuka</h3>\n3. <h3>Peluang Diferensiasi</h3>\n\nBerikut RPP-nya:\n"${rppText}"`;
                     prompt += latexInstruction;
                     callGeminiApi([{ text: prompt }], 'analisis-rpp-hasil', 'analisis-rpp-loader');
                 });
@@ -1512,10 +1634,10 @@
                     if (!container) return;
 
                     const buttonClass = isNested ? '.tab-button-nested' : '.tab-button';
-                    const contentSelector = isNested ? ':scope > .tab-content-nested' : ':scope > div > .tab-content';
+                    const contentClass = isNested ? ':scope > .tab-content-nested' : ':scope > .tab-content';
                     
                     const tabButtons = container.querySelectorAll(buttonClass);
-                    const tabContents = container.querySelectorAll(contentSelector);
+                    const tabContents = container.querySelectorAll(contentClass);
 
                     if(tabButtons.length === 0) return;
 
@@ -1523,13 +1645,13 @@
                         button.addEventListener('click', () => {
                             tabButtons.forEach(btn => {
                                 btn.classList.remove('active');
-                                btn.classList.add('text-slate-500', 'hover:text-slate-700');
+                                btn.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
                             });
                             button.classList.add('active');
-                            button.classList.remove('text-slate-500', 'hover:text-slate-700');
+                            button.classList.remove('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
                             
                             tabContents.forEach(content => content.classList.remove('active'));
-                            const targetContent = document.getElementById(button.dataset.target);
+                            const targetContent = container.querySelector(`#${button.dataset.target}`);
                             if(targetContent) targetContent.classList.add('active');
                         });
                     });
@@ -1553,3 +1675,4 @@
     </script>
 </body>
 </html>
+
