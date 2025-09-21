@@ -1141,21 +1141,22 @@
             async function callGeminiApi(promptParts, resultElId, loaderElId) {
                 const resultEl = document.getElementById(resultElId);
                 const loaderEl = document.getElementById(loaderElId);
+                const resultContainer = resultEl.parentElement.id.includes('container') ? resultEl.parentElement : resultEl;
                 
                 resultEl.innerHTML = '';
-                resultEl.classList.add('hidden');
+                resultContainer.classList.add('hidden');
                 loaderEl.classList.remove('hidden');
 
                 const apiKey = getNextApiKey(); 
 
                 if (!apiKey) {
                     resultEl.innerHTML = `<div class="p-4 bg-red-100 text-red-700 border border-red-300 rounded-md"><strong>Error:</strong> Tidak ada API Key yang tersedia.</div>`;
-                    resultEl.classList.remove('hidden');
+                    resultContainer.classList.remove('hidden');
                     loaderEl.classList.add('hidden');
                     return;
                 }
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: promptParts }] };
 
                 try {
@@ -1181,10 +1182,11 @@
                     resultEl.innerHTML = `<div class="p-4 bg-red-100 text-red-700 border border-red-300 rounded-md"><strong>Error:</strong> ${error.message}</div>`;
                 } finally {
                     loaderEl.classList.add('hidden');
-                    resultEl.classList.remove('hidden');
+                    resultContainer.classList.remove('hidden');
                 }
             }
             
+            // --- Attach Event Listeners ---
             function attachEventListeners() {
                 
                 const latexInstruction = `\n\n**PENTING**: Setiap kali Anda menulis rumus, persamaan, atau ekspresi matematika, WAJIB gunakan format LaTeX. Untuk matematika inline, bungkus dengan satu tanda dolar (contoh: $E=mc^2$). Untuk matematika dalam blok display terpisah, bungkus dengan dua tanda dolar (contoh: $$ y = \\frac{a}{b+c} $$). Ini sangat penting untuk rendering yang benar.`;
@@ -1253,10 +1255,10 @@
                     callGeminiApi(promptParts, 'penjawab-soal-hasil', 'penjawab-soal-loader');
                 });
 
-                document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
                     const theme = document.getElementById('proyek-tema').value;
                     const duration = document.getElementById('proyek-durasi').value;
-                    let prompt = `Anda adalah seorang ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek dengan detail berikut:\n\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
+                    let prompt = `Anda adalah seorang ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek (format HTML) dengan detail berikut:\n\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'proyek-hasil', 'proyek-loader');
                 });
@@ -1318,7 +1320,7 @@
                     callGeminiApi([{text: prompt}], 'jawaban-hasil', 'jawaban-loader');
                 });
 
-                document.getElementById('btn-generate-penilaian-terpadu')?.addEventListener('click', async () => {
+                 document.getElementById('btn-generate-penilaian-terpadu')?.addEventListener('click', async () => {
                     const answerSheetImageFile = document.getElementById('penilaian-terpadu-gambar').files[0];
                     const answerKeyText = document.getElementById('penilaian-terpadu-kunci-teks').value;
                     const answerKeyImageFile = document.getElementById('penilaian-terpadu-kunci-gambar').files[0];
@@ -1334,20 +1336,20 @@
                     const promptParts = [];
 
                     if (answerKeyText || answerKeyImageFile) {
-                        prompt = `Anda adalah AI pemeriksa ulangan. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa (gambar 1) dan membandingkannya dengan kunci jawaban yang saya berikan (teks atau gambar 2).
+                         prompt = `Anda adalah AI pemeriksa ulangan. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa (gambar 1) dan membandingkannya dengan kunci jawaban yang saya berikan (teks atau gambar 2).
                           - Skala Penilaian: "${gradingScale}"
-                          
+                         
                           Instruksi: Deteksi nama dan kelas dari lembar jawaban. Cocokkan jawaban siswa (PG dan esai singkat) dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap dalam format HTML.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                         if (answerKeyText) {
-                            promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+                             promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
                         }
                         if(answerKeyImageFile) {
                             const keyImg = await fileToBase64(answerKeyImageFile);
                             promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
                         }
                     } else {
-                        prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
+                         prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban terpadu siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
                           1. Analisis gambar untuk mendeteksi nama dan kelas siswa.
                           2. Identifikasi semua soal (PG, esai singkat, dll.) dan jawaban yang diberikan siswa.
                           3. Gunakan pengetahuan Anda untuk menentukan jawaban yang benar untuk setiap soal.
@@ -1450,11 +1452,11 @@
                           - Skala Penilaian: "${gradingScale}"
                           - Nama Siswa (jika ada di input): "${studentName}"
                           - Kelas (jika ada di input): "${studentClass}"
-                          
-                          Instruksi: Cocokkan jawaban siswa dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap. Jika nama/kelas tidak diisi, coba deteksi dari gambar lembar jawaban.`;
+                         
+                          Instruksi: Cocokkan jawaban siswa dengan kunci. Hitung skornya, dan tampilkan laporan penilaian lengkap dalam format HTML. Jika nama/kelas tidak diisi, coba deteksi dari gambar lembar jawaban.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                         if (answerKeyText) {
-                            promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+                             promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
                         }
                         if(answerKeyImageFile) {
                             const keyImg = await fileToBase64(answerKeyImageFile);
@@ -1463,12 +1465,12 @@
 
                     } else {
                         // Mode Otomatis Penuh
-                        prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
+                         prompt = `Anda adalah AI penilai super canggih. Tugas Anda adalah memeriksa lembar jawaban siswa dari gambar berikut secara otomatis. Lakukan langkah-langkah ini:
                           1. Analisis gambar untuk mengidentifikasi semua soal dan jawaban yang diberikan oleh siswa (perhatikan lingkaran atau tanda centang pada pilihan ganda). Jika ada nama dan kelas, deteksi juga.
                           2. Gunakan pengetahuan Anda untuk menentukan jawaban yang benar untuk setiap soal.
                           3. Bandingkan jawaban siswa dengan jawaban yang benar.
                           4. Hitung jumlah jawaban yang benar dan berikan nilai akhir berdasarkan skala penilaian: "${gradingScale}".
-                          5. Buat ringkasan penilaian yang jelas.`;
+                          5. Buat ringkasan penilaian yang jelas dalam format HTML.`;
                         promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
                     }
                     
@@ -1477,26 +1479,26 @@
                     callGeminiApi(promptParts, 'penilaian-otomatis-hasil', 'penilaian-otomatis-loader');
                 });
                 
-                document.getElementById('btn-generate-komunikasi')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-komunikasi')?.addEventListener('click', () => {
                     const studentName = document.getElementById('komunikasi-nama').value;
                     const purpose = document.getElementById('komunikasi-tujuan').value;
                     const keyPoints = document.getElementById('komunikasi-poin').value;
-                    const prompt = `Buatkan draf pesan singkat (email/WA) kepada orang tua dari siswa bernama "${studentName}".\nTujuan: "${purpose}".\nPoin kunci:\n- ${keyPoints.replace(/\n/g, "\n- ")}\n\nGunakan bahasa sopan dan kolaboratif.`;
+                    const prompt = `Buatkan draf pesan singkat (email/WA) kepada orang tua dari siswa bernama "${studentName}".\nTujuan: "${purpose}".\nPoin kunci:\n- ${keyPoints.replace(/\n/g, "\n- ")}\n\nGunakan bahasa sopan dan kolaboratif. Format dalam HTML <p> dan <strong>.`;
                     callGeminiApi([{text: prompt}], 'komunikasi-hasil', 'komunikasi-loader');
                 });
                 
-                document.getElementById('btn-generate-rpp')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-rpp')?.addEventListener('click', () => {
                     const topic = document.getElementById('rpp-topik').value;
                     const duration = document.getElementById('rpp-durasi').value;
                     const objective = document.getElementById('rpp-tujuan').value;
-                    let prompt = `Buatkan draf RPP untuk topik: "${topic}". Durasi: ${duration} menit. Tujuan Pembelajaran: "${objective}". Sertakan komponen RPP standar: pendahuluan, inti, dan penutup.`;
+                    let prompt = `Buatkan draf RPP (format HTML) untuk topik: "${topic}". Durasi: ${duration} menit. Tujuan Pembelajaran: "${objective}". Sertakan komponen RPP standar: pendahuluan, inti, dan penutup.`;
                     prompt += latexInstruction;
                     callGeminiApi([{text: prompt}], 'rpp-hasil', 'rpp-loader');
                 });
 
-                document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
+                 document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
                     const rppText = document.getElementById('analisis-rpp-teks').value;
-                    let prompt = `Anda adalah seorang "coach" pedagogis AI. Analisis draf RPP berikut dan berikan umpan balik konstruktif. Fokus pada:\n1. <h3>Kesesuaian Asesmen</h3>\n2. <h3>Saran Kegiatan Pembuka</h3>\n3. <h3>Peluang Diferensiasi</h3>\n\nBerikut RPP-nya:\n"${rppText}"`;
+                    let prompt = `Anda adalah seorang "coach" pedagogis AI. Analisis draf RPP berikut dan berikan umpan balik konstruktif dalam format HTML. Fokus pada:\n1. <h3>Kesesuaian Asesmen</h3>\n2. <h3>Saran Kegiatan Pembuka</h3>\n3. <h3>Peluang Diferensiasi</h3>\n\nBerikut RPP-nya:\n"${rppText}"`;
                     prompt += latexInstruction;
                     callGeminiApi([{ text: prompt }], 'analisis-rpp-hasil', 'analisis-rpp-loader');
                 });
@@ -1507,10 +1509,10 @@
                     if (!container) return;
 
                     const buttonClass = isNested ? '.tab-button-nested' : '.tab-button';
-                    const contentSelector = isNested ? ':scope > .tab-content-nested' : ':scope > .tab-content';
+                    const contentClass = isNested ? ':scope > .tab-content-nested' : ':scope > .tab-content';
                     
                     const tabButtons = container.querySelectorAll(buttonClass);
-                    const tabContents = container.querySelectorAll(contentSelector);
+                    const tabContents = container.querySelectorAll(contentClass);
 
                     if(tabButtons.length === 0) return;
 
@@ -1518,13 +1520,13 @@
                         button.addEventListener('click', () => {
                             tabButtons.forEach(btn => {
                                 btn.classList.remove('active');
-                                btn.classList.add('text-slate-500', 'hover:text-slate-700');
+                                btn.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
                             });
                             button.classList.add('active');
-                            button.classList.remove('text-slate-500', 'hover:text-slate-700');
+                            button.classList.remove('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
                             
                             tabContents.forEach(content => content.classList.remove('active'));
-                            const targetContent = document.getElementById(button.dataset.target);
+                            const targetContent = container.querySelector(`#${button.dataset.target}`);
                             if(targetContent) targetContent.classList.add('active');
                         });
                     });
@@ -1548,3 +1550,4 @@
     </script>
 </body>
 </html>
+
