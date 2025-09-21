@@ -826,22 +826,22 @@
             
             function createPremiumFileUploaderHTML(prefix, label, helpText = '') {
                 return `
-                        <div class="mb-6">
-                            <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
-                            ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
-                            <div class="premium-file-upload">
-                                <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
-                                <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
-                                    <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
-                                    <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
-                                    <p class="text-sm text-slate-500">atau drag & drop file</p>
+                            <div class="mb-6">
+                                <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
+                                ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
+                                <div class="premium-file-upload">
+                                    <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
+                                    <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
+                                        <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
+                                        <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
+                                        <p class="text-sm text-slate-500">atau drag & drop file</p>
+                                    </div>
+                                </div>
+                                <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
+                                    <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
+                                    <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
                                 </div>
                             </div>
-                            <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
-                                <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
-                                <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
-                            </div>
-                        </div>
                 `;
             }
 
@@ -852,58 +852,58 @@
                     'premium-button';
 
                 return `
-                        <div class="max-w-6xl mx-auto">
-                        ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
-                            <div class="premium-card p-4 sm:p-8">
-                                <div class="mb-6">
-                                    <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
-                                        <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
-                                        Pilih Cara Menentukan Topik
+                            <div class="max-w-6xl mx-auto">
+                            ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
+                                <div class="premium-card p-4 sm:p-8">
+                                    <div class="mb-6">
+                                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
+                                            <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
+                                            Pilih Cara Menentukan Topik
                                         </h2>
-                                    <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
-                                        <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
-                                            <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
-                                            Opsi 1: Kurikulum
-                                        </label>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                            <select id="${prefix}-jenjang" class="premium-select w-full">
-                                                <option value="">Pilih Jenjang...</option>
-                                            </select>
-                                            <select id="${prefix}-kelas" class="premium-select w-full" disabled>
-                                                <option value="">Pilih Kelas...</option>
-                                            </select>
-                                            <select id="${prefix}-mapel" class="premium-select w-full" disabled>
-                                                <option value="">Pilih Mapel...</option>
-                                            </select>
-                                            <select id="${prefix}-bab" class="premium-select w-full" disabled>
-                                                <option value="">Pilih Bab...</option>
-                                            </select>
+                                        <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
+                                            <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
+                                                <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
+                                                Opsi 1: Kurikulum
+                                            </label>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                                <select id="${prefix}-jenjang" class="premium-select w-full">
+                                                    <option value="">Pilih Jenjang...</option>
+                                                </select>
+                                                <select id="${prefix}-kelas" class="premium-select w-full" disabled>
+                                                    <option value="">Pilih Kelas...</option>
+                                                </select>
+                                                <select id="${prefix}-mapel" class="premium-select w-full" disabled>
+                                                    <option value="">Pilih Mapel...</option>
+                                                </select>
+                                                <select id="${prefix}-bab" class="premium-select w-full" disabled>
+                                                    <option value="">Pilih Bab...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center my-6">
+                                            <hr class="flex-grow border-t-2 border-slate-300">
+                                            <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
+                                            <hr class="flex-grow border-t-2 border-slate-300">
+                                        </div>
+                                        <div>
+                                            <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
+                                                <i class="fas fa-edit text-primary-500 mr-3"></i>
+                                                Opsi 2: Tulis Topik
+                                            </label>
+                                            <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
+                                            ${optionsHTML}
                                         </div>
                                     </div>
-                                    <div class="flex items-center my-6">
-                                        <hr class="flex-grow border-t-2 border-slate-300">
-                                        <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
-                                        <hr class="flex-grow border-t-2 border-slate-300">
+                                    <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
+                                        <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
+                                    </button>
+                                    <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
+                                        <div class="premium-loader"></div>
+                                        <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
                                     </div>
-                                    <div>
-                                        <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
-                                            <i class="fas fa-edit text-primary-500 mr-3"></i>
-                                            Opsi 2: Tulis Topik
-                                        </label>
-                                        <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
-                                        ${optionsHTML}
-                                    </div>
+                                    <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
                                 </div>
-                                <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
-                                    <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
-                                </button>
-                                <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
-                                    <div class="premium-loader"></div>
-                                    <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
-                                </div>
-                                <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
                             </div>
-                        </div>
                 `;
             }
 
@@ -1042,7 +1042,6 @@
                         </div>
                     </div>`;
 
-                // Premium sections without topic selector
                 document.getElementById('generator-glosarium').innerHTML = `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Generator Glosarium & Konteks Kata</h1>
@@ -1615,7 +1614,7 @@
                     return;
                 }
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: promptParts }] };
 
                 try {
@@ -1649,23 +1648,26 @@
             
             // --- Premium Event Listeners ---
             function attachPremiumEventListeners() {
-                const latexInstruction = `\n\n**PENTING**: Setiap kali Anda menulis rumus, persamaan, atau ekspresi matematika, WAJIB gunakan format LaTeX. Untuk matematika inline, bungkus dengan satu tanda dolar (contoh: $E=mc^2$). Untuk matematika dalam blok display terpisah, bungkus dengan dua tanda dolar (contoh: $$ y = \\frac{a}{b+c} $$). Ini sangat penting untuk rendering yang benar.`;
-                
+                const latexInstruction = `\n\n**PERINTAH FORMAT PENTING**: Setiap kali Anda menulis rumus, persamaan, atau ekspresi matematika, WAJIB gunakan format LaTeX. Untuk matematika inline, bungkus dengan satu tanda dolar (contoh: $E=mc^2$). Untuk matematika dalam blok display terpisah, bungkus dengan dua tanda dolar (contoh: $$y = \\frac{a}{b+c}$$). Ini sangat penting untuk rendering yang benar.`;
+                const listStyleInstruction = `\n**INSTRUKSI DAFTAR**: Untuk daftar bernomor, selalu gunakan <ol style="list-style-type: decimal; padding-left: 40px;">. Untuk daftar berpoin, gunakan <ul style="list-style-type: disc; padding-left: 40px;">.`;
+
                 document.getElementById('btn-generate-materi')?.addEventListener('click', () => {
                     const topic = document.getElementById('materi-topik').value;
                     const isDifferentiated = document.getElementById('materi-diferensiasi').checked;
-                    let prompt = `Anda adalah guru ahli. Buatkan materi ajar lengkap format HTML untuk topik: "${topic}". Gunakan heading (<h2>, <h3>) untuk memisahkan bagian.`;
+                    let prompt = `Anda adalah seorang ahli perancang kurikulum. **Seluruh output Anda HARUS berupa kode HTML yang valid dan siap render, tanpa teks pembuka atau penutup.** Buat materi ajar untuk topik: "${topic}".`;
                     
                     if (isDifferentiated) {
-                        prompt += ` Buat juga 3 versi: disederhanakan, standar, dan pengayaan.`;
+                        prompt += ` Struktur HTML HARUS menyajikan tiga bagian utama yang jelas: <h2>Materi Diferensiasi: ${topic}</h2><h3>1. Versi Disederhanakan</h3><p>Penjelasan untuk siswa dengan pemahaman dasar.</p><h3>2. Versi Standar</h3><p>Penjelasan sesuai standar kurikulum.</p><h3>3. Versi Pengayaan</h3><p>Penjelasan mendalam dengan konsep tambahan.</p> Setiap bagian harus terstruktur dengan baik.`;
+                    } else {
+                        prompt += ` Struktur HTML harus mencakup: <h2>${topic}</h2>, diikuti oleh beberapa bagian yang masing-masing memiliki <h3>Sub-Judul</h3> dan paragraf <p> yang menjelaskan konsep.`;
                     }
-                    prompt += latexInstruction;
+                    prompt += listStyleInstruction + latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'materi-hasil', 'materi-loader');
                 });
 
                 document.getElementById('btn-generate-glosarium')?.addEventListener('click', () => {
                     const text = document.getElementById('glosarium-teks').value;
-                    let prompt = `Analisis teks berikut dan identifikasi 5-7 istilah kunci. Untuk setiap istilah, berikan output HTML:\n- <h3> untuk istilah.\n- <p> untuk definisi yang mudah dipahami.\n- <ul><li> berisi contoh kalimat.\n\nTeks: "${text}"`;
+                    let prompt = `Anda adalah AI ahli linguistik. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Dari teks berikut, identifikasi 5-7 istilah paling penting. Untuk setiap istilah, gunakan format HTML berikut secara presisi: <h3>Istilah Kunci</h3><p>Definisi yang jelas.</p><h4>Contoh Penggunaan:</h4><ul style="list-style-type: disc; padding-left: 40px;"><li>Contoh kalimat 1</li></ul>. Teks untuk dianalisis: "${text}"`;
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'glosarium-hasil', 'glosarium-loader');
                 });
@@ -1677,7 +1679,7 @@
                         return; 
                     }
                     
-                    let prompt = `Anda adalah kurator museum dan guru ahli. Analisis gambar ini. Berikan output HTML yang mencakup:\n1. <h2>Deskripsi Detail</h2>\n2. <h2>Poin Diskusi & Pertanyaan HOTS</h2> (gunakan <ol>)\n3. <h2>Fakta Terkait</h2> (gunakan <ul>)`;
+                    let prompt = `Anda adalah sejarawan seni dan ahli pedagogi. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berdasarkan gambar ini, buat analisis mendalam dengan struktur HTML berikut:\n<h2>Deskripsi Visual Detail</h2><p>[Deskripsi mendalam tentang gambar]</p>\n<h2>Poin Diskusi & Pertanyaan HOTS</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Pertanyaan 1</li><li>Pertanyaan 2</li></ol>\n<h2>Fakta Menarik Terkait</h2><ul style="list-style-type: disc; padding-left: 40px;"><li>Fakta 1</li></ul>`;
                     prompt += latexInstruction;
                     
                     const { base64, mimeType } = await fileToBase64(imageFile);
@@ -1691,10 +1693,16 @@
                     const count = document.getElementById('soal-jumlah').value;
                     const withExplanation = document.getElementById('soal-pembahasan').checked;
                     
-                    let prompt = `Buatkan ${count} soal tipe "${type}" tentang "${topic}". Sertakan kunci jawaban. Format seluruh output dalam HTML yang rapi menggunakan <ol> untuk soal.`;
+                    let prompt = `Anda adalah AI spesialis evaluasi pendidikan. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan ${count} soal tipe "${type}" untuk topik "${topic}".`;
+
+                    if (type === 'Pilihan Ganda') {
+                        prompt += `\nSetiap soal HARUS berada dalam tag <li> di dalam sebuah <ol>. Pilihan jawaban (A, B, C, D, dst) HARUS berada di dalam daftar <ol type="A" style="list-style-type: upper-alpha; margin-left: 20px; padding-left: 20px;"> di dalam setiap <li> soal.`
+                    }
                     
                     if (withExplanation) {
-                        prompt += " Setelah kunci jawaban, tambahkan bagian 'Pembahasan' yang menjelaskan mengapa jawaban tersebut benar secara rinci untuk setiap soal.";
+                        prompt += `\nStruktur HTML WAJIB:\n<h2>Latihan Soal: ${topic}</h2>\n<ol style="list-style-type: decimal; padding-left: 40px;">\n  <li>Isi soal 1...\n    <ol type="A" style="list-style-type: upper-alpha; margin-left: 20px; padding-left: 20px;">\n      <li>Pilihan A</li>\n      <li>Pilihan B</li>\n    </ol>\n  </li>\n</ol>\n<h2>Kunci Jawaban & Pembahasan</h2>\n<div>\n  <h3>Soal 1</h3>\n  <p><strong>Jawaban:</strong> [Kunci Jawaban, misal: A]</p>\n  <p><strong>Pembahasan:</strong> Penjelasan detail...</p>\n</div>`;
+                    } else {
+                        prompt += `\nStruktur HTML WAJIB:\n<h2>Latihan Soal: ${topic}</h2>\n<ol style="list-style-type: decimal; padding-left: 40px;">\n  <li>Isi soal 1...\n    <ol type="A" style="list-style-type: upper-alpha; margin-left: 20px; padding-left: 20px;">\n      <li>Pilihan A</li>\n      <li>Pilihan B</li>\n    </ol>\n  </li>\n</ol>\n<h3>Kunci Jawaban</h3>\n<ol style="list-style-type: decimal; padding-left: 40px;">\n  <li>Jawaban soal 1</li>\n</ol>`;
                     }
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'soal-hasil', 'soal-loader');
@@ -1709,7 +1717,7 @@
                         return;
                     }
 
-                    let prompt = `Anda adalah seorang tutor ahli. Jawab dan berikan pembahasan langkah-demi-langkah yang lengkap untuk soal berikut. Format jawaban dalam HTML, gunakan heading dan daftar jika perlu untuk kejelasan.`;
+                    let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal yang diberikan. Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
                     prompt += latexInstruction;
                     
                     const promptParts = [{ text: prompt }];
@@ -1727,8 +1735,8 @@
                 document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
                     const theme = document.getElementById('proyek-tema').value;
                     const duration = document.getElementById('proyek-durasi').value;
-                    let prompt = `Anda adalah ahli pedagogi dan spesialis Project-Based Learning (PBL). Buatkan draf lengkap rencana proyek (format HTML) dengan detail:\n- Tema Utama: "${theme}"\n- Estimasi Durasi: "${duration}"\n\nStruktur output harus mencakup:\n1. <h2>Tujuan Proyek</h2>\n2. <h2>Pembagian Kelompok & Peran</h2>\n3. <h2>Linimasa Proyek</h2>\n4. <h2>Rubrik Penilaian</h2>`;
-                    prompt += latexInstruction;
+                    let prompt = `Anda adalah ahli pedagogi PBL. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan draf lengkap rencana proyek dengan detail:\n- Tema: "${theme}"\n- Durasi: "${duration}"\n\nStruktur output HTML WAJIB:\n<h2>Rancangan Proyek: ${theme}</h2>\n<h3>A. Pertanyaan Pemantik</h3>\n<h3>B. Aktivitas & Linimasa</h3>\n<h3>C. Produk Akhir & Kriteria Penilaian</h3>`;
+                    prompt += listStyleInstruction + latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'proyek-hasil', 'proyek-loader');
                 });
 
@@ -1768,8 +1776,8 @@
                             const topic = document.getElementById('aktivitas-topik').value;
                             const selectedActivity = generateBtn.dataset.activityType;
                             
-                            let prompt = `Rancang paket materi lengkap (format HTML) untuk aktivitas kelas "${selectedActivity}" dengan topik "${topic}". Sertakan tujuan, persiapan, langkah-langkah, dan materi siswa.`;
-                            prompt += latexInstruction;
+                            let prompt = `Anda adalah fasilitator pembelajaran kreatif. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Rancang panduan lengkap untuk aktivitas kelas "${selectedActivity}" dengan topik "${topic}". Gunakan struktur HTML berikut:\n<h2>Panduan Aktivitas: ${selectedActivity}</h2>\n<h3>Tujuan Pembelajaran</h3>\n<h3>Alat & Bahan</h3>\n<h3>Langkah-langkah Pelaksanaan</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li></ol>\n<h3>Materi Pendukung untuk Siswa</h3>`;
+                            prompt += listStyleInstruction + latexInstruction;
                             callPremiumGeminiApi([{text: prompt}], 'aktivitas-hasil', 'aktivitas-loader');
                         });
                     });
@@ -1777,14 +1785,14 @@
 
                 document.getElementById('btn-generate-kuis')?.addEventListener('click', () => {
                     const topic = document.getElementById('kuis-topik').value;
-                    let prompt = `Buat kuis formatif 10 pertanyaan tentang "${topic}". Campur 5 Pilihan Ganda (tandai jawaban benar dengan <strong>), 3 Benar/Salah, dan 2 Isian Singkat. Format dalam HTML <ol>.`;
+                    let prompt = `Anda adalah AI pembuat kuis. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buat kuis formatif tentang "${topic}" berisi 10 pertanyaan (5 PG, 3 Benar/Salah, 2 Isian Singkat). Gunakan struktur HTML berikut:\n<h2>Kuis: ${topic}</h2>\n<h3>Pilihan Ganda</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol>\n<h3>Benar/Salah</h3><ol start="6" style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol>\n<h3>Isian Singkat</h3><ol start="9" style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol><br><h3>Kunci Jawaban</h3><p>[Kunci jawaban untuk semua soal]</p>`;
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'kuis-hasil', 'kuis-loader');
                 });
 
                 document.getElementById('btn-generate-jawaban')?.addEventListener('click', () => {
                     const question = document.getElementById('pertanyaan-siswa').value;
-                    let prompt = `Saya guru mendapat pertanyaan dari siswa: "${question}". Berikan 3 opsi cara menjawab (format HTML):\n1. <h3>Penjelasan Sederhana</h3>\n2. <h3>Analogi atau Perumpamaan</h3>\n3. <h3>Ide Demonstrasi Cepat</h3>`;
+                    let prompt = `Anda adalah "coach" guru. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Siswa bertanya: "${question}". Berikan strategi menjawab dengan struktur HTML berikut:\n<h2>Strategi Menjawab Pertanyaan Siswa</h2>\n<ol style="list-style-type: decimal; padding-left: 40px;">\n<li><h3>Jawaban Langsung & Sederhana</h3><p>[Penjelasan mudah]</p></li>\n<li><h3>Analogi atau Perumpamaan</h3><p>[Analogi untuk membantu pemahaman]</p></li>\n<li><h3>Ide Aktivitas Cepat</h3><p>[Aktivitas singkat untuk visualisasi]</p></li>\n</ol>`;
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'jawaban-hasil', 'jawaban-loader');
                 });
@@ -1799,26 +1807,16 @@
                         alert("Mohon unggah gambar lembar jawaban siswa.");
                         return;
                     }
-
                     const { base64, mimeType } = await fileToBase64(answerSheetImageFile);
-                    let prompt;
                     const promptParts = [];
-
-                    if (answerKeyText || answerKeyImageFile) {
-                         prompt = `Anda AI pemeriksa ulangan. Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban (teks atau gambar 2). Skala Penilaian: "${gradingScale}". Deteksi nama/kelas. Cocokkan jawaban siswa. Hitung skor, dan tampilkan laporan penilaian lengkap dalam HTML.`;
-                        promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
-                        if (answerKeyText) promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
-                        if(answerKeyImageFile) {
-                            const keyImg = await fileToBase64(answerKeyImageFile);
-                            promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
-                        }
-                    } else {
-                         prompt = `Anda AI penilai. Periksa lembar jawaban siswa dari gambar. 1. Deteksi nama/kelas. 2. Identifikasi soal & jawaban siswa. 3. Tentukan jawaban benar. 4. Bandingkan jawaban. 5. Hitung skor & nilai akhir sesuai skala: "${gradingScale}". 6. Buat ringkasan penilaian HTML.`;
-                        promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
+                    let prompt = `Anda adalah AI penilai yang teliti. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Tugas: Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban yang diberikan (teks atau gambar 2). Skala Penilaian: "${gradingScale}".\nInstruksi: Ekstrak nama/kelas, hitung skor, dan hasilkan laporan dengan format HTML WAJIB berikut:\n<h2>Laporan Hasil Penilaian</h2>\n<h4><strong>Nama:</strong> [Nama Siswa]</h4>\n<h4><strong>Kelas:</strong> [Kelas Siswa]</h4>\n<h3>Nilai Akhir: [Nilai]</h3>\n<h3>Analisis Jawaban:</h3>\n(Gunakan tabel HTML dengan kolom: Nomor, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik:</h3>\n<p>Umpan balik konstruktif.</p>`;
+                    promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
+                    if (answerKeyText) promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+                    if(answerKeyImageFile) {
+                        const keyImg = await fileToBase64(answerKeyImageFile);
+                        promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
                     }
-
-                    promptParts.push({text: `\nFormat output harus mencakup: <h2>Hasil Penilaian</h2>, <h4>Nama: [Nama Siswa], Kelas: [Kelas Siswa]</h4>, <h3>Nilai Akhir: [Nilai]</h3>, <h3>Analisis Jawaban:</h3> (tabel nomor, jawaban siswa, jawaban benar, status), dan <h3>Umpan Balik</h3>.` + latexInstruction});
-
+                    promptParts.push({text: listStyleInstruction + latexInstruction});
                     callPremiumGeminiApi(promptParts, 'penilaian-terpadu-hasil', 'penilaian-terpadu-loader');
                 });
                 
@@ -1835,7 +1833,7 @@
                         return;
                     }
 
-                    let prompt = `Anda asisten penilai. Nilai jawaban esai siswa berdasarkan kunci jawaban.\n- Nama: "${studentName}"\n- Kelas: "${studentClass}"\n- Kunci/Pedoman: "${answerKey}"\n- Skala: "${gradingScale}"`;
+                    let prompt = `Anda AI asisten penilai. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.**\nTUGAS: Nilai esai siswa berdasarkan pedoman.\nDATA:\n- Nama: "${studentName}"\n- Kelas: "${studentClass}"\n- Pedoman: "${answerKey}"\n- Skala: "${gradingScale}"\nINSTRUKSI: Gunakan format HTML WAJIB:\n<h2>Hasil Penilaian Esai</h2>\n<h4><strong>Nama:</strong> ${studentName}</h4>\n<h3>Nilai: [Nilai]</h3>\n<h3>Umpan Balik Konstruktif:</h3>\n<p>[Analisis kekuatan dan area perbaikan]</p>`;
                     
                     const promptParts = [{ text: prompt }];
                     
@@ -1845,8 +1843,7 @@
                         promptParts.push({ text: "\nJawaban Siswa (gambar):" }, { inlineData: { mimeType, data: base64 } });
                     }
 
-                    promptParts.push({ text: `\nInstruksi: Berikan nilai sesuai skala, dan umpan balik konstruktif. Format output HTML: <h2>Hasil Penilaian Esai</h2>, <h4>Nama & Kelas</h4>, <h3>Nilai</h3>, dan <h3>Umpan Balik</h3>.` + latexInstruction });
-
+                    promptParts.push({ text: listStyleInstruction + latexInstruction });
                     callPremiumGeminiApi(promptParts, 'penilaian-manual-hasil', 'penilaian-manual-loader');
                 });
 
@@ -1861,7 +1858,7 @@
                         return;
                     }
 
-                    const prompt = `Anda guru ahli. Nilai jawaban esai siswa secara otomatis tanpa kunci.\n- Skala: "${gradingScale}"\n- Soal: "${questionText}"\n- Nilai berdasarkan: Kejelasan argumen, struktur, akurasi, dan analisis. Coba deteksi nama/kelas dari jawaban.`;
+                    const prompt = `Anda guru ahli penilai esai AI. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.**\nTUGAS: Nilai esai siswa secara otomatis.\nDATA:\n- Soal: "${questionText}"\n- Skala: "${gradingScale}"\nINSTRUKSI: Nilai berdasarkan akurasi, argumen, dan struktur. Gunakan format HTML WAJIB:\n<h2>Hasil Penilaian Esai Otomatis</h2>\n<h3>Nilai: [Nilai]</h3>\n<h3>Analisis & Umpan Balik:</h3>\n<ul style="list-style-type: disc; padding-left: 40px;"><li><strong>Akurasi Konten:</strong> [Komentar]</li><li><strong>Kejelasan Argumen:</strong> [Komentar]</li></ul>`;
 
                     const promptParts = [{ text: prompt }];
 
@@ -1871,8 +1868,7 @@
                         promptParts.push({ text: "\nJawaban Siswa (gambar):" }, { inlineData: { mimeType, data: base64 } });
                     }
 
-                    promptParts.push({ text: `\nInstruksi Final: Berikan nilai dan umpan balik konstruktif. Format output HTML: <h2>Hasil Penilaian Esai Otomatis</h2>, <h4>Nama & Kelas</h4>, <h3>Nilai</h3>, dan <h3>Umpan Balik</h3>.` + latexInstruction });
-
+                    promptParts.push({ text: latexInstruction });
                     callPremiumGeminiApi(promptParts, 'penilaian-esai-otomatis-hasil', 'penilaian-esai-otomatis-loader');
                 });
                 
@@ -1891,22 +1887,15 @@
                     let prompt;
                     const promptParts = [];
 
-                    if (answerKeyText || answerKeyImageFile) {
-                        prompt = `Anda AI pemeriksa. Periksa lembar jawaban siswa (gambar 1) bandingkan dengan kunci (teks/gambar 2). Skala: "${gradingScale}". Coba deteksi nama/kelas. Hitung skor, dan tampilkan laporan HTML.`;
-                        promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
-                        if (answerKeyText) promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
-                        if(answerKeyImageFile) {
-                            const keyImg = await fileToBase64(answerKeyImageFile);
-                            promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
-                        }
-
-                    } else {
-                        prompt = `Anda AI penilai. Periksa lembar jawaban siswa dari gambar. 1. Deteksi nama/kelas. 2. Identifikasi soal & jawaban. 3. Tentukan jawaban benar. 4. Bandingkan. 5. Hitung nilai sesuai skala: "${gradingScale}". 6. Buat ringkasan penilaian HTML.`;
-                        promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
+                    prompt = `Anda AI penilai. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.**\nTugas: Periksa lembar jawaban (gambar 1) dengan kunci (teks/gambar 2). Skala: "${gradingScale}".\nInstruksi: Deteksi nama/kelas. Hitung skor. Buat laporan HTML dengan format WAJIB:\n<h2>Hasil Penilaian</h2>\n<h4>Nama: [Nama]</h4><h3>Nilai Akhir: [Nilai]</h3><h3>Analisis Jawaban:</h3>(tabel HTML: No, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik</h3>`;
+                    promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
+                    if (answerKeyText) promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+                    if(answerKeyImageFile) {
+                        const keyImg = await fileToBase64(answerKeyImageFile);
+                        promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
                     }
                     
-                    promptParts.push({text: `\nFormat output harus: <h2>Hasil Penilaian</h2>, <h4>Nama: [Nama Siswa], Kelas: [Kelas Siswa]</h4>, <h3>Nilai Akhir: [Nilai]</h3>, <h3>Analisis Jawaban:</h3> (tabel nomor, jawaban siswa, jawaban benar, status), dan <h3>Umpan Balik</h3>.` + latexInstruction});
-
+                    promptParts.push({text: listStyleInstruction + latexInstruction});
                     callPremiumGeminiApi(promptParts, 'penilaian-otomatis-hasil', 'penilaian-otomatis-loader');
                 });
                 
@@ -1914,7 +1903,7 @@
                     const studentName = document.getElementById('komunikasi-nama').value;
                     const purpose = document.getElementById('komunikasi-tujuan').value;
                     const keyPoints = document.getElementById('komunikasi-poin').value;
-                    const prompt = `Buatkan draf pesan singkat (email/WA) kepada orang tua dari siswa bernama "${studentName}".\nTujuan: "${purpose}".\nPoin kunci:\n- ${keyPoints.replace(/\n/g, "\n- ")}\n\nGunakan bahasa sopan dan kolaboratif. Format dalam HTML <p> dan <strong>.`;
+                    const prompt = `Anda konselor sekolah ahli komunikasi. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan draf pesan profesional untuk orang tua siswa "${studentName}" dengan tujuan: "${purpose}" dan poin kunci: "${keyPoints}".\nStruktur HTML WAJIB:\n<p><strong>Yth. Bapak/Ibu Wali dari ${studentName},</strong></p>\n<p>[Isi pesan sopan dan kolaboratif]</p>\n<p>Salam hangat,</p><p>[Nama Guru]</p>`;
                     callPremiumGeminiApi([{text: prompt}], 'komunikasi-hasil', 'komunikasi-loader');
                 });
                 
@@ -1922,15 +1911,15 @@
                     const topic = document.getElementById('rpp-topik').value;
                     const duration = document.getElementById('rpp-durasi').value;
                     const objective = document.getElementById('rpp-tujuan').value;
-                    let prompt = `Buatkan draf RPP (format HTML) untuk topik: "${topic}". Durasi: ${duration} menit. Tujuan Pembelajaran: "${objective}". Sertakan komponen RPP standar: pendahuluan, inti, dan penutup.`;
-                    prompt += latexInstruction;
+                    let prompt = `Anda AI perancang pembelajaran. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan draf RPP untuk:\n- Topik: "${topic}"\n- Durasi: ${duration} menit\n- Tujuan: "${objective}"\nStruktur HTML WAJIB:\n<h2>RPP: ${topic}</h2>\n<h3>A. Tujuan Pembelajaran</h3>\n<h3>B. Kegiatan Pembelajaran</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li><strong>Pendahuluan:</strong> ...</li><li><strong>Kegiatan Inti:</strong> ...</li><li><strong>Penutup:</strong> ...</li></ol>\n<h3>C. Asesmen/Penilaian</h3>`;
+                    prompt += listStyleInstruction + latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'rpp-hasil', 'rpp-loader');
                 });
 
                 document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
                     const rppText = document.getElementById('analisis-rpp-teks').value;
-                    let prompt = `Anda "coach" pedagogis AI. Analisis draf RPP berikut dan berikan umpan balik konstruktif dalam format HTML. Fokus pada:\n1. <h3>Kesesuaian Asesmen</h3>\n2. <h3>Saran Kegiatan Pembuka</h3>\n3. <h3>Peluang Diferensiasi</h3>\n\nRPP-nya:\n"${rppText}"`;
-                    prompt += latexInstruction;
+                    let prompt = `Anda "coach" pedagogis AI. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Analisis RPP berikut dan berikan umpan balik konstruktif dengan format HTML WAJIB:\n<h2>Analisis RPP</h2>\n<h3>1. Kekuatan RPP</h3><p>[Aspek yang sudah baik]</p>\n<h3>2. Area untuk Peningkatan</h3><p>[Saran perbaikan]</p>\n<h3>3. Peluang Diferensiasi</h3><p>[Saran untuk mengakomodasi siswa]</p>\n\nRPP untuk dianalisis:\n"${rppText}"`;
+                    prompt += listStyleInstruction + latexInstruction;
                     callPremiumGeminiApi([{ text: prompt }], 'analisis-rpp-hasil', 'analisis-rpp-loader');
                 });
                 
@@ -1983,3 +1972,4 @@
     </script>
 </body>
 </html>
+
