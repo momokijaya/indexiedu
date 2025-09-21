@@ -79,7 +79,7 @@
             scrollbar-width: thin;
             scrollbar-color: #64748b #334155;
             flex-shrink: 0;
-            width: 288px;
+            width: 256px; /* 64 * 4px */
         }
 
         .premium-sidebar-item {
@@ -402,6 +402,16 @@
             .premium-ai-output { padding: 16px; }
         }
 
+        @media (max-width: 420px) {
+            .premium-button {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+            .premium-button .fas {
+                margin-right: 0.5rem;
+            }
+        }
+
         .premium-ai-output .katex-display {
             display: block;
             overflow-x: auto;
@@ -445,68 +455,68 @@
                         <h1 class="text-3xl font-black mb-2 group-hover:scale-105 transition-transform duration-300">
                             <span class="premium-gradient-text">INDEXIEDU</span>
                         </h1>
-                        <div class="text-sm text-slate-300 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 px-3 py-1 rounded-full border border-slate-500/30 inline-block mb-4">
+                        <div class="text-xs text-slate-300 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 px-3 py-1 rounded-full border border-slate-500/30 inline-block mb-4">
                             <i class="fas fa-crown text-yellow-400 mr-2"></i>Professional Edition
                         </div>
                     </a>
                 </div>
             </div>
-            <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
-                <a href="#" class="premium-sidebar-item active flex items-center py-3 px-4 rounded-xl" data-target="home">
-                    <i class="fas fa-home w-6 text-center text-xl"></i>
-                    <span class="ml-4 font-semibold">Beranda</span>
+            <nav class="flex-1 p-2 space-y-1 overflow-y-auto">
+                <a href="#" class="premium-sidebar-item active flex items-center py-2 px-3 rounded-xl" data-target="home">
+                    <i class="fas fa-home w-6 text-center text-lg"></i>
+                    <span class="ml-3 font-semibold text-sm">Beranda</span>
                 </a>
                 
-                <div class="pt-4 pb-2">
-                    <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Pembuatan Materi</p>
+                <div class="pt-3 pb-1">
+                    <p class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Pembuatan Materi</p>
                 </div>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="generator-materi">
-                    <i class="fas fa-book-open w-6 text-center text-xl"></i><span class="ml-4 font-medium">Generator Materi</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="generator-materi">
+                    <i class="fas fa-book-open w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Generator Materi</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="generator-glosarium">
-                    <i class="fas fa-spell-check w-6 text-center text-xl"></i><span class="ml-4 font-medium">Generator Glosarium</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="generator-glosarium">
+                    <i class="fas fa-spell-check w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Generator Glosarium</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="konteks-visual">
-                    <i class="fas fa-image w-6 text-center text-xl"></i><span class="ml-4 font-medium">Konteks Visual Cerdas</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="konteks-visual">
+                    <i class="fas fa-image w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Konteks Visual Cerdas</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="pembuat-soal">
-                    <i class="fas fa-lightbulb w-6 text-center text-xl"></i><span class="ml-4 font-medium">Pembuat Soal</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="pembuat-soal">
+                    <i class="fas fa-lightbulb w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Pembuat Soal</span>
                 </a>
 
-                <div class="pt-4 pb-2">
-                    <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Pelaksanaan Pembelajaran</p>
+                <div class="pt-3 pb-1">
+                    <p class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Pelaksanaan Pembelajaran</p>
                 </div>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="penjawab-soal">
-                    <i class="fas fa-calculator w-6 text-center text-xl"></i><span class="ml-4 font-medium">Penjawab Soal Cerdas</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="penjawab-soal">
+                    <i class="fas fa-calculator w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Penjawab Soal Cerdas</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="perancang-proyek">
-                    <i class="fas fa-sitemap w-6 text-center text-xl"></i><span class="ml-4 font-medium">Perancang Proyek (PBL)</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="perancang-proyek">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Perancang Proyek (PBL)</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="pustaka-aktivitas">
-                    <i class="fas fa-users w-6 text-center text-xl"></i><span class="ml-4 font-medium">Pustaka Aktivitas</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="pustaka-aktivitas">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Pustaka Aktivitas</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="pembuat-kuis">
-                    <i class="fas fa-graduation-cap w-6 text-center text-xl"></i><span class="ml-4 font-medium">Pembuat Kuis Cepat</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="pembuat-kuis">
+                    <i class="fas fa-graduation-cap w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Pembuat Kuis Cepat</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="asisten-pertanyaan">
-                    <i class="fas fa-question-circle w-6 text-center text-xl"></i><span class="ml-4 font-medium">Asisten Pertanyaan</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="asisten-pertanyaan">
+                    <i class="fas fa-question-circle w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Asisten Pertanyaan</span>
                 </a>
 
-                <div class="pt-4 pb-2">
-                    <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Evaluasi & Administrasi</p>
+                <div class="pt-3 pb-1">
+                    <p class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Evaluasi & Administrasi</p>
                 </div>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="penilaian-otomatis">
-                    <i class="fas fa-check-double w-6 text-center text-xl"></i><span class="ml-4 font-medium">Pengecekan & Penilaian AI</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="penilaian-otomatis">
+                    <i class="fas fa-check-double w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Pengecekan & Penilaian AI</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="perencana-rpp">
-                    <i class="fas fa-file-alt w-6 text-center text-xl"></i><span class="ml-4 font-medium">Perencana & Analisis RPP</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="perencana-rpp">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Perencana & Analisis RPP</span>
                 </a>
-                <a href="#" class="premium-sidebar-item flex items-center py-3 px-4 rounded-xl" data-target="komunikasi-ortu">
-                    <i class="fas fa-envelope w-6 text-center text-xl"></i><span class="ml-4 font-medium">Komunikasi Orang Tua</span>
+                <a href="#" class="premium-sidebar-item flex items-center py-2 px-3 rounded-xl" data-target="komunikasi-ortu">
+                    <i class="fas fa-envelope w-6 text-center text-lg"></i><span class="ml-3 font-medium text-sm">Komunikasi Orang Tua</span>
                 </a>
             </nav>
-            <div class="p-6 border-t border-slate-600/30 text-xs flex-shrink-0 text-slate-400 text-center">
-                <div class="glass-effect rounded-xl p-4">
+            <div class="p-4 border-t border-slate-600/30 text-xs flex-shrink-0 text-slate-400 text-center">
+                <div class="glass-effect rounded-xl p-3">
                     <p class="font-semibold">&copy; 2025 INDEXIEDU Professional</p>
                     <p class="text-slate-500">Developed with AI Excellence</p>
                 </div>
@@ -850,8 +860,10 @@
                 const buttonClass = isAnalysis ? 
                     'premium-button bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-700 hover:to-slate-900' : 
                     'premium-button';
+                const backButtonHTML = '<button class="back-to-home-btn mb-4 text-slate-600 hover:text-primary-600 font-semibold flex items-center transition-colors duration-200"><i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda</button>';
 
                 return `
+                            ${backButtonHTML}
                             <div class="max-w-6xl mx-auto">
                             ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
                                 <div class="premium-card p-4 sm:p-8">
@@ -909,6 +921,8 @@
 
             // --- Build Premium UI ---
             function buildPremiumUI() {
+                const backButtonHTML = '<button class="back-to-home-btn mb-4 text-slate-600 hover:text-primary-600 font-semibold flex items-center transition-colors duration-200"><i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda</button>';
+                
                 // Generator Materi
                 const materiOptions = `
                     <div class="mt-6 pt-6 border-t-2 border-slate-200">
@@ -975,6 +989,7 @@
                 `).join('');
 
                 document.getElementById('pustaka-aktivitas').innerHTML = `
+                    ${backButtonHTML}
                     <div class="max-w-7xl mx-auto">
                         <div class="text-center mb-12">
                             <h1 class="text-2xl sm:text-3xl font-black mb-4 text-slate-900">Pustaka Aktivitas Interaktif</h1>
@@ -994,6 +1009,7 @@
                 
                 // RPP Section dengan tab premium
                 document.getElementById('perencana-rpp').innerHTML = `
+                    ${backButtonHTML}
                     <div class="max-w-7xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Perencana & Analisis RPP</h1>
                         <div id="perencana-rpp-tabs-container" class="premium-card p-4 sm:p-6">
@@ -1018,7 +1034,7 @@
                                         <label for="rpp-tujuan" class="block text-base sm:text-lg font-semibold text-slate-700 mb-2">Tujuan Utama</label>
                                         <input type="text" id="rpp-tujuan" class="premium-input w-full" placeholder="Contoh: Siswa mampu menjelaskan...">
                                     </div>
-                                </div>`, 'Buat Draf RPP Premium', 'fa-file-alt')}
+                                </div>`, 'Buat Draf RPP Premium', 'fa-file-alt').replace(backButtonHTML, '')}
                             </div>
                             <div id="tab-analisis-rpp" class="tab-content">
                                 <div class="premium-card p-4 sm:p-6">
@@ -1042,7 +1058,7 @@
                         </div>
                     </div>`;
 
-                document.getElementById('generator-glosarium').innerHTML = `
+                document.getElementById('generator-glosarium').innerHTML = backButtonHTML + `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Generator Glosarium & Konteks Kata</h1>
                         <div class="premium-card p-4 sm:p-8">
@@ -1063,7 +1079,7 @@
                         </div>
                     </div>`;
 
-                document.getElementById('konteks-visual').innerHTML = `
+                document.getElementById('konteks-visual').innerHTML = backButtonHTML + `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Konteks Visual Cerdas</h1>
                         <div class="premium-card p-4 sm:p-8">
@@ -1083,7 +1099,7 @@
                         </div>
                     </div>`;
                 
-                document.getElementById('penjawab-soal').innerHTML = `
+                document.getElementById('penjawab-soal').innerHTML = backButtonHTML + `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Penjawab Soal Cerdas</h1>
                         <div class="premium-card p-4 sm:p-8">
@@ -1115,7 +1131,7 @@
                         </div>
                     </div>`;
 
-                document.getElementById('perancang-proyek').innerHTML = `
+                document.getElementById('perancang-proyek').innerHTML = backButtonHTML + `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Perancang Proyek (PBL)</h1>
                         <div class="premium-card p-4 sm:p-8">
@@ -1142,7 +1158,7 @@
                         </div>
                     </div>`;
 
-                document.getElementById('asisten-pertanyaan').innerHTML = `
+                document.getElementById('asisten-pertanyaan').innerHTML = backButtonHTML + `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Asisten Pertanyaan Siswa</h1>
                         <div class="premium-card p-4 sm:p-8">
@@ -1163,7 +1179,7 @@
                         </div>
                     </div>`;
                 
-                document.getElementById('penilaian-otomatis').innerHTML = `
+                document.getElementById('penilaian-otomatis').innerHTML = backButtonHTML + `
                     <div class="max-w-7xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Pengecekan & Penilaian AI</h1>
                         <div id="penilaian-tabs-container" class="premium-card p-4 sm:p-6">
@@ -1231,7 +1247,7 @@
                         </div>
                     </div>`;
 
-                document.getElementById('komunikasi-ortu').innerHTML = `
+                document.getElementById('komunikasi-ortu').innerHTML = backButtonHTML + `
                     <div class="max-w-6xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Generator Komunikasi Orang Tua</h1>
                         <div class="premium-card p-4 sm:p-8">
@@ -1605,6 +1621,8 @@
                 resultEl.classList.add('hidden');
                 loaderEl.classList.remove('hidden');
 
+                const hasImage = promptParts.some(part => part.inlineData);
+                const model = hasImage ? 'gemini-1.5-flash-latest' : 'gemini-pro';
                 const apiKey = getNextApiKey(); 
 
                 if (!apiKey) {
@@ -1614,7 +1632,7 @@
                     return;
                 }
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: promptParts }] };
 
                 try {
@@ -1965,9 +1983,19 @@
                 ['konteks', 'penjawab-soal', 'penilaian-terpadu', 'penilaian-terpadu-kunci', 'penilaian-otomatis', 'penilaian-otomatis-kunci', 'penilaian-esai-otomatis-jawaban', 'penilaian-manual-jawaban'].forEach(setupPremiumImageUploader);
             }
             
+            function attachBackToHomeListener() {
+                document.querySelector('main').addEventListener('click', function(e) {
+                    if (e.target.closest('.back-to-home-btn')) {
+                        e.preventDefault();
+                        switchTab('home');
+                    }
+                });
+            }
+
             // --- INITIALIZE PREMIUM APP ---
             buildPremiumUI();
             attachPremiumEventListeners(); // This will attach all event listeners for the premium UI
+            attachBackToHomeListener();
         });
     </script>
 </body>
