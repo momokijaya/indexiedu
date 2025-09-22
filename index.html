@@ -1900,7 +1900,7 @@
                     // Handle image-based questions (batch or single)
                     if (questionText && imageFiles.length === 0) {
                         if (loaderTextP) loaderTextP.textContent = 'AI sedang mengerjakan soal teks...';
-                        let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>pembahasan Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
+                        let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>pembahasan Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
                         prompt += latexInstruction;
                         await callPremiumGeminiApi([{ text: prompt }], 'penjawab-soal-hasil', 'penjawab-soal-loader');
                     } else { // Handle image-based questions (batch or single)
@@ -2256,6 +2256,7 @@
     </script>
 </body>
 </html>
+
 
 
 
