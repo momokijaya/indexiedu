@@ -1734,8 +1734,6 @@
                 resultEl.classList.add('hidden');
                 loaderEl.classList.remove('hidden');
 
-                const hasImage = promptParts.some(part => part.inlineData);
-                const model = hasImage ? 'gemini-2.5-flash' : 'gemini-2.5-flash';
                 const apiKey = getNextApiKey(); 
 
                 if (!apiKey) {
@@ -1745,8 +1743,14 @@
                     return;
                 }
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: promptParts }] };
+                        }],
+                        tools: [{
+                            "google_search": {}
+                        }]
+                };            
+                
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -1780,17 +1784,19 @@
             }
              // NEW: API call function adapted for batch processing (returns text instead of rendering)
             async function callPremiumGeminiApiForBatch(promptParts) {
-                const hasImage = promptParts.some(part => part.inlineData);
-                const model = hasImage ? 'gemini-2.5-flash' : 'gemini-2.5-flash';
                 const apiKey = getNextApiKey();
 
                 if (!apiKey) {
                     return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> API Key tidak tersedia.</div>`;
                 }
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: promptParts }] };
-
+                        }],
+                        tools: [{
+                            "google_search": {}
+                        }]
+                };
                 try {
                     const response = await fetch(apiUrl, {
                         method: 'POST',
@@ -1900,7 +1906,7 @@
                     // Handle image-based questions (batch or single)
                     if (questionText && imageFiles.length === 0) {
                         if (loaderTextP) loaderTextP.textContent = 'AI sedang mengerjakan soal teks...';
-                        let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>pembahasan Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
+                        let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
                         prompt += latexInstruction;
                         await callPremiumGeminiApi([{ text: prompt }], 'penjawab-soal-hasil', 'penjawab-soal-loader');
                     } else { // Handle image-based questions (batch or single)
@@ -2034,7 +2040,7 @@
                     }
 
                     for (let i = 0; i < answerSheetImageFiles.length; i++) {
-                        const file = answerSheetImageFiles[i];
+                        const file = imageFiles[i];
                         if (loaderTextP) loaderTextP.textContent = `AI sedang menilai lembar jawaban ${i + 1} dari ${answerSheetImageFiles.length}...`;
                         
                         let prompt = `Anda adalah AI penilai yang teliti. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Tugas: Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban yang diberikan (teks atau gambar 2). Skala Penilaian: "${gradingScale}".\nInstruksi: Ekstrak nama/kelas, hitung skor, dan hasilkan laporan dengan format HTML WAJIB berikut:\n<h2>Laporan Hasil Penilaian</h2>\n<h4><strong>Nama:</strong> [Nama Siswa]</h4>\n<h4><strong>Kelas:</strong> [Kelas Siswa]</h4>\n<h3>Nilai Akhir: [Nilai]</h3>\n<h3>Analisis Jawaban:</h3>\n(Gunakan tabel HTML dengan kolom: Nomor, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik:</h3>\n<p>Umpan balik konstruktif.</p>`;
@@ -2256,8 +2262,4 @@
     </script>
 </body>
 </html>
-
-
-
-
 
