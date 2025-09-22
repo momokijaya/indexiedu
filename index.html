@@ -518,7 +518,7 @@
             <div class="p-4 border-t border-slate-600/30 text-xs flex-shrink-0 text-slate-400 text-center">
                 <div class="glass-effect rounded-xl p-3">
                     <p class="font-semibold">&copy; 2025 INDEXIEDU Professional</p>
-                    <p class="text-slate-500">Developed with AI Excellence</p>
+                    <p class="text-slate-300">Developed by Apinakew</p>
                 </div>
             </div>
         </aside>
@@ -547,7 +547,7 @@
                                 Selamat Datang, <span class="premium-gradient-text">Pendidik Hebat!</span>
                             </h1>
                             <p class="text-base sm:text-lg text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-                                Platform AI terdepan untuk transformasi pengajaran modern. Semua perangkat canggih Anda dalam satu tempat yang elegan dan powerful.
+                                Perangkat bantu mengajar Anda ada di sini. Pilih fitur untuk memulai.
                             </p>
                             <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-8">
                                 <div class="flex items-center bg-green-100 text-green-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm">
@@ -834,24 +834,46 @@
             
             // --- Premium UI Template Functions ---
             
+            // Function for single file upload
             function createPremiumFileUploaderHTML(prefix, label, helpText = '') {
                 return `
-                            <div class="mb-6">
-                                <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
-                                ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
-                                <div class="premium-file-upload">
-                                    <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
-                                    <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
-                                        <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
-                                        <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
-                                        <p class="text-sm text-slate-500">atau drag & drop file</p>
-                                    </div>
-                                </div>
-                                <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
-                                    <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
-                                    <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
-                                </div>
+                    <div class="mb-6">
+                        <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
+                        ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
+                        <div class="premium-file-upload">
+                            <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
+                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
+                                <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
+                                <p class="text-sm text-slate-500">atau drag & drop file</p>
                             </div>
+                        </div>
+                        <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
+                            <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
+                            <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // NEW: Function for batch (multiple) file upload
+            function createPremiumBatchFileUploaderHTML(prefix, label, helpText = '') {
+                return `
+                    <div class="mb-6">
+                        <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
+                        ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
+                        <div class="premium-file-upload">
+                            <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden" multiple/>
+                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
+                                <i class="fas fa-images text-4xl text-primary-500 mb-4"></i>
+                                <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
+                                <p class="text-sm text-slate-500">Anda dapat memilih beberapa file</p>
+                            </div>
+                        </div>
+                        <div id="${prefix}-batch-preview" class="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+                           <!-- Previews will be shown here -->
+                        </div>
+                    </div>
                 `;
             }
 
@@ -863,59 +885,59 @@
                 const backButtonHTML = '<button class="back-to-home-btn mb-4 text-slate-600 hover:text-primary-600 font-semibold flex items-center transition-colors duration-200"><i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda</button>';
 
                 return `
-                            ${backButtonHTML}
-                            <div class="max-w-6xl mx-auto">
-                            ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
-                                <div class="premium-card p-4 sm:p-8">
-                                    <div class="mb-6">
-                                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
-                                            <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
-                                            Pilih Cara Menentukan Topik
-                                        </h2>
-                                        <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
-                                            <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
-                                                <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
-                                                Opsi 1: Kurikulum
-                                            </label>
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                                <select id="${prefix}-jenjang" class="premium-select w-full">
-                                                    <option value="">Pilih Jenjang...</option>
-                                                </select>
-                                                <select id="${prefix}-kelas" class="premium-select w-full" disabled>
-                                                    <option value="">Pilih Kelas...</option>
-                                                </select>
-                                                <select id="${prefix}-mapel" class="premium-select w-full" disabled>
-                                                    <option value="">Pilih Mapel...</option>
-                                                </select>
-                                                <select id="${prefix}-bab" class="premium-select w-full" disabled>
-                                                    <option value="">Pilih Bab...</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center my-6">
-                                            <hr class="flex-grow border-t-2 border-slate-300">
-                                            <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
-                                            <hr class="flex-grow border-t-2 border-slate-300">
-                                        </div>
-                                        <div>
-                                            <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
-                                                <i class="fas fa-edit text-primary-500 mr-3"></i>
-                                                Opsi 2: Tulis Topik
-                                            </label>
-                                            <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
-                                            ${optionsHTML}
+                    ${backButtonHTML}
+                    <div class="max-w-6xl mx-auto">
+                        ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
+                            <div class="premium-card p-4 sm:p-8">
+                                <div class="mb-6">
+                                    <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
+                                        <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
+                                        Pilih Cara Menentukan Topik
+                                    </h2>
+                                    <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
+                                        <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
+                                            <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
+                                            Opsi 1: Kurikulum
+                                        </label>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                            <select id="${prefix}-jenjang" class="premium-select w-full">
+                                                <option value="">Pilih Jenjang...</option>
+                                            </select>
+                                            <select id="${prefix}-kelas" class="premium-select w-full" disabled>
+                                                <option value="">Pilih Kelas...</option>
+                                            </select>
+                                            <select id="${prefix}-mapel" class="premium-select w-full" disabled>
+                                                <option value="">Pilih Mapel...</option>
+                                            </select>
+                                            <select id="${prefix}-bab" class="premium-select w-full" disabled>
+                                                <option value="">Pilih Bab...</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
-                                        <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
-                                    </button>
-                                    <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
-                                        <div class="premium-loader"></div>
-                                        <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
+                                    <div class="flex items-center my-6">
+                                        <hr class="flex-grow border-t-2 border-slate-300">
+                                        <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
+                                        <hr class="flex-grow border-t-2 border-slate-300">
                                     </div>
-                                    <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
+                                    <div>
+                                        <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
+                                            <i class="fas fa-edit text-primary-500 mr-3"></i>
+                                            Opsi 2: Tulis Topik
+                                        </label>
+                                        <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
+                                        ${optionsHTML}
+                                    </div>
                                 </div>
+                                <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
+                                    <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
+                                </button>
+                                <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
+                                    <div class="premium-loader"></div>
+                                    <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
+                                </div>
+                                <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
                             </div>
+                        </div>
                 `;
             }
 
@@ -934,7 +956,7 @@
                             </div>
                         </label>
                     </div>`;
-                document.getElementById('generator-materi').innerHTML = createPremiumTopicSelectorHTML('materi', 'Generator Materi Ajar Premium', materiOptions, 'Buat Materi Berkualitas Tinggi', 'fa-magic');
+                document.getElementById('generator-materi').innerHTML = createPremiumTopicSelectorHTML('materi', 'Generator Materi Ajar', materiOptions, 'Buat Materi Berkualitas Tinggi', 'fa-magic');
 
                 // Pembuat Soal
                 const soalOptions = `
@@ -1105,21 +1127,21 @@
                         <div class="premium-card p-4 sm:p-8">
                             <div class="text-center mb-6">
                                 <i class="fas fa-calculator text-5xl text-primary-500 mb-4"></i>
-                                <p class="text-base sm:text-lg text-slate-600">Dapatkan solusi lengkap untuk soal teks atau gambar.</p>
+                                <p class="text-base sm:text-lg text-slate-600">Dapatkan solusi lengkap untuk soal teks atau gambar (bisa lebih dari satu).</p>
                             </div>
                             <div class="mb-6">
                                 <label for="penjawab-soal-teks" class="text-base sm:text-lg font-semibold text-slate-700 mb-2 block flex items-center">
                                     <i class="fas fa-keyboard text-primary-500 mr-3"></i>
-                                    Masukkan Soal (Teks)
+                                    Konteks/Pertanyaan Tambahan (Teks)
                                 </label>
-                                <textarea id="penjawab-soal-teks" rows="4" class="premium-textarea w-full" placeholder="Ketik atau tempel soal di sini..."></textarea>
+                                <textarea id="penjawab-soal-teks" rows="4" class="premium-textarea w-full" placeholder="Ketik atau tempel soal di sini (opsional jika menggunakan gambar)..."></textarea>
                             </div>
                             <div class="flex items-center my-6">
                                 <hr class="flex-grow border-t-2 border-slate-300">
-                                <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
+                                <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">DAN/ATAU</span>
                                 <hr class="flex-grow border-t-2 border-slate-300">
                             </div>
-                            ${createPremiumFileUploaderHTML('penjawab-soal', 'Unggah Gambar Soal', 'Upload foto soal dari buku atau lembar ujian.')}
+                            ${createPremiumBatchFileUploaderHTML('penjawab-soal', 'Unggah Gambar Soal', 'Upload satu atau lebih foto soal dari buku atau lembar ujian.')}
                             <button id="btn-generate-penjawab-soal" class="premium-button w-full text-base py-3">
                                 <i class="fas fa-calculator mr-3"></i> Jawab & Bahas Soal
                             </button>
@@ -1186,7 +1208,7 @@
                             <div class="border-b-2 border-slate-200 mb-6">
                                 <nav class="flex flex-wrap gap-2" aria-label="Tabs">
                                     <button class="premium-tab-button active text-xs px-2 py-2 sm:text-sm sm:px-3 sm:py-2" data-target="tab-penilaian-terpadu">
-                                        <i class="fas fa-magic mr-2"></i>Penilaian Terpadu
+                                        <i class="fas fa-magic mr-2"></i>Penilaian Terpadu (Batch)
                                     </button>
                                     <button class="premium-tab-button text-xs px-2 py-2 sm:text-sm sm:px-3 sm:py-2" data-target="tab-penilaian-pg">
                                         <i class="fas fa-check-circle mr-2"></i>Mode PG
@@ -1197,17 +1219,17 @@
                                 </nav>
                             </div>
 
-                            <!-- Tab: Penilaian Terpadu -->
+                            <!-- Tab: Penilaian Terpadu (Batch Enabled) -->
                             <div id="tab-penilaian-terpadu" class="tab-content active">
                                 <div class="text-center mb-6">
-                                    <h2 class="text-xl sm:text-2xl font-bold mb-2 text-slate-900">Penilaian Lembar Jawaban Terpadu</h2>
-                                    <p class="text-sm sm:text-base text-slate-600">Upload foto lembar jawaban siswa (campuran PG dan esai) untuk penilaian otomatis.</p>
+                                    <h2 class="text-xl sm:text-2xl font-bold mb-2 text-slate-900">Penilaian Batch Lembar Jawaban Terpadu</h2>
+                                    <p class="text-sm sm:text-base text-slate-600">Upload beberapa foto lembar jawaban siswa (campuran PG dan esai) untuk penilaian otomatis.</p>
                                 </div>
                                 
-                                ${createPremiumFileUploaderHTML('penilaian-terpadu', 'Unggah Lembar Jawaban Siswa', 'Upload foto lembar jawaban yang sudah diisi siswa')}
+                                ${createPremiumBatchFileUploaderHTML('penilaian-terpadu', 'Unggah Lembar Jawaban Siswa', 'Pilih satu atau lebih gambar lembar jawaban')}
                                 <div class="mt-6 pt-6 border-t-2 border-slate-200">
-                                    <label class="block text-base sm:text-lg font-semibold text-slate-700 mb-2">Kunci Jawaban (Opsional)</label>
-                                    <p class="text-sm text-slate-500 mb-3">Berikan kunci jawaban untuk akurasi maksimal.</p>
+                                    <label class="block text-base sm:text-lg font-semibold text-slate-700 mb-2">Kunci Jawaban (Sangat Direkomendasikan)</label>
+                                    <p class="text-sm text-slate-500 mb-3">Berikan kunci jawaban untuk akurasi maksimal. Kunci ini akan diterapkan untuk semua lembar jawaban yang diunggah.</p>
                                     <textarea id="penilaian-terpadu-kunci-teks" rows="4" class="premium-textarea w-full mb-4" placeholder="Contoh: 1. A, 2. C, 3. B ... atau poin-poin esai"></textarea>
                                     ${createPremiumFileUploaderHTML('penilaian-terpadu-kunci', 'Upload Kunci Jawaban (Gambar)', 'Opsional: upload gambar kunci jawaban')}
                                 </div>
@@ -1218,7 +1240,7 @@
                                     </select>
                                 </div>
                                 <button id="btn-generate-penilaian-terpadu" class="premium-button mt-6 w-full text-base py-3">
-                                    <i class="fas fa-magic mr-3"></i> Periksa Lembar Jawaban
+                                    <i class="fas fa-magic mr-3"></i> Periksa Semua Lembar Jawaban
                                 </button>
                                 <div id="penilaian-terpadu-loader" class="hidden mt-8 flex flex-col items-center">
                                     <div class="premium-loader"></div>
@@ -1227,7 +1249,7 @@
                                 <div id="penilaian-terpadu-hasil" class="mt-12 hidden premium-ai-output"></div>
                             </div>
 
-                            <!-- Tab Content for PG -->
+                            <!-- Tab Content for PG (Single) -->
                             <div id="tab-penilaian-pg" class="tab-content">
                                 <div class="text-center mb-6">
                                     <h2 class="text-xl sm:text-2xl font-bold mb-2 text-slate-900">Mode Pilihan Ganda</h2>
@@ -1236,7 +1258,7 @@
                                 <div id="penilaian-pg-content-wrapper"></div>
                             </div>
                             
-                            <!-- Tab Content for Esai -->
+                            <!-- Tab Content for Esai (Single) -->
                             <div id="tab-penilaian-esai" class="tab-content">
                                 <div class="text-center mb-6">
                                     <h2 class="text-xl sm:text-2xl font-bold mb-2 text-slate-900">Mode Esai</h2>
@@ -1427,7 +1449,8 @@
             const contentSections = document.querySelectorAll('.content-section');
             const featureCards = document.querySelectorAll('.premium-feature-card');
 
-            function switchTab(targetId) {
+            // MODIFIED: Added fromPopState flag to prevent pushing history state on back/forward navigation
+            function switchTab(targetId, fromPopState = false) {
                 contentSections.forEach(section => section.classList.remove('active'));
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
@@ -1436,9 +1459,17 @@
                 sidebarItems.forEach(item => {
                     item.classList.toggle('active', item.dataset.target === targetId);
                 });
+
+                // ADDED: Push state to history if not from a popstate event
+                if (!fromPopState && location.hash !== `#${targetId}`) {
+                    history.pushState({ page: targetId }, '', `#${targetId}`);
+                }
+
                 if (window.innerWidth < 768) {
                     closeSidebar();
                 }
+                 // Scroll to top of main content on tab switch
+                document.querySelector('main').scrollTop = 0;
             }
 
             sidebarItems.forEach(item => {
@@ -1468,7 +1499,8 @@
                     reader.readAsDataURL(file);
                     reader.onload = () => resolve({ 
                         base64: reader.result.split(',')[1],
-                        mimeType: file.type
+                        mimeType: file.type,
+                        dataUrl: reader.result
                     });
                     reader.onerror = error => reject(error);
                 });
@@ -1507,6 +1539,31 @@
                     input.value = ''; 
                     previewImg.src = '';
                     previewContainer.classList.add('hidden');
+                });
+            }
+
+            // NEW: Batch uploader setup
+            function setupPremiumBatchUploader(prefix) {
+                const input = document.getElementById(`${prefix}-gambar`);
+                const previewContainer = document.getElementById(`${prefix}-batch-preview`);
+
+                if (!input || !previewContainer) return;
+
+                input.addEventListener('change', (e) => {
+                    previewContainer.innerHTML = ''; // Clear previous previews
+                    if (e.target.files) {
+                        Array.from(e.target.files).forEach(file => {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                const imgEl = document.createElement('img');
+                                imgEl.src = event.target.result;
+                                imgEl.className = 'w-full h-24 object-cover rounded-lg border-2 border-white shadow-md';
+                                imgEl.title = file.name;
+                                previewContainer.appendChild(imgEl);
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
                 });
             }
             
@@ -1663,6 +1720,44 @@
                     resultEl.classList.remove('hidden');
                 }
             }
+             // NEW: API call function adapted for batch processing (returns text instead of rendering)
+            async function callPremiumGeminiApiForBatch(promptParts) {
+                const hasImage = promptParts.some(part => part.inlineData);
+                const model = hasImage ? 'gemini-2.0-flash' : 'gemini-2.0-flash';
+                const apiKey = getNextApiKey();
+
+                if (!apiKey) {
+                    return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> API Key tidak tersedia.</div>`;
+                }
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ parts: promptParts }] };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error.message || `HTTP error! Status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const textResult = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    
+                    if (textResult) {
+                        return textResult;
+                    } else {
+                        throw new Error("Respons dari API tidak valid atau kosong.");
+                    }
+                } catch (error) {
+                    console.error("Error in batch API call:", error);
+                    return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> ${error.message}</div>`;
+                }
+            }
             
             // --- Premium Event Listeners ---
             function attachPremiumEventListeners() {
@@ -1726,29 +1821,62 @@
                     callPremiumGeminiApi([{text: prompt}], 'soal-hasil', 'soal-loader');
                 });
                 
+                // MODIFIED: Event listener for batch "Penjawab Soal"
                 document.getElementById('btn-generate-penjawab-soal')?.addEventListener('click', async () => {
                     const questionText = document.getElementById('penjawab-soal-teks').value;
-                    const questionImageFile = document.getElementById('penjawab-soal-gambar').files[0];
+                    const imageFiles = document.getElementById('penjawab-soal-gambar').files;
 
-                    if (!questionText && !questionImageFile) {
-                        alert("Silakan masukkan soal dalam bentuk teks atau gambar.");
+                    if (!questionText && (!imageFiles || imageFiles.length === 0)) {
+                        alert("Silakan masukkan soal dalam bentuk teks atau unggah setidaknya satu gambar.");
                         return;
                     }
 
-                    let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal yang diberikan. Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
-                    prompt += latexInstruction;
+                    const resultEl = document.getElementById('penjawab-soal-hasil');
+                    const loaderEl = document.getElementById('penjawab-soal-loader');
+                    const loaderTextP = loaderEl.querySelector('p');
                     
-                    const promptParts = [{ text: prompt }];
+                    resultEl.innerHTML = '';
+                    resultEl.classList.add('hidden');
+                    loaderEl.classList.remove('hidden');
 
-                    if (questionText) {
-                        promptParts.push({ text: `Soal (teks): ${questionText}` });
+                    // Handle text-only question
+                    if (questionText && imageFiles.length === 0) {
+                        if (loaderTextP) loaderTextP.textContent = 'AI sedang mengerjakan soal teks...';
+                        let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
+                        prompt += latexInstruction;
+                        await callPremiumGeminiApi([{ text: prompt }], 'penjawab-soal-hasil', 'penjawab-soal-loader');
+                    } else { // Handle image-based questions (batch or single)
+                        let accumulatedResultsHTML = '';
+                        for (let i = 0; i < imageFiles.length; i++) {
+                            const file = imageFiles[i];
+                            if (loaderTextP) loaderTextP.textContent = `AI sedang mengerjakan soal dari gambar ${i + 1} dari ${imageFiles.length}...`;
+                            
+                            let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal yang ada pada gambar. Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
+                            prompt += latexInstruction;
+                            
+                            const promptParts = [{ text: prompt }];
+                            if (questionText) { promptParts.push({ text: `\nKonteks/Pertanyaan Tambahan (teks): ${questionText}` }); }
+                            
+                            const { base64, mimeType, dataUrl } = await fileToBase64(file);
+                            promptParts.push({ inlineData: { mimeType, data: base64 } });
+
+                            const resultText = await callPremiumGeminiApiForBatch(promptParts);
+                            
+                            accumulatedResultsHTML += `
+                                <div class="mb-8 p-4 border border-slate-200 rounded-2xl bg-white shadow-sm">
+                                    <h3 class="text-xl font-bold mb-4 text-slate-700">Hasil untuk: ${file.name}</h3>
+                                    <img src="${dataUrl}" class="max-h-48 rounded-lg border mb-4 shadow-sm" alt="Gambar soal ${i + 1}">
+                                    <div>${resultText}</div>
+                                </div>
+                            `;
+                        }
+                        renderPremiumAIOutput(accumulatedResultsHTML, resultEl);
+                        resultEl.classList.remove('hidden');
+                        loaderEl.classList.add('hidden');
                     }
-                    if (questionImageFile) {
-                        const { base64, mimeType } = await fileToBase64(questionImageFile);
-                        promptParts.push({ inlineData: { mimeType, data: base64 } });
-                    }
-                    callPremiumGeminiApi(promptParts, 'penjawab-soal-hasil', 'penjawab-soal-loader');
+                    if (loaderTextP) loaderTextP.textContent = 'AI sedang bekerja untuk Anda...'; // Reset loader text
                 });
+
 
                 document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
                     const theme = document.getElementById('proyek-tema').value;
@@ -1815,27 +1943,62 @@
                     callPremiumGeminiApi([{text: prompt}], 'jawaban-hasil', 'jawaban-loader');
                 });
 
+                // MODIFIED: Event listener for batch "Penilaian Terpadu"
                 document.getElementById('btn-generate-penilaian-terpadu')?.addEventListener('click', async () => {
-                    const answerSheetImageFile = document.getElementById('penilaian-terpadu-gambar').files[0];
+                    const answerSheetImageFiles = document.getElementById('penilaian-terpadu-gambar').files;
                     const answerKeyText = document.getElementById('penilaian-terpadu-kunci-teks').value;
                     const answerKeyImageFile = document.getElementById('penilaian-terpadu-kunci-gambar').files[0];
                     const gradingScale = document.getElementById('penilaian-terpadu-skala').value;
 
-                    if (!answerSheetImageFile) {
-                        alert("Mohon unggah gambar lembar jawaban siswa.");
+                    if (!answerSheetImageFiles || answerSheetImageFiles.length === 0) {
+                        alert("Mohon unggah setidaknya satu gambar lembar jawaban siswa.");
                         return;
                     }
-                    const { base64, mimeType } = await fileToBase64(answerSheetImageFile);
-                    const promptParts = [];
-                    let prompt = `Anda adalah AI penilai yang teliti. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Tugas: Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban yang diberikan (teks atau gambar 2). Skala Penilaian: "${gradingScale}".\nInstruksi: Ekstrak nama/kelas, hitung skor, dan hasilkan laporan dengan format HTML WAJIB berikut:\n<h2>Laporan Hasil Penilaian</h2>\n<h4><strong>Nama:</strong> [Nama Siswa]</h4>\n<h4><strong>Kelas:</strong> [Kelas Siswa]</h4>\n<h3>Nilai Akhir: [Nilai]</h3>\n<h3>Analisis Jawaban:</h3>\n(Gunakan tabel HTML dengan kolom: Nomor, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik:</h3>\n<p>Umpan balik konstruktif.</p>`;
-                    promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
-                    if (answerKeyText) promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
+
+                    const resultEl = document.getElementById('penilaian-terpadu-hasil');
+                    const loaderEl = document.getElementById('penilaian-terpadu-loader');
+                    const loaderTextP = loaderEl.querySelector('p');
+                    
+                    resultEl.innerHTML = '';
+                    resultEl.classList.add('hidden');
+                    loaderEl.classList.remove('hidden');
+
+                    let accumulatedResultsHTML = '';
+
+                    // Prepare answer key part once
+                    const keyPromptParts = [];
+                    if (answerKeyText) keyPromptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
                     if(answerKeyImageFile) {
                         const keyImg = await fileToBase64(answerKeyImageFile);
-                        promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
+                        keyPromptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
                     }
-                    promptParts.push({text: listStyleInstruction + latexInstruction});
-                    callPremiumGeminiApi(promptParts, 'penilaian-terpadu-hasil', 'penilaian-terpadu-loader');
+
+                    for (let i = 0; i < answerSheetImageFiles.length; i++) {
+                        const file = answerSheetImageFiles[i];
+                        if (loaderTextP) loaderTextP.textContent = `AI sedang menilai lembar jawaban ${i + 1} dari ${answerSheetImageFiles.length}...`;
+                        
+                        let prompt = `Anda adalah AI penilai yang teliti. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Tugas: Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban yang diberikan (teks atau gambar 2). Skala Penilaian: "${gradingScale}".\nInstruksi: Ekstrak nama/kelas, hitung skor, dan hasilkan laporan dengan format HTML WAJIB berikut:\n<h2>Laporan Hasil Penilaian</h2>\n<h4><strong>Nama:</strong> [Nama Siswa]</h4>\n<h4><strong>Kelas:</strong> [Kelas Siswa]</h4>\n<h3>Nilai Akhir: [Nilai]</h3>\n<h3>Analisis Jawaban:</h3>\n(Gunakan tabel HTML dengan kolom: Nomor, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik:</h3>\n<p>Umpan balik konstruktif.</p>`;
+                        
+                        const { base64, mimeType, dataUrl } = await fileToBase64(file);
+                        const promptParts = [{ text: prompt }, { inlineData: { mimeType, data: base64 } }];
+                        promptParts.push(...keyPromptParts); // Add the prepared key
+                        promptParts.push({text: listStyleInstruction + latexInstruction});
+                        
+                        const resultText = await callPremiumGeminiApiForBatch(promptParts);
+
+                        accumulatedResultsHTML += `
+                            <div class="mb-8 p-4 border border-slate-200 rounded-2xl bg-white shadow-sm">
+                                <h3 class="text-xl font-bold mb-4 text-slate-700">Hasil untuk: ${file.name}</h3>
+                                <img src="${dataUrl}" class="max-h-48 rounded-lg border mb-4 shadow-sm" alt="Lembar jawaban ${i + 1}">
+                                <div>${resultText}</div>
+                            </div>
+                        `;
+                    }
+
+                    renderPremiumAIOutput(accumulatedResultsHTML, resultEl);
+                    resultEl.classList.remove('hidden');
+                    loaderEl.classList.add('hidden');
+                    if (loaderTextP) loaderTextP.textContent = 'AI sedang menganalisis dan menilai...'; // Reset loader text
                 });
                 
                 document.getElementById('btn-generate-penilaian-manual')?.addEventListener('click', async () => {
@@ -1979,8 +2142,12 @@
                 // Initialize all topic selectors
                 ['materi', 'soal', 'kuis', 'rpp', 'aktivitas'].forEach(initializePremiumTopicSelector);
                 
-                // Initialize all image uploaders  
-                ['konteks', 'penjawab-soal', 'penilaian-terpadu', 'penilaian-terpadu-kunci', 'penilaian-otomatis', 'penilaian-otomatis-kunci', 'penilaian-esai-otomatis-jawaban', 'penilaian-manual-jawaban'].forEach(setupPremiumImageUploader);
+                // Initialize all SINGLE image uploaders  
+                ['konteks', 'penilaian-terpadu-kunci', 'penilaian-otomatis', 'penilaian-otomatis-kunci', 'penilaian-esai-otomatis-jawaban', 'penilaian-manual-jawaban'].forEach(setupPremiumImageUploader);
+
+                 // NEW: Initialize all BATCH image uploaders
+                ['penjawab-soal', 'penilaian-terpadu'].forEach(setupPremiumBatchUploader);
+
             }
             
             function attachBackToHomeListener() {
@@ -1996,9 +2163,29 @@
             buildPremiumUI();
             attachPremiumEventListeners(); // This will attach all event listeners for the premium UI
             attachBackToHomeListener();
+            
+            // --- NEW: History Management for Mobile Back Button ---
+            // Set the initial state to 'home' when the page loads
+            history.replaceState({ page: 'home' }, 'Home', '#home');
+
+            window.addEventListener('popstate', (event) => {
+                const state = event.state;
+                // Determine the target page. If state is null (e.g., initial page load), default to home.
+                // Or if user manually changes hash, use that.
+                const targetId = state ? state.page : (location.hash.substring(1) || 'home');
+                
+                const validSection = document.getElementById(targetId);
+                
+                if (validSection && validSection.classList.contains('content-section')) {
+                     // The 'true' flag tells switchTab this is from a popstate, so it doesn't push a new history state.
+                    switchTab(targetId, true);
+                } else {
+                    // Fallback to home if the hash points to a non-existent section
+                    switchTab('home', true);
+                }
+            });
+
         });
     </script>
 </body>
 </html>
-
-
