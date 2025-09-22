@@ -323,6 +323,17 @@
             transform: translateY(-1px);
         }
 
+        .premium-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem; /* Make space for the arrow */
+        }
+
         .premium-ai-output {
             background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
             border-radius: 20px;
@@ -397,8 +408,28 @@
 
         /* Mobile Responsive Enhancements */
         @media (max-width: 768px) {
-            .premium-feature-card { margin-bottom: 16px; }
+            .premium-feature-card {
+                margin-bottom: 16px;
+                padding: 1rem;
+            }
             .premium-feature-card:hover { transform: translateY(-8px); }
+            .premium-feature-card h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .premium-feature-card p {
+                font-size: 0.875rem;
+                line-height: 1.4;
+            }
+            .premium-feature-card .icon-container {
+                width: 48px;
+                height: 48px;
+                margin-bottom: 1rem;
+                border-radius: 16px;
+            }
+            .premium-feature-card .icon-container i {
+                font-size: 1.25rem;
+            }
             .premium-ai-output { padding: 16px; }
         }
 
@@ -764,6 +795,10 @@
                 sidebar.classList.remove('-translate-x-full');
                 sidebarBackdrop.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                // Push a state so the back button can close it, preserving existing page state
+                if (!history.state || !history.state.sidebarOpen) {
+                    history.pushState({ ...(history.state || {}), sidebarOpen: true }, 'Sidebar');
+                }
             }
 
             function closeSidebar() {
@@ -772,21 +807,34 @@
                 document.body.style.overflow = '';
             }
 
+            // New handler to also manage history for UI-triggered close actions
+            function handleCloseSidebar() {
+                // The popstate listener will handle the visual closing. We just need to trigger it.
+                if (history.state && history.state.sidebarOpen) {
+                    history.back();
+                } else {
+                    // Fallback for safety, though should not be needed with proper state management
+                    closeSidebar();
+                }
+            }
+
+
             if (menuToggle && sidebar && sidebarBackdrop) {
                 menuToggle.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openSidebar();
                 });
                 
-                sidebarBackdrop.addEventListener('click', closeSidebar);
+                // Use the new handler for UI close events
+                sidebarBackdrop.addEventListener('click', handleCloseSidebar);
                 
                 if (sidebarCloseBtn) {
-                    sidebarCloseBtn.addEventListener('click', closeSidebar);
+                    sidebarCloseBtn.addEventListener('click', handleCloseSidebar);
                 }
 
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && !sidebar.classList.contains('-translate-x-full')) {
-                        closeSidebar();
+                        handleCloseSidebar();
                     }
                 });
             }
@@ -1461,7 +1509,7 @@
                 });
 
                 // ADDED: Push state to history if not from a popstate event
-                if (!fromPopState && location.hash !== `#${targetId}`) {
+                if (!fromPopState && (!history.state || history.state.page !== targetId)) {
                     history.pushState({ page: targetId }, '', `#${targetId}`);
                 }
 
@@ -1718,6 +1766,8 @@
                 } finally {
                     loaderEl.classList.add('hidden');
                     resultEl.classList.remove('hidden');
+                    // Auto-scroll to the result
+                    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
              // NEW: API call function adapted for batch processing (returns text instead of rendering)
@@ -1839,7 +1889,7 @@
                     resultEl.classList.add('hidden');
                     loaderEl.classList.remove('hidden');
 
-                    // Handle text-only question
+                    // Handle image-based questions (batch or single)
                     if (questionText && imageFiles.length === 0) {
                         if (loaderTextP) loaderTextP.textContent = 'AI sedang mengerjakan soal teks...';
                         let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
@@ -1873,6 +1923,8 @@
                         renderPremiumAIOutput(accumulatedResultsHTML, resultEl);
                         resultEl.classList.remove('hidden');
                         loaderEl.classList.add('hidden');
+                        // Auto-scroll to results after batch processing
+                        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                     if (loaderTextP) loaderTextP.textContent = 'AI sedang bekerja untuk Anda...'; // Reset loader text
                 });
@@ -1999,6 +2051,8 @@
                     resultEl.classList.remove('hidden');
                     loaderEl.classList.add('hidden');
                     if (loaderTextP) loaderTextP.textContent = 'AI sedang menganalisis dan menilai...'; // Reset loader text
+                     // Auto-scroll to results after batch processing
+                    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
                 
                 document.getElementById('btn-generate-penilaian-manual')?.addEventListener('click', async () => {
@@ -2169,9 +2223,14 @@
             history.replaceState({ page: 'home' }, 'Home', '#home');
 
             window.addEventListener('popstate', (event) => {
+                // --- Sidebar back button logic ---
+                const sidebarIsOpen = !sidebar.classList.contains('-translate-x-full');
+                if (sidebarIsOpen && (!event.state || !event.state.sidebarOpen)) {
+                    closeSidebar();
+                }
+
+                // --- Page navigation logic ---
                 const state = event.state;
-                // Determine the target page. If state is null (e.g., initial page load), default to home.
-                // Or if user manually changes hash, use that.
                 const targetId = state ? state.page : (location.hash.substring(1) || 'home');
                 
                 const validSection = document.getElementById(targetId);
@@ -2189,3 +2248,4 @@
     </script>
 </body>
 </html>
+
