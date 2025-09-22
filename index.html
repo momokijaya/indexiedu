@@ -1744,11 +1744,11 @@
                 }
 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ parts: promptParts }] };
-                        }],
-                        tools: [{
-                            "google_search": {}
-                        }]
+                const payload = {
+                    contents: [{ parts: promptParts }],
+                    tools: [{
+                        "google_search": {}
+                    }]
                 };            
                 
 
@@ -1791,12 +1791,13 @@
                 }
 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ parts: promptParts }] };
-                        }],
-                        tools: [{
-                            "google_search": {}
-                        }]
-                };
+                const payload = {
+                    contents: [{ parts: promptParts }],
+                    tools: [{
+                        "google_search": {}
+                    }]
+                }; 
+				
                 try {
                     const response = await fetch(apiUrl, {
                         method: 'POST',
@@ -2262,4 +2263,5 @@
     </script>
 </body>
 </html>
+
 
