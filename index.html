@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- KaTeX for LaTeX Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMckDITrE3IsidIypkoOkRdflBKoidGbItJpZLomdcAivaxNE" crossorigin="anonymous">
@@ -48,7 +48,7 @@
 
     <style>
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', 'Poppins', sans-serif; }
+        body { font-family: 'Nunito Sans', sans-serif; }
 
         .glass-effect {
             backdrop-filter: blur(20px);
@@ -466,6 +466,18 @@
         .floating-element { animation: float 6s ease-in-out infinite; }
         .success-state { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border: 1px solid #6ee7b7; color: #065f46; }
         .error-state { background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #f87171; color: #991b1b; }
+
+        #mobile-header-title-text {
+            color: transparent;
+            -webkit-text-stroke: 1.5px #1e293b;
+            text-stroke: 1.5px #1e293b;
+        }
+
+        #desktop-header-title-text {
+            color: transparent;
+            -webkit-text-stroke: 1.5px #e2e8f0; /* slate-200 */
+            text-stroke: 1.5px #e2e8f0;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-800 premium-bg-pattern">
@@ -483,9 +495,9 @@
                 </button>
                 <div class="flex flex-col items-center text-center">
                     <a href="#" id="home-link-desktop" class="cursor-pointer group">
-                        <h1 class="text-3xl font-black mb-2 group-hover:scale-105 transition-transform duration-300">
-                            <span class="premium-gradient-text">INDEXIEDU</span>
-                        </h1>
+                        <div class="mb-2 px-3 py-1 bg-slate-900/30 border border-slate-500/30 rounded-lg backdrop-blur-sm shadow-inner group-hover:scale-105 transition-transform duration-300">
+                            <h1 id="desktop-header-title-text" class="text-3xl font-black">INDEXIEDU</h1>
+                        </div>
                         <div class="text-xs text-slate-300 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 px-3 py-1 rounded-full border border-slate-500/30 inline-block mb-4">
                             <i class="fas fa-crown text-yellow-400 mr-2"></i>Professional Edition
                         </div>
@@ -562,7 +574,9 @@
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 <a href="#" id="home-link-mobile" class="cursor-pointer">
-                    <h1 class="text-2xl font-black premium-gradient-text">INDEXIEDU</h1>
+                    <div class="px-3 py-1 bg-white/30 border border-slate-400/30 rounded-lg backdrop-blur-sm shadow-inner">
+                        <h1 id="mobile-header-title-text" class="text-2xl font-black">INDEXIEDU</h1>
+                    </div>
                 </a>
                 <div class="w-8"></div>
             </header>
@@ -2248,4 +2262,8 @@
     </script>
 </body>
 </html>
+
+
+
+"
 
