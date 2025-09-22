@@ -46,6 +46,10 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlVwcpaNlchBQDfuIQA5YNp6gbaQJ5OMrLJQ8zmcITbEwbWgCNl1aGla/A+" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 
+    <!-- jsPDF and html2canvas for PDF Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kLmbG4dprT9OCgfC3mXsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" xintegrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', 'Poppins', sans-serif; }
@@ -392,16 +396,102 @@
         .premium-bg-pattern {
             background-image: radial-gradient(circle at 25% 25%, rgba(6, 182, 212, 0.05) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
         }
-
-        .premium-file-upload {
+        
+        .premium-file-upload-small {
             border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            background: linear-gradient(145deg, #f8fafc 0%, #ffffff 100%);
         }
-        .premium-file-upload:hover { border-color: #06b6d4; background: linear-gradient(145deg, #f0f9ff 0%, #e0f2fe 100%); }
+        .premium-file-upload-small:hover {
+            border-color: #06b6d4;
+            background: linear-gradient(145deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .image-preview-item {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview-item .remove-image-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background-color: rgba(239, 68, 68, 0.8);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(2px);
+        }
+        .image-preview-item .remove-image-btn:hover {
+            background-color: rgba(220, 38, 38, 1);
+            transform: scale(1.1);
+        }
+
+        .download-btn {
+             border: none;
+             border-radius: 12px;
+             color: white;
+             font-weight: 600;
+             padding: 8px 16px;
+             font-size: 0.875rem;
+             position: relative;
+             overflow: hidden;
+             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+             cursor: pointer;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        .download-btn-pdf {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+        }
+         .download-btn-pdf:hover {
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+        }
+        .download-btn-doc {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+        .download-btn-doc:hover {
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+        .download-btn-txt {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            box-shadow: 0 6px 20px rgba(100, 116, 139, 0.3);
+        }
+        .download-btn-txt:hover {
+            box-shadow: 0 10px 30px rgba(100, 116, 139, 0.4);
+        }
+
 
         @keyframes premium-fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes premium-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -492,7 +582,7 @@
                     <a href="#" id="home-link-desktop" class="cursor-pointer group">
                         <div class="mb-4 px-4 py-2 bg-slate-900/30 border border-slate-500/30 rounded-xl backdrop-blur-sm shadow-inner group-hover:scale-105 transition-transform duration-300">
                              <h1 class="font-header text-3xl font-black">
-                                <span class="premium-gradient-text">INDEXIEDU</span>
+                                 <span class="premium-gradient-text">INDEXIEDU</span>
                             </h1>
                         </div>
                     </a>
@@ -555,7 +645,7 @@
             <div class="p-4 border-t border-slate-600/30 text-xs flex-shrink-0 text-slate-400 text-center">
                 <div class="glass-effect rounded-xl p-3">
                     <p class="font-semibold">&copy; 2025 INDEXIEDU Professional</p>
-                    <p class="text-slate-300">Developed by Apinakew</p>
+                    <p class="text-slate-300">Dikembangkan oleh Apinakew</p>
                 </div>
             </div>
         </aside>
@@ -595,11 +685,11 @@
                                 </div>
                                 <div class="flex items-center bg-blue-100 text-blue-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm">
                                     <i class="fas fa-bolt mr-2"></i>
-                                    <span class="font-semibold">Instant Results</span>
+                                    <span class="font-semibold">Hasil Instan</span>
                                 </div>
                                 <div class="flex items-center bg-purple-100 text-purple-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm">
                                     <i class="fas fa-shield-alt mr-2"></i>
-                                    <span class="font-semibold">100% Secure</span>
+                                    <span class="font-semibold">100% Aman</span>
                                 </div>
                             </div>
                         </div>
@@ -793,6 +883,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- Global State for Uploaded Files ---
+            window.uploadedFiles = {};
+
             // --- Mobile Sidebar Toggle ---
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menu-toggle');
@@ -803,7 +896,6 @@
                 sidebar.classList.remove('-translate-x-full');
                 sidebarBackdrop.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
-                // Push a state so the back button can close it, preserving existing page state
                 if (!history.state || !history.state.sidebarOpen) {
                     history.pushState({ ...(history.state || {}), sidebarOpen: true }, 'Sidebar');
                 }
@@ -815,17 +907,13 @@
                 document.body.style.overflow = '';
             }
 
-            // New handler to also manage history for UI-triggered close actions
             function handleCloseSidebar() {
-                // The popstate listener will handle the visual closing. We just need to trigger it.
                 if (history.state && history.state.sidebarOpen) {
                     history.back();
                 } else {
-                    // Fallback for safety, though should not be needed with proper state management
                     closeSidebar();
                 }
             }
-
 
             if (menuToggle && sidebar && sidebarBackdrop) {
                 menuToggle.addEventListener('click', (e) => {
@@ -833,7 +921,6 @@
                     openSidebar();
                 });
                 
-                // Use the new handler for UI close events
                 sidebarBackdrop.addEventListener('click', handleCloseSidebar);
                 
                 if (sidebarCloseBtn) {
@@ -890,44 +977,21 @@
             
             // --- Premium UI Template Functions ---
             
-            // Function for single file upload
-            function createPremiumFileUploaderHTML(prefix, label, helpText = '') {
+            function createPremiumMultiImageUploaderHTML(prefix, label, helpText = '') {
                 return `
                     <div class="mb-6">
-                        <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
+                        <label for="${prefix}-gambar-input" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
                         ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
-                        <div class="premium-file-upload">
-                            <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden"/>
-                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
-                                <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-4"></i>
-                                <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
-                                <p class="text-sm text-slate-500">atau drag & drop file</p>
+                        <div class="premium-file-upload-small">
+                            <input type="file" id="${prefix}-gambar-input" accept="image/*" class="hidden" multiple/>
+                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar-input').click()">
+                                <i class="fas fa-plus-circle text-3xl text-primary-500 mb-2"></i>
+                                <p class="text-sm font-semibold text-slate-700">Tambah Gambar</p>
+                                <p class="text-xs text-slate-500">Klik atau drag & drop</p>
                             </div>
                         </div>
-                        <div id="${prefix}-preview" class="mt-6 hidden relative inline-block">
-                            <button id="${prefix}-remove-img" title="Hapus gambar" class="absolute top-0 right-0 -mt-3 -mr-3 bg-red-500 hover:bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-10 transition-all shadow-lg">&times;</button>
-                            <img id="${prefix}-preview-img" class="max-h-64 rounded-2xl border-4 border-white shadow-xl"/>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // NEW: Function for batch (multiple) file upload
-            function createPremiumBatchFileUploaderHTML(prefix, label, helpText = '') {
-                return `
-                    <div class="mb-6">
-                        <label for="${prefix}-gambar" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
-                        ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
-                        <div class="premium-file-upload">
-                            <input type="file" id="${prefix}-gambar" accept="image/*" class="hidden" multiple/>
-                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar').click()">
-                                <i class="fas fa-images text-4xl text-primary-500 mb-4"></i>
-                                <p class="text-base font-semibold text-slate-700">Klik untuk upload gambar</p>
-                                <p class="text-sm text-slate-500">Anda dapat memilih beberapa file</p>
-                            </div>
-                        </div>
-                        <div id="${prefix}-batch-preview" class="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-                           <!-- Previews will be shown here -->
+                        <div id="${prefix}-preview-container" class="image-preview-container">
+                            <!-- Image previews will be dynamically inserted here -->
                         </div>
                     </div>
                 `;
@@ -991,7 +1055,12 @@
                                     <div class="premium-loader"></div>
                                     <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
                                 </div>
-                                <div id="${prefix}-hasil" class="mt-12 hidden premium-ai-output"></div>
+                                <div id="download-container-${prefix}" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                    <button data-format="pdf" data-prefix="${prefix}" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                    <button data-format="doc" data-prefix="${prefix}" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                    <button data-format="txt" data-prefix="${prefix}" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                                </div>
+                                <div id="${prefix}-hasil" class="mt-4 hidden premium-ai-output"></div>
                             </div>
                         </div>
                 `;
@@ -1130,7 +1199,12 @@
                                         <div class="premium-loader"></div>
                                         <p class="mt-4 text-slate-600 font-medium">AI sedang menganalisis RPP Anda...</p>
                                     </div>
-                                    <div id="analisis-rpp-hasil" class="mt-12 hidden premium-ai-output"></div>
+                                    <div id="download-container-analisis-rpp" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                        <button data-format="pdf" data-prefix="analisis-rpp" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                        <button data-format="doc" data-prefix="analisis-rpp" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                        <button data-format="txt" data-prefix="analisis-rpp" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                                    </div>
+                                    <div id="analisis-rpp-hasil" class="mt-4 hidden premium-ai-output"></div>
                                 </div>
                             </div>
                         </div>
@@ -1153,7 +1227,12 @@
                                 <div class="premium-loader"></div>
                                 <p class="mt-4 text-slate-600 font-medium">AI sedang mengidentifikasi istilah kunci...</p>
                             </div>
-                            <div id="glosarium-hasil" class="mt-12 hidden premium-ai-output"></div>
+                             <div id="download-container-glosarium" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                <button data-format="pdf" data-prefix="glosarium" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                <button data-format="doc" data-prefix="glosarium" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                <button data-format="txt" data-prefix="glosarium" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                            </div>
+                            <div id="glosarium-hasil" class="mt-4 hidden premium-ai-output"></div>
                         </div>
                     </div>`;
 
@@ -1165,7 +1244,7 @@
                                 <i class="fas fa-image text-5xl text-primary-500 mb-4"></i>
                                 <p class="text-base sm:text-lg text-slate-600">Analisis gambar untuk bahan diskusi dan pertanyaan HOTS.</p>
                             </div>
-                            ${createPremiumFileUploaderHTML('konteks', 'Unggah Gambar untuk Analisis', 'Upload foto, diagram, karya seni, atau grafik.')}
+                            ${createPremiumMultiImageUploaderHTML('konteks', 'Unggah Gambar untuk Analisis', 'Upload foto, diagram, karya seni, atau grafik.')}
                             <button id="btn-generate-konteks" class="premium-button w-full text-base py-3">
                                 <i class="fas fa-search-plus mr-3"></i> Analisis Gambar
                             </button>
@@ -1173,7 +1252,12 @@
                                 <div class="premium-loader"></div>
                                 <p class="mt-4 text-slate-600 font-medium">AI sedang menganalisis konteks visual...</p>
                             </div>
-                            <div id="konteks-hasil" class="mt-12 hidden premium-ai-output"></div>
+                            <div id="download-container-konteks" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                <button data-format="pdf" data-prefix="konteks" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                <button data-format="doc" data-prefix="konteks" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                <button data-format="txt" data-prefix="konteks" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                            </div>
+                            <div id="konteks-hasil" class="mt-4 hidden premium-ai-output"></div>
                         </div>
                     </div>`;
                 
@@ -1197,7 +1281,7 @@
                                 <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">DAN/ATAU</span>
                                 <hr class="flex-grow border-t-2 border-slate-300">
                             </div>
-                            ${createPremiumBatchFileUploaderHTML('penjawab-soal', 'Unggah Gambar Soal', 'Upload satu atau lebih foto soal dari buku atau lembar ujian.')}
+                            ${createPremiumMultiImageUploaderHTML('penjawab-soal', 'Unggah Gambar Soal', 'Upload satu atau lebih foto soal dari buku atau lembar ujian.')}
                             <button id="btn-generate-penjawab-soal" class="premium-button w-full text-base py-3">
                                 <i class="fas fa-calculator mr-3"></i> Jawab & Bahas Soal
                             </button>
@@ -1205,7 +1289,12 @@
                                 <div class="premium-loader"></div>
                                 <p class="mt-4 text-slate-600 font-medium">AI sedang mengerjakan soal...</p>
                             </div>
-                            <div id="penjawab-soal-hasil" class="mt-12 hidden premium-ai-output"></div>
+                            <div id="download-container-penjawab-soal" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                <button data-format="pdf" data-prefix="penjawab-soal" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                <button data-format="doc" data-prefix="penjawab-soal" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                <button data-format="txt" data-prefix="penjawab-soal" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                            </div>
+                            <div id="penjawab-soal-hasil" class="mt-4 hidden premium-ai-output"></div>
                         </div>
                     </div>`;
 
@@ -1232,7 +1321,12 @@
                                 <div class="premium-loader"></div>
                                 <p class="mt-4 text-slate-600 font-medium">AI sedang merancang struktur proyek...</p>
                             </div>
-                            <div id="proyek-hasil" class="mt-12 hidden premium-ai-output"></div>
+                             <div id="download-container-proyek" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                <button data-format="pdf" data-prefix="proyek" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                <button data-format="doc" data-prefix="proyek" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                <button data-format="txt" data-prefix="proyek" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                            </div>
+                            <div id="proyek-hasil" class="mt-4 hidden premium-ai-output"></div>
                         </div>
                     </div>`;
 
@@ -1253,10 +1347,16 @@
                                 <div class="premium-loader"></div>
                                 <p class="mt-4 text-slate-600 font-medium">AI sedang menyiapkan pendekatan terbaik...</p>
                             </div>
-                            <div id="jawaban-hasil" class="mt-12 hidden premium-ai-output"></div>
+                            <div id="download-container-jawaban" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                <button data-format="pdf" data-prefix="jawaban" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                <button data-format="doc" data-prefix="jawaban" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                <button data-format="txt" data-prefix="jawaban" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                            </div>
+                            <div id="jawaban-hasil" class="mt-4 hidden premium-ai-output"></div>
                         </div>
                     </div>`;
                 
+                // RESTORED: Full penilaian-otomatis section with all tabs
                 document.getElementById('penilaian-otomatis').innerHTML = backButtonHTML + `
                     <div class="max-w-7xl mx-auto">
                         <h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">Pengecekan & Penilaian AI</h1>
@@ -1282,12 +1382,12 @@
                                     <p class="text-sm sm:text-base text-slate-600">Upload beberapa foto lembar jawaban siswa (campuran PG dan esai) untuk penilaian otomatis.</p>
                                 </div>
                                 
-                                ${createPremiumBatchFileUploaderHTML('penilaian-terpadu', 'Unggah Lembar Jawaban Siswa', 'Pilih satu atau lebih gambar lembar jawaban')}
+                                ${createPremiumMultiImageUploaderHTML('penilaian-terpadu', 'Unggah Lembar Jawaban Siswa', 'Pilih satu atau lebih gambar lembar jawaban')}
                                 <div class="mt-6 pt-6 border-t-2 border-slate-200">
                                     <label class="block text-base sm:text-lg font-semibold text-slate-700 mb-2">Kunci Jawaban (Sangat Direkomendasikan)</label>
                                     <p class="text-sm text-slate-500 mb-3">Berikan kunci jawaban untuk akurasi maksimal. Kunci ini akan diterapkan untuk semua lembar jawaban yang diunggah.</p>
                                     <textarea id="penilaian-terpadu-kunci-teks" rows="4" class="premium-textarea w-full mb-4" placeholder="Contoh: 1. A, 2. C, 3. B ... atau poin-poin esai"></textarea>
-                                    ${createPremiumFileUploaderHTML('penilaian-terpadu-kunci', 'Upload Kunci Jawaban (Gambar)', 'Opsional: upload gambar kunci jawaban')}
+                                    ${createPremiumMultiImageUploaderHTML('penilaian-terpadu-kunci', 'Upload Kunci Jawaban (Gambar)', 'Opsional: upload gambar kunci jawaban')}
                                 </div>
                                 <div class="mt-4">
                                     <label for="penilaian-terpadu-skala" class="block text-base sm:text-lg font-semibold text-slate-700 mb-2">Skala Nilai</label>
@@ -1302,7 +1402,12 @@
                                     <div class="premium-loader"></div>
                                     <p class="mt-4 text-slate-600 font-medium">AI sedang menganalisis dan menilai...</p>
                                 </div>
-                                <div id="penilaian-terpadu-hasil" class="mt-12 hidden premium-ai-output"></div>
+                                <div id="download-container-penilaian-terpadu" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                     <button data-format="pdf" data-prefix="penilaian-terpadu" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                     <button data-format="doc" data-prefix="penilaian-terpadu" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                     <button data-format="txt" data-prefix="penilaian-terpadu" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                                </div>
+                                <div id="penilaian-terpadu-hasil" class="mt-4 hidden premium-ai-output"></div>
                             </div>
 
                             <!-- Tab Content for PG (Single) -->
@@ -1361,11 +1466,16 @@
                                 <div class="premium-loader"></div>
                                 <p class="mt-4 text-slate-600 font-medium">AI sedang menyusun pesan...</p>
                             </div>
-                            <div id="komunikasi-hasil" class="mt-12 hidden premium-ai-output"></div>
+                            <div id="download-container-komunikasi" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                <button data-format="pdf" data-prefix="komunikasi" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                <button data-format="doc" data-prefix="komunikasi" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                <button data-format="txt" data-prefix="komunikasi" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                            </div>
+                            <div id="komunikasi-hasil" class="mt-4 hidden premium-ai-output"></div>
                         </div>
                     </div>`;
                 
-                // Inject PG and Esai specific content
+                // RESTORED: Inject PG and Esai specific content
                 const pgContentWrapper = document.getElementById('penilaian-pg-content-wrapper');
                 if(pgContentWrapper) {
                     pgContentWrapper.innerHTML = `
@@ -1386,13 +1496,13 @@
                             </select>
                         </div>
                         <div class="mb-6">
-                            ${createPremiumFileUploaderHTML('penilaian-otomatis', 'Unggah Lembar Jawaban Siswa', 'Upload lembar jawaban pilihan ganda yang sudah diisi')}
+                            ${createPremiumMultiImageUploaderHTML('penilaian-otomatis', 'Unggah Lembar Jawaban Siswa', 'Upload lembar jawaban pilihan ganda yang sudah diisi')}
                         </div>
                         <div class="pt-6 border-t-2 border-slate-200">
                             <label class="block text-base sm:text-lg font-semibold text-slate-700 mb-2">Kunci Jawaban (Opsional)</label>
                             <p class="text-sm text-slate-500 mb-3">Untuk akurasi maksimal, berikan kunci jawaban.</p>
                             <textarea id="penilaian-otomatis-kunci-teks" rows="4" class="premium-textarea w-full mb-4" placeholder="Contoh: 1. A, 2. C, 3. B, 4. D..."></textarea>
-                            ${createPremiumFileUploaderHTML('penilaian-otomatis-kunci', 'Upload Kunci Jawaban (Gambar)', 'Opsional: upload gambar kunci jawaban')}
+                            ${createPremiumMultiImageUploaderHTML('penilaian-otomatis-kunci', 'Upload Kunci Jawaban (Gambar)', 'Opsional: upload gambar kunci jawaban')}
                         </div>
                         <button id="btn-generate-penilaian-otomatis" class="premium-button mt-6 w-full text-base py-3">
                             <i class="fas fa-magic mr-3"></i> Periksa Pilihan Ganda
@@ -1401,7 +1511,12 @@
                             <div class="premium-loader"></div>
                             <p class="mt-4 text-slate-600 font-medium">AI sedang memeriksa jawaban...</p>
                         </div>
-                        <div id="penilaian-otomatis-hasil" class="mt-12 hidden premium-ai-output"></div>
+                        <div id="download-container-penilaian-otomatis" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                            <button data-format="pdf" data-prefix="penilaian-otomatis" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                            <button data-format="doc" data-prefix="penilaian-otomatis" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                            <button data-format="txt" data-prefix="penilaian-otomatis" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                        </div>
+                        <div id="penilaian-otomatis-hasil" class="mt-4 hidden premium-ai-output"></div>
                     `;
                 }
 
@@ -1433,7 +1548,7 @@
                                     <div class="pt-4 border-t border-slate-200 mb-4">
                                         <label class="block text-base font-semibold text-slate-700 mb-2">Jawaban Esai Siswa</label>
                                         <textarea id="penilaian-esai-otomatis-jawaban-teks" rows="5" class="premium-textarea w-full mb-4" placeholder="Ketik jawaban siswa..."></textarea>
-                                        ${createPremiumFileUploaderHTML('penilaian-esai-otomatis-jawaban', 'Upload Jawaban Esai (Gambar)', 'Alternatif: upload foto jawaban')}
+                                        ${createPremiumMultiImageUploaderHTML('penilaian-esai-otomatis-jawaban', 'Upload Jawaban Esai (Gambar)', 'Alternatif: upload foto jawaban')}
                                     </div>
                                     <div class="mb-4">
                                         <label for="penilaian-esai-otomatis-skala" class="block text-base font-semibold text-slate-700 mb-2">Skala Nilai</label>
@@ -1448,7 +1563,12 @@
                                         <div class="premium-loader"></div>
                                         <p class="mt-4 text-slate-600 font-medium">AI sedang menilai esai...</p>
                                     </div>
-                                    <div id="penilaian-esai-otomatis-hasil" class="mt-12 hidden premium-ai-output"></div>
+                                    <div id="download-container-penilaian-esai-otomatis" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                        <button data-format="pdf" data-prefix="penilaian-esai-otomatis" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                        <button data-format="doc" data-prefix="penilaian-esai-otomatis" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                        <button data-format="txt" data-prefix="penilaian-esai-otomatis" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                                    </div>
+                                    <div id="penilaian-esai-otomatis-hasil" class="mt-4 hidden premium-ai-output"></div>
                                 </div>
                             </div>
                             
@@ -1473,7 +1593,7 @@
                                     <div class="pt-4 border-t border-slate-200 mb-4">
                                         <label class="block text-base font-semibold text-slate-700 mb-2">Jawaban Esai Siswa</label>
                                         <textarea id="penilaian-manual-jawaban-teks" rows="5" class="premium-textarea w-full mb-4" placeholder="Ketik jawaban siswa..."></textarea>
-                                        ${createPremiumFileUploaderHTML('penilaian-manual-jawaban', 'Upload Jawaban Esai (Gambar)', 'Alternatif: upload foto jawaban')}
+                                        ${createPremiumMultiImageUploaderHTML('penilaian-manual-jawaban', 'Upload Jawaban Esai (Gambar)', 'Alternatif: upload foto jawaban')}
                                     </div>
                                     <div class="pt-4 border-t border-slate-200 mb-4">
                                         <label for="penilaian-manual-kunci" class="block text-base font-semibold text-slate-700 mb-2">Kunci Jawaban / Pedoman</label>
@@ -1492,7 +1612,12 @@
                                         <div class="premium-loader"></div>
                                         <p class="mt-4 text-slate-600 font-medium">AI sedang menganalisis...</p>
                                     </div>
-                                    <div id="penilaian-manual-hasil" class="mt-12 hidden premium-ai-output"></div>
+                                     <div id="download-container-penilaian-manual" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                        <button data-format="pdf" data-prefix="penilaian-manual" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                        <button data-format="doc" data-prefix="penilaian-manual" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                        <button data-format="txt" data-prefix="penilaian-manual" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
+                                    </div>
+                                    <div id="penilaian-manual-hasil" class="mt-4 hidden premium-ai-output"></div>
                                 </div>
                             </div>
                         </div>
@@ -1505,7 +1630,6 @@
             const contentSections = document.querySelectorAll('.content-section');
             const featureCards = document.querySelectorAll('.premium-feature-card');
 
-            // MODIFIED: Added fromPopState flag to prevent pushing history state on back/forward navigation
             function switchTab(targetId, fromPopState = false) {
                 contentSections.forEach(section => section.classList.remove('active'));
                 const targetSection = document.getElementById(targetId);
@@ -1516,7 +1640,6 @@
                     item.classList.toggle('active', item.dataset.target === targetId);
                 });
 
-                // ADDED: Push state to history if not from a popstate event
                 if (!fromPopState && (!history.state || history.state.page !== targetId)) {
                     history.pushState({ page: targetId }, '', `#${targetId}`);
                 }
@@ -1524,7 +1647,6 @@
                 if (window.innerWidth < 768) {
                     closeSidebar();
                 }
-                 // Scroll to top of main content on tab switch
                 document.querySelector('main').scrollTop = 0;
             }
 
@@ -1561,65 +1683,52 @@
                     reader.onerror = error => reject(error);
                 });
             }
+            
+            function setupPremiumMultiImageUploader(prefix) {
+                const input = document.getElementById(`${prefix}-gambar-input`);
+                if (!input) return;
 
-            function setupPremiumImageUploader(prefix) {
-                const inputId = `${prefix}-gambar`;
-                const previewId = `${prefix}-preview`;
-                const imgId = `${prefix}-preview-img`;
-                const removeBtnId = `${prefix}-remove-img`;
+                window.uploadedFiles[prefix] = [];
 
-                const input = document.getElementById(inputId);
-                const previewContainer = document.getElementById(previewId);
-                const previewImg = document.getElementById(imgId);
-                const removeBtn = document.getElementById(removeBtnId);
+                function renderImagePreviews() {
+                    const previewContainer = document.getElementById(`${prefix}-preview-container`);
+                    previewContainer.innerHTML = ''; 
 
-                if (!input || !previewContainer || !previewImg || !removeBtn) {
-                    return;
-                }
-
-                input.addEventListener('change', function() {
-                    if (this.files && this.files[0]) {
+                    window.uploadedFiles[prefix].forEach((file, index) => {
                         const reader = new FileReader();
                         reader.onload = (e) => {
-                            previewImg.src = e.target.result;
-                            previewContainer.classList.remove('hidden');
-                        }
-                        reader.readAsDataURL(this.files[0]);
-                    } else {
-                        previewContainer.classList.add('hidden');
-                    }
-                });
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'image-preview-item';
 
-                removeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    input.value = ''; 
-                    previewImg.src = '';
-                    previewContainer.classList.add('hidden');
-                });
-            }
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.title = file.name;
 
-            // NEW: Batch uploader setup
-            function setupPremiumBatchUploader(prefix) {
-                const input = document.getElementById(`${prefix}-gambar`);
-                const previewContainer = document.getElementById(`${prefix}-batch-preview`);
+                            const removeBtn = document.createElement('button');
+                            removeBtn.className = 'remove-image-btn';
+                            removeBtn.innerHTML = '&times;';
+                            removeBtn.title = 'Hapus gambar';
+                            removeBtn.onclick = () => {
+                                window.uploadedFiles[prefix].splice(index, 1);
+                                renderImagePreviews();
+                            };
 
-                if (!input || !previewContainer) return;
+                            previewItem.appendChild(img);
+                            previewItem.appendChild(removeBtn);
+                            previewContainer.appendChild(previewItem);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
 
                 input.addEventListener('change', (e) => {
-                    previewContainer.innerHTML = ''; // Clear previous previews
                     if (e.target.files) {
                         Array.from(e.target.files).forEach(file => {
-                            const reader = new FileReader();
-                            reader.onload = (event) => {
-                                const imgEl = document.createElement('img');
-                                imgEl.src = event.target.result;
-                                imgEl.className = 'w-full h-24 object-cover rounded-lg border-2 border-white shadow-md';
-                                imgEl.title = file.name;
-                                previewContainer.appendChild(imgEl);
-                            };
-                            reader.readAsDataURL(file);
+                             window.uploadedFiles[prefix].push(file);
                         });
+                        renderImagePreviews();
                     }
+                    e.target.value = '';
                 });
             }
             
@@ -1704,13 +1813,21 @@
                 });
             }
 
-            function renderPremiumAIOutput(rawText, outputElement) {
-                // Sanitize the raw text to prevent potential HTML injection issues if not intended
-                // For this app, we trust the AI to produce safe HTML, so we directly use innerHTML.
-                // In a production app with user input, consider using a sanitizer.
-                outputElement.innerHTML = rawText;
+            // MODIFIED: Function to clean AI response from unwanted artifacts
+            function cleanAIResponse(rawText) {
+                let cleaned = rawText.trim();
+                // Remove markdown code block fences (e.g., ```html or ```)
+                cleaned = cleaned.replace(/^```(html)?\s*/i, '').replace(/```\s*$/, '');
+                // Remove leading list numbers that are on their own line or at the very start
+                cleaned = cleaned.replace(/^\s*\d+\.\s*/gm, '');
+                return cleaned.trim();
+            }
 
-                // Render LaTeX math expressions
+            function renderPremiumAIOutput(rawText, outputElement) {
+                // Clean the text before rendering
+                const cleanedText = cleanAIResponse(rawText);
+                outputElement.innerHTML = cleanedText;
+
                 if (window.renderMathInElement) {
                     try {
                         renderMathInElement(outputElement, {
@@ -1729,10 +1846,16 @@
             async function callPremiumGeminiApi(promptParts, resultElId, loaderElId) {
                 const resultEl = document.getElementById(resultElId);
                 const loaderEl = document.getElementById(loaderElId);
+                const prefix = resultElId.replace('-hasil', '');
+                const downloadContainer = document.getElementById(`download-container-${prefix}`);
                 
                 resultEl.innerHTML = '';
                 resultEl.classList.add('hidden');
+                if(downloadContainer) downloadContainer.classList.add('hidden');
                 loaderEl.classList.remove('hidden');
+                // AUTO-SCROLL
+                loaderEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
 
                 const apiKey = getNextApiKey(); 
 
@@ -1746,11 +1869,8 @@
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{ parts: promptParts }],
-                    tools: [{
-                        "google_search": {}
-                    }]
-                };            
-                
+                    tools: [{ "google_search": {} }]
+                };                
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -1769,6 +1889,7 @@
 
                     if (textResult) {
                         renderPremiumAIOutput(textResult, resultEl);
+                        if(downloadContainer) downloadContainer.classList.remove('hidden');
                     } else {
                         throw new Error("Respons dari API tidak valid atau kosong.");
                     }
@@ -1778,41 +1899,32 @@
                 } finally {
                     loaderEl.classList.add('hidden');
                     resultEl.classList.remove('hidden');
-                    // Auto-scroll to the result
-                    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Do not auto-scroll here to let user see the loader first
                 }
             }
-             // NEW: API call function adapted for batch processing (returns text instead of rendering)
+
             async function callPremiumGeminiApiForBatch(promptParts) {
                 const apiKey = getNextApiKey();
-
                 if (!apiKey) {
                     return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> API Key tidak tersedia.</div>`;
                 }
-
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{ parts: promptParts }],
-                    tools: [{
-                        "google_search": {}
-                    }]
-                }; 
-				
+                    tools: [{ "google_search": {} }]
+                };  
                 try {
                     const response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.error.message || `HTTP error! Status: ${response.status}`);
                     }
-
                     const result = await response.json();
                     const textResult = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                    
                     if (textResult) {
                         return textResult;
                     } else {
@@ -1826,13 +1938,14 @@
             
             // --- Premium Event Listeners ---
             function attachPremiumEventListeners() {
+                const strictFormattingInstruction = `**Seluruh output Anda HARUS berupa kode HTML yang valid dan siap render, tanpa teks pembuka, penutup, atau nomor enumerasi yang tidak diminta.**`;
                 const latexInstruction = `\n\n**PERINTAH FORMAT PENTING**: Setiap kali Anda menulis rumus, persamaan, atau ekspresi matematika, WAJIB gunakan format LaTeX. Untuk matematika inline, bungkus dengan satu tanda dolar (contoh: $E=mc^2$). Untuk matematika dalam blok display terpisah, bungkus dengan dua tanda dolar (contoh: $$y = \\frac{a}{b+c}$$). Ini sangat penting untuk rendering yang benar.`;
                 const listStyleInstruction = `\n**INSTRUKSI DAFTAR**: Untuk daftar bernomor, selalu gunakan <ol style="list-style-type: decimal; padding-left: 40px;">. Untuk daftar berpoin, gunakan <ul style="list-style-type: disc; padding-left: 40px;">.`;
 
                 document.getElementById('btn-generate-materi')?.addEventListener('click', () => {
                     const topic = document.getElementById('materi-topik').value;
                     const isDifferentiated = document.getElementById('materi-diferensiasi').checked;
-                    let prompt = `Anda adalah seorang ahli perancang kurikulum. **Seluruh output Anda HARUS berupa kode HTML yang valid dan siap render, tanpa teks pembuka atau penutup.** Buat materi ajar untuk topik: "${topic}".`;
+                    let prompt = `Anda adalah seorang ahli perancang kurikulum. ${strictFormattingInstruction} Buat materi ajar untuk topik: "${topic}".`;
                     
                     if (isDifferentiated) {
                         prompt += ` Struktur HTML HARUS menyajikan tiga bagian utama yang jelas: <h2>Materi Diferensiasi: ${topic}</h2><h3>1. Versi Disederhanakan</h3><p>Penjelasan untuk siswa dengan pemahaman dasar.</p><h3>2. Versi Standar</h3><p>Penjelasan sesuai standar kurikulum.</p><h3>3. Versi Pengayaan</h3><p>Penjelasan mendalam dengan konsep tambahan.</p> Setiap bagian harus terstruktur dengan baik.`;
@@ -1845,19 +1958,20 @@
 
                 document.getElementById('btn-generate-glosarium')?.addEventListener('click', () => {
                     const text = document.getElementById('glosarium-teks').value;
-                    let prompt = `Anda adalah AI ahli linguistik. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Dari teks berikut, identifikasi 5-7 istilah paling penting. Untuk setiap istilah, gunakan format HTML berikut secara presisi: <h3>Istilah Kunci</h3><p>Definisi yang jelas.</p><h4>Contoh Penggunaan:</h4><ul style="list-style-type: disc; padding-left: 40px;"><li>Contoh kalimat 1</li></ul>. Teks untuk dianalisis: "${text}"`;
+                    let prompt = `Anda adalah AI ahli linguistik. ${strictFormattingInstruction} Dari teks berikut, identifikasi 5-7 istilah paling penting. Untuk setiap istilah, gunakan format HTML berikut secara presisi: <h3>Istilah Kunci</h3><p>Definisi yang jelas.</p><h4>Contoh Penggunaan:</h4><ul style="list-style-type: disc; padding-left: 40px;"><li>Contoh kalimat 1</li></ul>. Teks untuk dianalisis: "${text}"`;
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'glosarium-hasil', 'glosarium-loader');
                 });
 
                 document.getElementById('btn-generate-konteks')?.addEventListener('click', async () => {
-                    const imageFile = document.getElementById('konteks-gambar').files[0];
-                    if (!imageFile) { 
+                    const imageFiles = window.uploadedFiles['konteks'];
+                    if (!imageFiles || imageFiles.length === 0) { 
                         alert("Silakan unggah sebuah gambar untuk dianalisis."); 
                         return; 
                     }
+                    const imageFile = imageFiles[0]; 
                     
-                    let prompt = `Anda adalah sejarawan seni dan ahli pedagogi. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berdasarkan gambar ini, buat analisis mendalam dengan struktur HTML berikut:\n<h2>Deskripsi Visual Detail</h2><p>[Deskripsi mendalam tentang gambar]</p>\n<h2>Poin Diskusi & Pertanyaan HOTS</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Pertanyaan 1</li><li>Pertanyaan 2</li></ol>\n<h2>Fakta Menarik Terkait</h2><ul style="list-style-type: disc; padding-left: 40px;"><li>Fakta 1</li></ul>`;
+                    let prompt = `Anda adalah sejarawan seni dan ahli pedagogi. ${strictFormattingInstruction} Berdasarkan gambar ini, buat analisis mendalam dengan struktur HTML berikut:\n<h2>Deskripsi Visual Detail</h2><p>[Deskripsi mendalam tentang gambar]</p>\n<h2>Poin Diskusi & Pertanyaan HOTS</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Pertanyaan 1</li><li>Pertanyaan 2</li></ol>\n<h2>Fakta Menarik Terkait</h2><ul style="list-style-type: disc; padding-left: 40px;"><li>Fakta 1</li></ul>`;
                     prompt += latexInstruction;
                     
                     const { base64, mimeType } = await fileToBase64(imageFile);
@@ -1871,7 +1985,7 @@
                     const count = document.getElementById('soal-jumlah').value;
                     const withExplanation = document.getElementById('soal-pembahasan').checked;
                     
-                    let prompt = `Anda adalah AI spesialis evaluasi pendidikan. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan ${count} soal tipe "${type}" untuk topik "${topic}".`;
+                    let prompt = `Anda adalah AI spesialis evaluasi pendidikan. ${strictFormattingInstruction} Buatkan ${count} soal tipe "${type}" untuk topik "${topic}".`;
 
                     if (type === 'Pilihan Ganda') {
                         prompt += `\nSetiap soal HARUS berada dalam tag <li> di dalam sebuah <ol>. Pilihan jawaban (A, B, C, D, dst) HARUS berada di dalam daftar <ol type="A" style="list-style-type: upper-alpha; margin-left: 20px; padding-left: 20px;"> di dalam setiap <li> soal.`
@@ -1886,76 +2000,52 @@
                     callPremiumGeminiApi([{text: prompt}], 'soal-hasil', 'soal-loader');
                 });
                 
-                // MODIFIED: Event listener for batch "Penjawab Soal"
                 document.getElementById('btn-generate-penjawab-soal')?.addEventListener('click', async () => {
                     const questionText = document.getElementById('penjawab-soal-teks').value;
-                    const imageFiles = document.getElementById('penjawab-soal-gambar').files;
+                    const imageFiles = window.uploadedFiles['penjawab-soal'] || [];
 
-                    if (!questionText && (!imageFiles || imageFiles.length === 0)) {
+                    if (!questionText && imageFiles.length === 0) {
                         alert("Silakan masukkan soal dalam bentuk teks atau unggah setidaknya satu gambar.");
                         return;
                     }
 
-                    const resultEl = document.getElementById('penjawab-soal-hasil');
                     const loaderEl = document.getElementById('penjawab-soal-loader');
                     const loaderTextP = loaderEl.querySelector('p');
                     
-                    resultEl.innerHTML = '';
-                    resultEl.classList.add('hidden');
-                    loaderEl.classList.remove('hidden');
+                    let promptBase = `Anda adalah tutor AI jenius. ${strictFormattingInstruction} Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal yang diberikan. Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>` + latexInstruction;
+                    const promptParts = [];
 
-                    // Handle image-based questions (batch or single)
-                    if (questionText && imageFiles.length === 0) {
-                        if (loaderTextP) loaderTextP.textContent = 'AI sedang mengerjakan soal teks...';
-                        let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal berikut: "${questionText}". Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
-                        prompt += latexInstruction;
-                        await callPremiumGeminiApi([{ text: prompt }], 'penjawab-soal-hasil', 'penjawab-soal-loader');
-                    } else { // Handle image-based questions (batch or single)
-                        let accumulatedResultsHTML = '';
+                    if (questionText) {
+                        promptParts.push({text: `Soal (Teks): ${questionText}\n`});
+                    }
+                    
+                    if (imageFiles.length > 0) {
                         for (let i = 0; i < imageFiles.length; i++) {
                             const file = imageFiles[i];
-                            if (loaderTextP) loaderTextP.textContent = `AI sedang mengerjakan soal dari gambar ${i + 1} dari ${imageFiles.length}...`;
-                            
-                            let prompt = `Anda adalah tutor AI jenius. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Berikan jawaban dan pembahasan langkah-demi-langkah untuk soal yang ada pada gambar. Gunakan struktur HTML ini:\n<h2>Analisis Soal</h2><p>[Jelaskan apa yang ditanyakan soal]</p>\n<h2>Langkah-langkah Pengerjaan</h2><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li><li>Langkah 2...</li></ol>\n<h2>Jawaban Akhir</h2><p><strong>[Jawaban akhir ditulis tebal]</strong></p>`;
-                            prompt += latexInstruction;
-                            
-                            const promptParts = [{ text: prompt }];
-                            if (questionText) { promptParts.push({ text: `\nKonteks/Pertanyaan Tambahan (teks): ${questionText}` }); }
-                            
-                            const { base64, mimeType, dataUrl } = await fileToBase64(file);
-                            promptParts.push({ inlineData: { mimeType, data: base64 } });
-
-                            const resultText = await callPremiumGeminiApiForBatch(promptParts);
-                            
-                            accumulatedResultsHTML += `
-                                <div class="mb-8 p-4 border border-slate-200 rounded-2xl bg-white shadow-sm">
-                                    <h3 class="text-xl font-bold mb-4 text-slate-700">Hasil untuk: ${file.name}</h3>
-                                    <img src="${dataUrl}" class="max-h-48 rounded-lg border mb-4 shadow-sm" alt="Gambar soal ${i + 1}">
-                                    <div>${resultText}</div>
-                                </div>
-                            `;
+                            if(loaderTextP) loaderTextP.textContent = `Membaca gambar ${i + 1}/${imageFiles.length}...`;
+                            const { base64, mimeType } = await fileToBase64(file);
+                            promptParts.push({text: `Soal (Gambar ${i+1}):`}, { inlineData: { mimeType, data: base64 } });
                         }
-                        renderPremiumAIOutput(accumulatedResultsHTML, resultEl);
-                        resultEl.classList.remove('hidden');
-                        loaderEl.classList.add('hidden');
-                        // Auto-scroll to results after batch processing
-                        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
+
+                    promptParts.unshift({text: promptBase});
+
+                    await callPremiumGeminiApi(promptParts, 'penjawab-soal-hasil', 'penjawab-soal-loader');
+
                     if (loaderTextP) loaderTextP.textContent = 'AI sedang bekerja untuk Anda...'; // Reset loader text
                 });
-
 
                 document.getElementById('btn-generate-proyek')?.addEventListener('click', () => {
                     const theme = document.getElementById('proyek-tema').value;
                     const duration = document.getElementById('proyek-durasi').value;
-                    let prompt = `Anda adalah ahli pedagogi PBL. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan draf lengkap rencana proyek dengan detail:\n- Tema: "${theme}"\n- Durasi: "${duration}"\n\nStruktur output HTML WAJIB:\n<h2>Rancangan Proyek: ${theme}</h2>\n<h3>A. Pertanyaan Pemantik</h3>\n<h3>B. Aktivitas & Linimasa</h3>\n<h3>C. Produk Akhir & Kriteria Penilaian</h3>`;
+                    let prompt = `Anda adalah ahli pedagogi PBL. ${strictFormattingInstruction} Buatkan draf lengkap rencana proyek dengan detail:\n- Tema: "${theme}"\n- Durasi: "${duration}"\n\nStruktur output HTML WAJIB:\n<h2>Rancangan Proyek: ${theme}</h2>\n<h3>A. Pertanyaan Pemantik</h3>\n<h3>B. Aktivitas & Linimasa</h3>\n<h3>C. Produk Akhir & Kriteria Penilaian</h3>`;
                     prompt += listStyleInstruction + latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'proyek-hasil', 'proyek-loader');
                 });
 
-                const activityCards = document.querySelectorAll('.activity-choice-card');
-                activityCards.forEach(card => {
-                    card.addEventListener('click', () => {
+                document.querySelector('#pustaka-aktivitas').addEventListener('click', (e) => {
+                    const card = e.target.closest('.activity-choice-card');
+                    if (card) {
                         const activityType = card.dataset.activityType;
                         const activityTitle = card.dataset.activityTitle;
                         
@@ -1989,66 +2079,70 @@
                             const topic = document.getElementById('aktivitas-topik').value;
                             const selectedActivity = generateBtn.dataset.activityType;
                             
-                            let prompt = `Anda adalah fasilitator pembelajaran kreatif. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Rancang panduan lengkap untuk aktivitas kelas "${selectedActivity}" dengan topik "${topic}". Gunakan struktur HTML berikut:\n<h2>Panduan Aktivitas: ${selectedActivity}</h2>\n<h3>Tujuan Pembelajaran</h3>\n<h3>Alat & Bahan</h3>\n<h3>Langkah-langkah Pelaksanaan</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li></ol>\n<h3>Materi Pendukung untuk Siswa</h3>`;
+                            let prompt = `Anda adalah fasilitator pembelajaran kreatif. ${strictFormattingInstruction} Rancang panduan lengkap untuk aktivitas kelas "${selectedActivity}" dengan topik "${topic}". Gunakan struktur HTML berikut:\n<h2>Panduan Aktivitas: ${selectedActivity}</h2>\n<h3>Tujuan Pembelajaran</h3>\n<h3>Alat & Bahan</h3>\n<h3>Langkah-langkah Pelaksanaan</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li>Langkah 1...</li></ol>\n<h3>Materi Pendukung untuk Siswa</h3>`;
                             prompt += listStyleInstruction + latexInstruction;
                             callPremiumGeminiApi([{text: prompt}], 'aktivitas-hasil', 'aktivitas-loader');
                         });
-                    });
+                    }
                 });
+
 
                 document.getElementById('btn-generate-kuis')?.addEventListener('click', () => {
                     const topic = document.getElementById('kuis-topik').value;
-                    let prompt = `Anda adalah AI pembuat kuis. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buat kuis formatif tentang "${topic}" berisi 10 pertanyaan (5 PG, 3 Benar/Salah, 2 Isian Singkat). Gunakan struktur HTML berikut:\n<h2>Kuis: ${topic}</h2>\n<h3>Pilihan Ganda</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol>\n<h3>Benar/Salah</h3><ol start="6" style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol>\n<h3>Isian Singkat</h3><ol start="9" style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol><br><h3>Kunci Jawaban</h3><p>[Kunci jawaban untuk semua soal]</p>`;
+                    let prompt = `Anda adalah AI pembuat kuis. ${strictFormattingInstruction} Buat kuis formatif tentang "${topic}" berisi 10 pertanyaan (5 PG, 3 Benar/Salah, 2 Isian Singkat). Gunakan struktur HTML berikut:\n<h2>Kuis: ${topic}</h2>\n<h3>Pilihan Ganda</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol>\n<h3>Benar/Salah</h3><ol start="6" style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol>\n<h3>Isian Singkat</h3><ol start="9" style="list-style-type: decimal; padding-left: 40px;"><li>...</li></ol><br><h3>Kunci Jawaban</h3><p>[Kunci jawaban untuk semua soal]</p>`;
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'kuis-hasil', 'kuis-loader');
                 });
 
                 document.getElementById('btn-generate-jawaban')?.addEventListener('click', () => {
                     const question = document.getElementById('pertanyaan-siswa').value;
-                    let prompt = `Anda adalah "coach" guru. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Siswa bertanya: "${question}". Berikan strategi menjawab dengan struktur HTML berikut:\n<h2>Strategi Menjawab Pertanyaan Siswa</h2>\n<ol style="list-style-type: decimal; padding-left: 40px;">\n<li><h3>Jawaban Langsung & Sederhana</h3><p>[Penjelasan mudah]</p></li>\n<li><h3>Analogi atau Perumpamaan</h3><p>[Analogi untuk membantu pemahaman]</p></li>\n<li><h3>Ide Aktivitas Cepat</h3><p>[Aktivitas singkat untuk visualisasi]</p></li>\n</ol>`;
+                    let prompt = `Anda adalah "coach" guru. ${strictFormattingInstruction} Siswa bertanya: "${question}". Berikan strategi menjawab dengan struktur HTML berikut:\n<h2>Strategi Menjawab Pertanyaan Siswa</h2>\n<ol style="list-style-type: decimal; padding-left: 40px;">\n<li><h3>Jawaban Langsung & Sederhana</h3><p>[Penjelasan mudah]</p></li>\n<li><h3>Analogi atau Perumpamaan</h3><p>[Analogi untuk membantu pemahaman]</p></li>\n<li><h3>Ide Aktivitas Cepat</h3><p>[Aktivitas singkat untuk visualisasi]</p></li>\n</ol>`;
                     prompt += latexInstruction;
                     callPremiumGeminiApi([{text: prompt}], 'jawaban-hasil', 'jawaban-loader');
                 });
 
-                // MODIFIED: Event listener for batch "Penilaian Terpadu"
                 document.getElementById('btn-generate-penilaian-terpadu')?.addEventListener('click', async () => {
-                    const answerSheetImageFiles = document.getElementById('penilaian-terpadu-gambar').files;
+                    const answerSheetImageFiles = window.uploadedFiles['penilaian-terpadu'] || [];
                     const answerKeyText = document.getElementById('penilaian-terpadu-kunci-teks').value;
-                    const answerKeyImageFile = document.getElementById('penilaian-terpadu-kunci-gambar').files[0];
+                    const answerKeyImageFiles = window.uploadedFiles['penilaian-terpadu-kunci'] || [];
                     const gradingScale = document.getElementById('penilaian-terpadu-skala').value;
 
-                    if (!answerSheetImageFiles || answerSheetImageFiles.length === 0) {
+                    if (answerSheetImageFiles.length === 0) {
                         alert("Mohon unggah setidaknya satu gambar lembar jawaban siswa.");
                         return;
                     }
 
                     const resultEl = document.getElementById('penilaian-terpadu-hasil');
                     const loaderEl = document.getElementById('penilaian-terpadu-loader');
+                    const downloadContainer = document.getElementById('download-container-penilaian-terpadu');
                     const loaderTextP = loaderEl.querySelector('p');
                     
                     resultEl.innerHTML = '';
                     resultEl.classList.add('hidden');
+                    if (downloadContainer) downloadContainer.classList.add('hidden');
                     loaderEl.classList.remove('hidden');
+                    loaderEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                     let accumulatedResultsHTML = '';
-
-                    // Prepare answer key part once
                     const keyPromptParts = [];
                     if (answerKeyText) keyPromptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
-                    if(answerKeyImageFile) {
-                        const keyImg = await fileToBase64(answerKeyImageFile);
-                        keyPromptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
+                    if (answerKeyImageFiles.length > 0) {
+                        keyPromptParts.push({ text: "\nKunci Jawaban (gambar):" });
+                        for (const keyFile of answerKeyImageFiles) {
+                           const keyImg = await fileToBase64(keyFile);
+                           keyPromptParts.push({ inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
+                        }
                     }
 
                     for (let i = 0; i < answerSheetImageFiles.length; i++) {
-                        const file = imageFiles[i];
+                        const file = answerSheetImageFiles[i];
                         if (loaderTextP) loaderTextP.textContent = `AI sedang menilai lembar jawaban ${i + 1} dari ${answerSheetImageFiles.length}...`;
                         
-                        let prompt = `Anda adalah AI penilai yang teliti. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Tugas: Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban yang diberikan (teks atau gambar 2). Skala Penilaian: "${gradingScale}".\nInstruksi: Ekstrak nama/kelas, hitung skor, dan hasilkan laporan dengan format HTML WAJIB berikut:\n<h2>Laporan Hasil Penilaian</h2>\n<h4><strong>Nama:</strong> [Nama Siswa]</h4>\n<h4><strong>Kelas:</strong> [Kelas Siswa]</h4>\n<h3>Nilai Akhir: [Nilai]</h3>\n<h3>Analisis Jawaban:</h3>\n(Gunakan tabel HTML dengan kolom: Nomor, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik:</h3>\n<p>Umpan balik konstruktif.</p>`;
+                        let prompt = `Anda adalah AI penilai yang teliti. ${strictFormattingInstruction} Tugas: Periksa lembar jawaban siswa (gambar 1) dan bandingkan dengan kunci jawaban yang diberikan (teks atau gambar 2). Skala Penilaian: "${gradingScale}".\nInstruksi: Ekstrak nama/kelas, hitung skor, dan hasilkan laporan dengan format HTML WAJIB berikut:\n<h2>Laporan Hasil Penilaian</h2>\n<h4><strong>Nama:</strong> [Nama Siswa]</h4>\n<h4><strong>Kelas:</strong> [Kelas Siswa]</h4>\n<h3>Nilai Akhir: [Nilai]</h3>\n<h3>Analisis Jawaban:</h3>\n(Gunakan tabel HTML dengan kolom: Nomor, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik:</h3>\n<p>Umpan balik konstruktif.</p>`;
                         
                         const { base64, mimeType, dataUrl } = await fileToBase64(file);
                         const promptParts = [{ text: prompt }, { inlineData: { mimeType, data: base64 } }];
-                        promptParts.push(...keyPromptParts); // Add the prepared key
+                        promptParts.push(...keyPromptParts); 
                         promptParts.push({text: listStyleInstruction + latexInstruction});
                         
                         const resultText = await callPremiumGeminiApiForBatch(promptParts);
@@ -2064,33 +2158,62 @@
 
                     renderPremiumAIOutput(accumulatedResultsHTML, resultEl);
                     resultEl.classList.remove('hidden');
+                    if (downloadContainer) downloadContainer.classList.remove('hidden');
                     loaderEl.classList.add('hidden');
-                    if (loaderTextP) loaderTextP.textContent = 'AI sedang menganalisis dan menilai...'; // Reset loader text
-                     // Auto-scroll to results after batch processing
+                    if (loaderTextP) loaderTextP.textContent = 'AI sedang menganalisis dan menilai...';
                     resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
                 
+                document.getElementById('btn-generate-komunikasi')?.addEventListener('click', () => {
+                    const studentName = document.getElementById('komunikasi-nama').value;
+                    const purpose = document.getElementById('komunikasi-tujuan').value;
+                    const keyPoints = document.getElementById('komunikasi-poin').value;
+                    const prompt = `Anda konselor sekolah ahli komunikasi. ${strictFormattingInstruction} Buatkan draf pesan profesional untuk orang tua siswa "${studentName}" dengan tujuan: "${purpose}" dan poin kunci: "${keyPoints}".\nStruktur HTML WAJIB:\n<p><strong>Yth. Bapak/Ibu Wali dari ${studentName},</strong></p>\n<p>[Isi pesan sopan dan kolaboratif]</p>\n<p>Salam hangat,</p><p>[Nama Guru]</p>`;
+                    callPremiumGeminiApi([{text: prompt}], 'komunikasi-hasil', 'komunikasi-loader');
+                });
+                
+                document.getElementById('btn-generate-rpp')?.addEventListener('click', () => {
+                    const topic = document.getElementById('rpp-topik').value;
+                    const duration = document.getElementById('rpp-durasi').value;
+                    const objective = document.getElementById('rpp-tujuan').value;
+                    let prompt = `Anda AI perancang pembelajaran. ${strictFormattingInstruction} Buatkan draf RPP untuk:\n- Topik: "${topic}"\n- Durasi: ${duration} menit\n- Tujuan: "${objective}"\nStruktur HTML WAJIB:\n<h2>RPP: ${topic}</h2>\n<h3>A. Tujuan Pembelajaran</h3>\n<h3>B. Kegiatan Pembelajaran</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li><strong>Pendahuluan:</strong> ...</li><li><strong>Kegiatan Inti:</strong> ...</li><li><strong>Penutup:</strong> ...</li></ol>\n<h3>C. Asesmen/Penilaian</h3>`;
+                    prompt += listStyleInstruction + latexInstruction;
+                    callPremiumGeminiApi([{text: prompt}], 'rpp-hasil', 'rpp-loader');
+                });
+
+                document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
+                    const rppText = document.getElementById('analisis-rpp-teks').value;
+                    let prompt = `Anda "coach" pedagogis AI. ${strictFormattingInstruction} Analisis RPP berikut dan berikan umpan balik konstruktif dengan format HTML WAJIB:\n<h2>Analisis RPP</h2>\n<h3>1. Kekuatan RPP</h3><p>[Aspek yang sudah baik]</p>\n<h3>2. Area untuk Peningkatan</h3><p>[Saran perbaikan]</p>\n<h3>3. Peluang Diferensiasi</h3><p>[Saran untuk mengakomodasi siswa]</p>\n\nRPP untuk dianalisis:\n"${rppText}"`;
+                    prompt += listStyleInstruction + latexInstruction;
+                    callPremiumGeminiApi([{ text: prompt }], 'analisis-rpp-hasil', 'analisis-rpp-loader');
+                });
+                
+                // RESTORED: All event listeners for restored grading section
                 document.getElementById('btn-generate-penilaian-manual')?.addEventListener('click', async () => {
                     const studentName = document.getElementById('penilaian-manual-nama').value;
                     const studentClass = document.getElementById('penilaian-manual-kelas').value;
                     const answerText = document.getElementById('penilaian-manual-jawaban-teks').value;
-                    const answerImageFile = document.getElementById('penilaian-manual-jawaban-gambar').files[0];
+                    const answerImageFiles = window.uploadedFiles['penilaian-manual-jawaban'] || [];
                     const answerKey = document.getElementById('penilaian-manual-kunci').value;
                     const gradingScale = document.getElementById('penilaian-manual-skala').value;
 
-                    if (!answerText && !answerImageFile) {
+                    if (!answerText && answerImageFiles.length === 0) {
                         alert("Mohon lengkapi Jawaban Siswa.");
                         return;
                     }
 
-                    let prompt = `Anda AI asisten penilai. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.**\nTUGAS: Nilai esai siswa berdasarkan pedoman.\nDATA:\n- Nama: "${studentName}"\n- Kelas: "${studentClass}"\n- Pedoman: "${answerKey}"\n- Skala: "${gradingScale}"\nINSTRUKSI: Gunakan format HTML WAJIB:\n<h2>Hasil Penilaian Esai</h2>\n<h4><strong>Nama:</strong> ${studentName}</h4>\n<h3>Nilai: [Nilai]</h3>\n<h3>Umpan Balik Konstruktif:</h3>\n<p>[Analisis kekuatan dan area perbaikan]</p>`;
+                    let prompt = `Anda AI asisten penilai. ${strictFormattingInstruction}\nTUGAS: Nilai esai siswa berdasarkan pedoman.\nDATA:\n- Nama: "${studentName}"\n- Kelas: "${studentClass}"\n- Pedoman: "${answerKey}"\n- Skala: "${gradingScale}"\nINSTRUKSI: Gunakan format HTML WAJIB:\n<h2>Hasil Penilaian Esai</h2>\n<h4><strong>Nama:</strong> ${studentName}</h4>\n<h3>Nilai: [Nilai]</h3>\n<h3>Umpan Balik Konstruktif:</h3>\n<p>[Analisis kekuatan dan area perbaikan]</p>`;
                     
                     const promptParts = [{ text: prompt }];
                     
                     if (answerText) promptParts.push({ text: `\nJawaban Siswa (teks): \n${answerText}` });
-                    if (answerImageFile) {
-                        const { base64, mimeType } = await fileToBase64(answerImageFile);
-                        promptParts.push({ text: "\nJawaban Siswa (gambar):" }, { inlineData: { mimeType, data: base64 } });
+
+                    if (answerImageFiles.length > 0) {
+                        promptParts.push({ text: "\nJawaban Siswa (gambar):" });
+                        for (const file of answerImageFiles) {
+                           const { base64, mimeType } = await fileToBase64(file);
+                           promptParts.push({ inlineData: { mimeType, data: base64 } });
+                        }
                     }
 
                     promptParts.push({ text: listStyleInstruction + latexInstruction });
@@ -2100,22 +2223,25 @@
                 document.getElementById('btn-generate-penilaian-esai-otomatis')?.addEventListener('click', async () => {
                     const questionText = document.getElementById('penilaian-esai-otomatis-soal').value;
                     const answerText = document.getElementById('penilaian-esai-otomatis-jawaban-teks').value;
-                    const answerImageFile = document.getElementById('penilaian-esai-otomatis-jawaban-gambar').files[0];
+                    const answerImageFiles = window.uploadedFiles['penilaian-esai-otomatis-jawaban'] || [];
                     const gradingScale = document.getElementById('penilaian-esai-otomatis-skala').value;
 
-                    if (!questionText || (!answerText && !answerImageFile)) {
+                    if (!questionText || (!answerText && answerImageFiles.length === 0)) {
                         alert("Mohon lengkapi Soal Esai dan Jawaban Siswa.");
                         return;
                     }
 
-                    const prompt = `Anda guru ahli penilai esai AI. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.**\nTUGAS: Nilai esai siswa secara otomatis.\nDATA:\n- Soal: "${questionText}"\n- Skala: "${gradingScale}"\nINSTRUKSI: Nilai berdasarkan akurasi, argumen, dan struktur. Gunakan format HTML WAJIB:\n<h2>Hasil Penilaian Esai Otomatis</h2>\n<h3>Nilai: [Nilai]</h3>\n<h3>Analisis & Umpan Balik:</h3>\n<ul style="list-style-type: disc; padding-left: 40px;"><li><strong>Akurasi Konten:</strong> [Komentar]</li><li><strong>Kejelasan Argumen:</strong> [Komentar]</li></ul>`;
+                    const prompt = `Anda guru ahli penilai esai AI. ${strictFormattingInstruction}\nTUGAS: Nilai esai siswa secara otomatis.\nDATA:\n- Soal: "${questionText}"\n- Skala: "${gradingScale}"\nINSTRUKSI: Nilai berdasarkan akurasi, argumen, dan struktur. Gunakan format HTML WAJIB:\n<h2>Hasil Penilaian Esai Otomatis</h2>\n<h3>Nilai: [Nilai]</h3>\n<h3>Analisis & Umpan Balik:</h3>\n<ul style="list-style-type: disc; padding-left: 40px;"><li><strong>Akurasi Konten:</strong> [Komentar]</li><li><strong>Kejelasan Argumen:</strong> [Komentar]</li></ul>`;
 
                     const promptParts = [{ text: prompt }];
 
                     if (answerText) promptParts.push({ text: `\nJawaban Siswa (teks): \n${answerText}` });
-                    if (answerImageFile) {
-                        const { base64, mimeType } = await fileToBase64(answerImageFile);
-                        promptParts.push({ text: "\nJawaban Siswa (gambar):" }, { inlineData: { mimeType, data: base64 } });
+                    if (answerImageFiles.length > 0) {
+                        promptParts.push({ text: "\nJawaban Siswa (gambar):" });
+                         for (const file of answerImageFiles) {
+                           const { base64, mimeType } = await fileToBase64(file);
+                           promptParts.push({ inlineData: { mimeType, data: base64 } });
+                        }
                     }
 
                     promptParts.push({ text: latexInstruction });
@@ -2123,77 +2249,53 @@
                 });
                 
                 document.getElementById('btn-generate-penilaian-otomatis')?.addEventListener('click', async () => {
-                    const answerSheetImageFile = document.getElementById('penilaian-otomatis-gambar').files[0];
+                    const answerSheetImageFiles = window.uploadedFiles['penilaian-otomatis'] || [];
                     const answerKeyText = document.getElementById('penilaian-otomatis-kunci-teks').value;
-                    const answerKeyImageFile = document.getElementById('penilaian-otomatis-kunci-gambar').files[0];
+                    const answerKeyImageFiles = window.uploadedFiles['penilaian-otomatis-kunci'] || [];
                     const gradingScale = document.getElementById('penilaian-otomatis-skala').value;
 
-                    if (!answerSheetImageFile) {
+                    if (answerSheetImageFiles.length === 0) {
                         alert("Mohon unggah gambar lembar jawaban siswa.");
                         return;
                     }
                     
-                    const { base64, mimeType } = await fileToBase64(answerSheetImageFile);
-                    let prompt;
                     const promptParts = [];
-
-                    prompt = `Anda AI penilai. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.**\nTugas: Periksa lembar jawaban (gambar 1) dengan kunci (teks/gambar 2). Skala: "${gradingScale}".\nInstruksi: Deteksi nama/kelas. Hitung skor. Buat laporan HTML dengan format WAJIB:\n<h2>Hasil Penilaian</h2>\n<h4>Nama: [Nama]</h4><h3>Nilai Akhir: [Nilai]</h3><h3>Analisis Jawaban:</h3>(tabel HTML: No, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik</h3>`;
-                    promptParts.push({ text: prompt }, { inlineData: { mimeType, data: base64 } });
+                    let prompt = `Anda AI penilai. ${strictFormattingInstruction}\nTugas: Periksa lembar jawaban (gambar terlampir) dengan kunci (teks/gambar terlampir). Skala: "${gradingScale}".\nInstruksi: Deteksi nama/kelas. Hitung skor. Buat laporan HTML dengan format WAJIB:\n<h2>Hasil Penilaian</h2>\n<h4>Nama: [Nama]</h4><h3>Nilai Akhir: [Nilai]</h3><h3>Analisis Jawaban:</h3>(tabel HTML: No, Jawaban Siswa, Kunci, Status)\n<h3>Umpan Balik</h3>`;
+                    
+                    promptParts.push({ text: prompt });
+                    for(const file of answerSheetImageFiles) {
+                        const { base64, mimeType } = await fileToBase64(file);
+                        promptParts.push({ inlineData: { mimeType, data: base64 } });
+                    }
+                    
                     if (answerKeyText) promptParts.push({ text: `\nKunci Jawaban (teks): \n${answerKeyText}` });
-                    if(answerKeyImageFile) {
-                        const keyImg = await fileToBase64(answerKeyImageFile);
-                        promptParts.push({ text: "\nKunci Jawaban (gambar):" }, { inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
+                    if(answerKeyImageFiles.length > 0) {
+                        promptParts.push({text: "\nKunci Jawaban (gambar):"});
+                        for (const keyFile of answerKeyImageFiles) {
+                           const keyImg = await fileToBase64(keyFile);
+                           promptParts.push({ inlineData: { mimeType: keyImg.mimeType, data: keyImg.base64 } });
+                        }
                     }
                     
                     promptParts.push({text: listStyleInstruction + latexInstruction});
                     callPremiumGeminiApi(promptParts, 'penilaian-otomatis-hasil', 'penilaian-otomatis-loader');
                 });
-                
-                document.getElementById('btn-generate-komunikasi')?.addEventListener('click', () => {
-                    const studentName = document.getElementById('komunikasi-nama').value;
-                    const purpose = document.getElementById('komunikasi-tujuan').value;
-                    const keyPoints = document.getElementById('komunikasi-poin').value;
-                    const prompt = `Anda konselor sekolah ahli komunikasi. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan draf pesan profesional untuk orang tua siswa "${studentName}" dengan tujuan: "${purpose}" dan poin kunci: "${keyPoints}".\nStruktur HTML WAJIB:\n<p><strong>Yth. Bapak/Ibu Wali dari ${studentName},</strong></p>\n<p>[Isi pesan sopan dan kolaboratif]</p>\n<p>Salam hangat,</p><p>[Nama Guru]</p>`;
-                    callPremiumGeminiApi([{text: prompt}], 'komunikasi-hasil', 'komunikasi-loader');
-                });
-                
-                document.getElementById('btn-generate-rpp')?.addEventListener('click', () => {
-                    const topic = document.getElementById('rpp-topik').value;
-                    const duration = document.getElementById('rpp-durasi').value;
-                    const objective = document.getElementById('rpp-tujuan').value;
-                    let prompt = `Anda AI perancang pembelajaran. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Buatkan draf RPP untuk:\n- Topik: "${topic}"\n- Durasi: ${duration} menit\n- Tujuan: "${objective}"\nStruktur HTML WAJIB:\n<h2>RPP: ${topic}</h2>\n<h3>A. Tujuan Pembelajaran</h3>\n<h3>B. Kegiatan Pembelajaran</h3><ol style="list-style-type: decimal; padding-left: 40px;"><li><strong>Pendahuluan:</strong> ...</li><li><strong>Kegiatan Inti:</strong> ...</li><li><strong>Penutup:</strong> ...</li></ol>\n<h3>C. Asesmen/Penilaian</h3>`;
-                    prompt += listStyleInstruction + latexInstruction;
-                    callPremiumGeminiApi([{text: prompt}], 'rpp-hasil', 'rpp-loader');
-                });
 
-                document.getElementById('btn-generate-analisis-rpp')?.addEventListener('click', () => {
-                    const rppText = document.getElementById('analisis-rpp-teks').value;
-                    let prompt = `Anda "coach" pedagogis AI. **Seluruh output Anda HARUS berupa kode HTML yang valid, tanpa teks pembuka atau penutup.** Analisis RPP berikut dan berikan umpan balik konstruktif dengan format HTML WAJIB:\n<h2>Analisis RPP</h2>\n<h3>1. Kekuatan RPP</h3><p>[Aspek yang sudah baik]</p>\n<h3>2. Area untuk Peningkatan</h3><p>[Saran perbaikan]</p>\n<h3>3. Peluang Diferensiasi</h3><p>[Saran untuk mengakomodasi siswa]</p>\n\nRPP untuk dianalisis:\n"${rppText}"`;
-                    prompt += listStyleInstruction + latexInstruction;
-                    callPremiumGeminiApi([{ text: prompt }], 'analisis-rpp-hasil', 'analisis-rpp-loader');
-                });
-                
-                // Tab system initialization
+
                 function initializePremiumTabLogic(containerId) {
                     const container = document.getElementById(containerId);
                     if (!container) return;
-
                     const nav = container.querySelector('nav');
                     if (!nav) return;
-
                     nav.addEventListener('click', (event) => {
                         const button = event.target.closest('.premium-tab-button');
                         if (!button) return;
-
                         const targetId = button.dataset.target;
                         if (!targetId) return;
-
                         const isNested = container.id.includes('nested');
                         const contentSelector = isNested ? '.tab-content-nested' : '.tab-content';
-
                         nav.querySelectorAll('.premium-tab-button').forEach(btn => btn.classList.remove('active'));
                         button.classList.add('active');
-
                         const contentPanes = container.querySelectorAll(`:scope > ${contentSelector}, :scope > div > ${contentSelector}`);
                         contentPanes.forEach(pane => pane.classList.remove('active'));
                         
@@ -2205,18 +2307,13 @@
                 }
                 
                 initializePremiumTabLogic('perencana-rpp-tabs-container');
-                initializePremiumTabLogic('penilaian-tabs-container');  
+                initializePremiumTabLogic('penilaian-tabs-container');
                 initializePremiumTabLogic('penilaian-esai-nested-tabs-container');
                 
-                // Initialize all topic selectors
                 ['materi', 'soal', 'kuis', 'rpp', 'aktivitas'].forEach(initializePremiumTopicSelector);
                 
-                // Initialize all SINGLE image uploaders  
-                ['konteks', 'penilaian-terpadu-kunci', 'penilaian-otomatis', 'penilaian-otomatis-kunci', 'penilaian-esai-otomatis-jawaban', 'penilaian-manual-jawaban'].forEach(setupPremiumImageUploader);
-
-                 // NEW: Initialize all BATCH image uploaders
-                ['penjawab-soal', 'penilaian-terpadu'].forEach(setupPremiumBatchUploader);
-
+                // Initialize all multi-image uploaders
+                ['konteks', 'penjawab-soal', 'penilaian-terpadu', 'penilaian-terpadu-kunci', 'penilaian-otomatis', 'penilaian-otomatis-kunci', 'penilaian-esai-otomatis-jawaban', 'penilaian-manual-jawaban'].forEach(setupPremiumMultiImageUploader);
             }
             
             function attachBackToHomeListener() {
@@ -2228,33 +2325,122 @@
                 });
             }
 
+            function attachDownloadListeners() {
+                document.body.addEventListener('click', async (e) => {
+                    const button = e.target.closest('.download-btn');
+                    if (!button) return;
+
+                    const format = button.dataset.format;
+                    const prefix = button.dataset.prefix;
+                    const outputEl = document.getElementById(`${prefix}-hasil`);
+
+                    if (!outputEl || !outputEl.innerHTML.trim()) {
+                        alert('Tidak ada konten untuk diunduh.');
+                        return;
+                    }
+
+                    const originalText = button.innerHTML;
+                    button.disabled = true;
+                    button.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> ...`;
+
+                    const fileName = `INDEXIEDU_${prefix}_${new Date().toISOString().slice(0,10)}`;
+
+                    try {
+                        if (format === 'pdf') {
+                            // Clone the element to modify styles without affecting the display
+                            const clone = outputEl.cloneNode(true);
+                            clone.style.position = 'absolute';
+                            clone.style.left = '-9999px';
+                            clone.style.width = outputEl.offsetWidth + 'px'; // Ensure width is consistent
+                            document.body.appendChild(clone);
+                            
+                            // Neutralize gradient text for PDF rendering
+                            clone.querySelectorAll('.premium-gradient-text, .premium-ai-output h2').forEach(el => {
+                                el.style.color = '#0369a1'; // A solid dark blue color
+                                el.style.background = 'none';
+                                el.style.webkitBackgroundClip = 'unset';
+                                el.style.backgroundClip = 'unset';
+                            });
+
+                            const { jsPDF } = window.jspdf;
+                            const canvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+                            
+                            // Clean up the clone
+                            document.body.removeChild(clone);
+
+                            const imgData = canvas.toDataURL('image/png');
+                            const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+                            const pdfWidth = pdf.internal.pageSize.getWidth();
+                            const pageHeight = pdf.internal.pageSize.getHeight();
+                            const imgProps = pdf.getImageProperties(imgData);
+                            const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                            let heightLeft = imgHeight;
+                            let position = 0;
+
+                            pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth - 20, imgHeight);
+                            heightLeft -= (pageHeight - 20);
+
+                            while (heightLeft > 0) {
+                                position -= (pageHeight - 20);
+                                pdf.addPage();
+                                pdf.addImage(imgData, 'PNG', 10, position, pdfWidth - 20, imgHeight);
+                                heightLeft -= pageHeight;
+                            }
+                            pdf.save(`${fileName}.pdf`);
+                        } else if (format === 'doc') {
+                             const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML to Word</title></head><body>";
+                             const footer = "</body></html>";
+                             const sourceHTML = header + outputEl.innerHTML + footer;
+                             const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+                             const fileDownload = document.createElement("a");
+                             document.body.appendChild(fileDownload);
+                             fileDownload.href = source;
+                             fileDownload.download = `${fileName}.doc`;
+                             fileDownload.click();
+                             document.body.removeChild(fileDownload);
+                        } else if (format === 'txt') {
+                             const text = outputEl.innerText;
+                             const blob = new Blob([text], { type: 'text/plain' });
+                             const link = document.createElement('a');
+                             link.href = URL.createObjectURL(blob);
+                             link.download = `${fileName}.txt`;
+                             document.body.appendChild(link);
+                             link.click();
+                             document.body.removeChild(link);
+                        }
+                    } catch (error) {
+                        console.error('Error generating file:', error);
+                        alert('Gagal membuat file. Silakan coba lagi.');
+                    } finally {
+                       button.disabled = false;
+                       button.innerHTML = originalText;
+                    }
+                });
+            }
+
             // --- INITIALIZE PREMIUM APP ---
             buildPremiumUI();
-            attachPremiumEventListeners(); // This will attach all event listeners for the premium UI
+            attachPremiumEventListeners();
             attachBackToHomeListener();
+            attachDownloadListeners();
             
-            // --- NEW: History Management for Mobile Back Button ---
-            // Set the initial state to 'home' when the page loads
+            // --- History Management ---
             history.replaceState({ page: 'home' }, 'Home', '#home');
 
             window.addEventListener('popstate', (event) => {
-                // --- Sidebar back button logic ---
                 const sidebarIsOpen = !sidebar.classList.contains('-translate-x-full');
                 if (sidebarIsOpen && (!event.state || !event.state.sidebarOpen)) {
                     closeSidebar();
                 }
 
-                // --- Page navigation logic ---
                 const state = event.state;
                 const targetId = state ? state.page : (location.hash.substring(1) || 'home');
                 
                 const validSection = document.getElementById(targetId);
                 
                 if (validSection && validSection.classList.contains('content-section')) {
-                     // The 'true' flag tells switchTab this is from a popstate, so it doesn't push a new history state.
                     switchTab(targetId, true);
                 } else {
-                    // Fallback to home if the hash points to a non-existent section
                     switchTab('home', true);
                 }
             });
@@ -2263,5 +2449,4 @@
     </script>
 </body>
 </html>
-
 
