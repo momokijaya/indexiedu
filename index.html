@@ -934,7 +934,7 @@
                 });
             }
 
-            // --- API Key Management (Same as original) ---
+            // --- API Key Management (MODIFIED) ---
             const apiKeys = [
                 'AIzaSyDE-eC4Z5sLoyLb-gfufWybfq5FDfQ8eJA', 'AIzaSyCJCLcOLSxNzAo7Yj2OkFrvBCmriMWWY4A', 'AIzaSyBCN3QCP0JAlh8T0A4I_bnYO8dRJaxgllc',
                 'AIzaSyB7ZflQgfuCdAwCdJqy5ls1mGoVQCK0Ghg', 'AIzaSyBk5rAPyic400shgKO1PAAPJYbnoYj7IqA', 'AIzaSyCEgpllq7leaQTBVE-f75plyvxVGR5W_ao',
@@ -955,10 +955,26 @@
                 'AIzaSyBZ9DmnBWIhICwFS4rgfEAgVOWKQTvsDco', 'AIzaSyAYCj1fUO_6rKT2UgHi6Y6ITtXYFP9lcEQ', 'AIzaSyDHa1GwBT_-d40Ug5S_HGQ4fPPcsCF5HoI'
             ];
             
-            let currentApiKeyIndex = parseInt(localStorage.getItem('currentApiKeyIndex')) || 0;
+            let currentApiKeyIndex;
+            // [MODIFIED] Check if it's the user's first visit
+            if (localStorage.getItem('currentApiKeyIndex') === null) {
+                // Pick a random index for a new user
+                currentApiKeyIndex = Math.floor(Math.random() * apiKeys.length);
+                console.log('First visit. Setting random API key index to:', currentApiKeyIndex);
+            } else {
+                // Continue from the last used index for returning users
+                currentApiKeyIndex = parseInt(localStorage.getItem('currentApiKeyIndex'), 10);
+            }
+             // Fallback to ensure the index is always valid
+            if (isNaN(currentApiKeyIndex) || currentApiKeyIndex >= apiKeys.length || currentApiKeyIndex < 0) {
+                currentApiKeyIndex = 0;
+            }
+            localStorage.setItem('currentApiKeyIndex', currentApiKeyIndex);
+
 
             function getNextApiKey() {
                 const key = apiKeys[currentApiKeyIndex];
+                // Move to the next key for the subsequent call
                 currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
                 localStorage.setItem('currentApiKeyIndex', currentApiKeyIndex);
                 let usedIndex = currentApiKeyIndex === 0 ? apiKeys.length - 1 : currentApiKeyIndex - 1;
@@ -979,21 +995,21 @@
             
             function createPremiumMultiImageUploaderHTML(prefix, label, helpText = '') {
                 return `
-                    <div class="mb-6">
-                        <label for="${prefix}-gambar-input" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
-                        ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
-                        <div class="premium-file-upload-small">
-                            <input type="file" id="${prefix}-gambar-input" accept="image/*" class="hidden" multiple/>
-                            <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar-input').click()">
-                                <i class="fas fa-plus-circle text-3xl text-primary-500 mb-2"></i>
-                                <p class="text-sm font-semibold text-slate-700">Tambah Gambar</p>
-                                <p class="text-xs text-slate-500">Klik atau drag & drop</p>
+                        <div class="mb-6">
+                            <label for="${prefix}-gambar-input" class="block text-sm font-semibold text-slate-700 mb-2">${label}</label>
+                            ${helpText ? `<p class="text-xs text-slate-500 mb-3">${helpText}</p>` : ''}
+                            <div class="premium-file-upload-small">
+                                <input type="file" id="${prefix}-gambar-input" accept="image/*" class="hidden" multiple/>
+                                <div class="cursor-pointer" onclick="document.getElementById('${prefix}-gambar-input').click()">
+                                    <i class="fas fa-plus-circle text-3xl text-primary-500 mb-2"></i>
+                                    <p class="text-sm font-semibold text-slate-700">Tambah Gambar</p>
+                                    <p class="text-xs text-slate-500">Klik atau drag & drop</p>
+                                </div>
+                            </div>
+                            <div id="${prefix}-preview-container" class="image-preview-container">
+                                <!-- Image previews will be dynamically inserted here -->
                             </div>
                         </div>
-                        <div id="${prefix}-preview-container" class="image-preview-container">
-                            <!-- Image previews will be dynamically inserted here -->
-                        </div>
-                    </div>
                 `;
             }
 
@@ -1005,64 +1021,64 @@
                 const backButtonHTML = '<button class="back-to-home-btn mb-4 text-slate-600 hover:text-primary-600 font-semibold flex items-center transition-colors duration-200"><i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda</button>';
 
                 return `
-                    ${backButtonHTML}
-                    <div class="max-w-6xl mx-auto">
-                        ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
-                            <div class="premium-card p-4 sm:p-8">
-                                <div class="mb-6">
-                                    <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
-                                        <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
-                                        Pilih Cara Menentukan Topik
-                                    </h2>
-                                    <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
-                                        <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
-                                            <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
-                                            Opsi 1: Kurikulum
-                                        </label>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                            <select id="${prefix}-jenjang" class="premium-select w-full">
-                                                <option value="">Pilih Jenjang...</option>
-                                            </select>
-                                            <select id="${prefix}-kelas" class="premium-select w-full" disabled>
-                                                <option value="">Pilih Kelas...</option>
-                                            </select>
-                                            <select id="${prefix}-mapel" class="premium-select w-full" disabled>
-                                                <option value="">Pilih Mapel...</option>
-                                            </select>
-                                            <select id="${prefix}-bab" class="premium-select w-full" disabled>
-                                                <option value="">Pilih Bab...</option>
-                                            </select>
+                        ${backButtonHTML}
+                        <div class="max-w-6xl mx-auto">
+                            ${title ? `<h1 class="text-2xl sm:text-3xl font-black mb-6 text-slate-900 text-center">${title}</h1>` : ''}
+                                <div class="premium-card p-4 sm:p-8">
+                                    <div class="mb-6">
+                                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center">
+                                            <i class="fas fa-lightbulb text-primary-500 mr-3"></i>
+                                            Pilih Cara Menentukan Topik
+                                        </h2>
+                                        <div class="glass-effect rounded-2xl p-4 sm:p-6 mb-6">
+                                            <label class="text-base sm:text-lg font-semibold text-slate-800 mb-4 block flex items-center">
+                                                <i class="fas fa-graduation-cap text-primary-500 mr-3"></i>
+                                                Opsi 1: Kurikulum
+                                            </label>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                                <select id="${prefix}-jenjang" class="premium-select w-full">
+                                                    <option value="">Pilih Jenjang...</option>
+                                                </select>
+                                                <select id="${prefix}-kelas" class="premium-select w-full" disabled>
+                                                    <option value="">Pilih Kelas...</option>
+                                                </select>
+                                                <select id="${prefix}-mapel" class="premium-select w-full" disabled>
+                                                    <option value="">Pilih Mapel...</option>
+                                                </select>
+                                                <select id="${prefix}-bab" class="premium-select w-full" disabled>
+                                                    <option value="">Pilih Bab...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center my-6">
+                                            <hr class="flex-grow border-t-2 border-slate-300">
+                                            <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
+                                            <hr class="flex-grow border-t-2 border-slate-300">
+                                        </div>
+                                        <div>
+                                            <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
+                                                <i class="fas fa-edit text-primary-500 mr-3"></i>
+                                                Opsi 2: Tulis Topik
+                                            </label>
+                                            <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
+                                            ${optionsHTML}
                                         </div>
                                     </div>
-                                    <div class="flex items-center my-6">
-                                        <hr class="flex-grow border-t-2 border-slate-300">
-                                        <span class="mx-4 text-slate-600 font-bold text-sm px-3 py-1 bg-slate-100 rounded-full">ATAU</span>
-                                        <hr class="flex-grow border-t-2 border-slate-300">
+                                    <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
+                                        <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
+                                    </button>
+                                    <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
+                                        <div class="premium-loader"></div>
+                                        <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
                                     </div>
-                                    <div>
-                                        <label for="${prefix}-topik" class="text-base sm:text-lg font-semibold text-slate-800 mb-3 block flex items-center">
-                                            <i class="fas fa-edit text-primary-500 mr-3"></i>
-                                            Opsi 2: Tulis Topik
-                                        </label>
-                                        <textarea id="${prefix}-topik" rows="3" class="premium-textarea w-full" placeholder="Ketik topik spesifik Anda di sini..."></textarea>
-                                        ${optionsHTML}
+                                    <div id="download-container-${prefix}" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
+                                        <button data-format="pdf" data-prefix="${prefix}" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
+                                        <button data-format="doc" data-prefix="${prefix}" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
+                                        <button data-format="txt" data-prefix="${prefix}" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
                                     </div>
+                                    <div id="${prefix}-hasil" class="mt-4 hidden premium-ai-output"></div>
                                 </div>
-                                <button id="btn-generate-${prefix}" class="${buttonClass} w-full text-base py-3">
-                                    <i class="fas ${buttonIcon} mr-3"></i> ${buttonText}
-                                </button>
-                                <div id="${prefix}-loader" class="hidden mt-8 flex flex-col items-center">
-                                    <div class="premium-loader"></div>
-                                    <p class="mt-4 text-slate-600 font-medium">AI sedang bekerja untuk Anda...</p>
-                                </div>
-                                <div id="download-container-${prefix}" class="hidden mt-8 text-right flex justify-end gap-2 flex-wrap">
-                                    <button data-format="pdf" data-prefix="${prefix}" class="download-btn download-btn-pdf"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
-                                    <button data-format="doc" data-prefix="${prefix}" class="download-btn download-btn-doc"><i class="fas fa-file-word mr-2"></i>DOC</button>
-                                    <button data-format="txt" data-prefix="${prefix}" class="download-btn download-btn-txt"><i class="fas fa-file-alt mr-2"></i>TXT</button>
-                                </div>
-                                <div id="${prefix}-hasil" class="mt-4 hidden premium-ai-output"></div>
                             </div>
-                        </div>
                 `;
             }
 
@@ -1813,11 +1829,12 @@
                 });
             }
 
-            // MODIFIED: Function to clean AI response from unwanted artifacts
+            // [MODIFIED] Function to clean AI response from unwanted artifacts
             function cleanAIResponse(rawText) {
+                if (typeof rawText !== 'string') return '';
                 let cleaned = rawText.trim();
                 // Remove markdown code block fences (e.g., ```html or ```)
-                cleaned = cleaned.replace(/^```(html)?\s*/i, '').replace(/```\s*$/, '');
+                cleaned = cleaned.replace(/^```(html|markdown)?\s*/i, '').replace(/```\s*$/, '');
                 // Remove leading list numbers that are on their own line or at the very start
                 cleaned = cleaned.replace(/^\s*\d+\.\s*/gm, '');
                 return cleaned.trim();
@@ -1842,7 +1859,7 @@
                     }
                 }
             }
-
+            // [MODIFIED] Enhanced API calling function
             async function callPremiumGeminiApi(promptParts, resultElId, loaderElId) {
                 const resultEl = document.getElementById(resultElId);
                 const loaderEl = document.getElementById(loaderElId);
@@ -1865,12 +1882,23 @@
                     loaderEl.classList.add('hidden');
                     return;
                 }
-
+                
+                // Using a more stable model and adding generation/safety configs
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{ parts: promptParts }],
-                    tools: [{ "google_search": {} }]
-                };                
+                    generationConfig: {
+                        "temperature": 0.7,
+                        "topP": 0.95,
+                        "maxOutputTokens": 4096,
+                    },
+                    safetySettings: [ // More lenient safety settings
+                        { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
+                        { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
+                        { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
+                        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+                    ]
+                };                        
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -1885,13 +1913,20 @@
                     }
                     
                     const result = await response.json();
-                    const textResult = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    
+                    // Improved check for valid response text
+                    const candidate = result.candidates?.[0];
+                    const textResult = candidate?.content?.parts?.[0]?.text;
 
-                    if (textResult) {
+                    if (textResult != null) { // Checks for null or undefined, allowing empty string ""
                         renderPremiumAIOutput(textResult, resultEl);
                         if(downloadContainer) downloadContainer.classList.remove('hidden');
                     } else {
-                        throw new Error("Respons dari API tidak valid atau kosong.");
+                        // Provide a more specific error if blocked by safety
+                        if (candidate?.finishReason === 'SAFETY') {
+                           throw new Error("Respons diblokir karena kebijakan keamanan. Coba dengan pertanyaan yang berbeda.");
+                        }
+                        throw new Error("Respons dari API tidak valid atau kosong. Ini bisa terjadi karena kunci API telah mencapai batas penggunaan atau masalah jaringan.");
                     }
                 } catch (error) {
                     console.error("Error calling Gemini API:", error);
@@ -1899,19 +1934,28 @@
                 } finally {
                     loaderEl.classList.add('hidden');
                     resultEl.classList.remove('hidden');
-                    // Do not auto-scroll here to let user see the loader first
                 }
             }
-
+            // [MODIFIED] Enhanced batch API calling function
             async function callPremiumGeminiApiForBatch(promptParts) {
                 const apiKey = getNextApiKey();
                 if (!apiKey) {
                     return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> API Key tidak tersedia.</div>`;
                 }
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                const payload = {
+                 const payload = {
                     contents: [{ parts: promptParts }],
-                    tools: [{ "google_search": {} }]
+                    generationConfig: {
+                        "temperature": 0.7,
+                        "topP": 0.95,
+                        "maxOutputTokens": 4096,
+                    },
+                    safetySettings: [
+                        { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
+                        { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
+                        { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
+                        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+                    ]
                 };  
                 try {
                     const response = await fetch(apiUrl, {
@@ -1924,11 +1968,16 @@
                         throw new Error(errorData.error.message || `HTTP error! Status: ${response.status}`);
                     }
                     const result = await response.json();
-                    const textResult = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (textResult) {
+                    const candidate = result.candidates?.[0];
+                    const textResult = candidate?.content?.parts?.[0]?.text;
+
+                    if (textResult != null) {
                         return textResult;
                     } else {
-                        throw new Error("Respons dari API tidak valid atau kosong.");
+                         if (candidate?.finishReason === 'SAFETY') {
+                           throw new Error("Respons diblokir oleh kebijakan keamanan.");
+                        }
+                        throw new Error("Respons API tidak valid atau kosong.");
                     }
                 } catch (error) {
                     console.error("Error in batch API call:", error);
