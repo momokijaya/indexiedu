@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INDEXIEDU Pro - AI Education Assistant</title>
+    <title>INDEXIEDU - AI Education Assistant</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20640%20512'%3E%3Cpath%20fill='%23667eea'%20d='M320%2032c-17.7%200-32%2014.3-32%2032v16H224c-17.7%200-32%2014.3-32%2032s14.3%2032%2032%2032h64V320H128c-35.3%200-64%2028.7-64%2064s28.7%2064%2064%2064h384c35.3%200%2064-28.7%2064-64s-28.7-64-64-64H352V144h64c17.7%200%2032-14.3%2032-32s-14.3-32-32-32H352V64c0-17.7-14.3-32-32-32zM64%20288c-17.7%200-32%2014.3-32%2032v64c0%2017.7%2014.3%2032%2032%2032H576c17.7%200%2032-14.3%2032-32V320c0-17.7-14.3-32-32-32H64z'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -842,21 +842,13 @@
                         </div>
 
                         <!-- Premium Stats Section -->
-                        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="flex justify-center items-center gap-x-8">
                             <div class="text-center">
-                                <div class="text-3xl sm:text-4xl font-black text-primary-600 mb-2">50k+</div>
-                                <div class="text-slate-600 font-semibold">Guru Aktif</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl sm:text-4xl font-black text-primary-600 mb-2">1M+</div>
-                                <div class="text-slate-600 font-semibold">Materi Dibuat</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl sm:text-4xl font-black text-primary-600 mb-2">99.9%</div>
+                                <div class="text-3xl sm:text-4xl font-black text-primary-600 mt-4">99.9%</div>
                                 <div class="text-slate-600 font-semibold">Uptime</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-3xl sm:text-4xl font-black text-primary-600 mb-2">24/7</div>
+                                <div class="text-3xl sm:text-4xl font-black text-primary-600 mt-4">24/7</div>
                                 <div class="text-slate-600 font-semibold">Support</div>
                             </div>
                         </div>
@@ -1097,7 +1089,7 @@
                             </div>
                         </label>
                     </div>`;
-                document.getElementById('generator-materi').innerHTML = createPremiumTopicSelectorHTML('materi', 'Generator Materi Ajar', materiOptions, 'Buat Materi Berkualitas Tinggi', 'fa-magic');
+                document.getElementById('generator-materi').innerHTML = createPremiumTopicSelectorHTML('materi', 'Generator Materi Ajar', materiOptions, 'Buat Materi', 'fa-magic');
 
                 // Pembuat Soal
                 const soalOptions = `
@@ -2498,4 +2490,5 @@
     </script>
 </body>
 </html>
+
 
