@@ -1876,118 +1876,108 @@
                 // AUTO-SCROLL
                 loaderEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
+                const maxRetries = apiKeys.length;
+                let retryCount = 0;
 
-                const apiKey = getNextApiKey(); 
-
-                if (!apiKey) {
-                    resultEl.innerHTML = `<div class="error-state p-6 rounded-2xl border-2"><strong>Error:</strong> Tidak ada API Key yang tersedia.</div>`;
-                    resultEl.classList.remove('hidden');
-                    loaderEl.classList.add('hidden');
-                    return;
-                }
-                
-                // Using a more stable model and adding generation/safety configs
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{ parts: promptParts }],
-                    generationConfig: {
-                        "temperature": 0.7,
-                        "topP": 0.95,
-                        "maxOutputTokens": 4096,
-                    },
-                    tools: [{ "google_search": {} }],
-                    safetySettings: [ // More lenient safety settings
-                        { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
-                    ]
-                };                        
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
+                while (retryCount < maxRetries) {
+                    const apiKey = getNextApiKey();
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const payload = {
+                        contents: [{ parts: promptParts }],
+                        generationConfig: {
+                            "temperature": 0.7,
+                            "topP": 0.95,
+                            "maxOutputTokens": 4096,
+                        },
+                        tools: [{ "google_search": {} }],
+                        safetySettings: [ // More lenient safety settings
+                            { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
+                            { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
+                            { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
+                            { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+                        ]
+                    };
                     
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error.message || `HTTP error! Status: ${response.status}`);
-                    }
-                    
-                    const result = await response.json();
-                    
-                    // Improved check for valid response text
-                    const candidate = result.candidates?.[0];
-                    const textResult = candidate?.content?.parts?.[0]?.text;
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        const result = await response.json();
+                        const candidate = result.candidates?.[0];
+                        const textResult = candidate?.content?.parts?.[0]?.text;
 
-                    if (textResult != null) { // Checks for null or undefined, allowing empty string ""
-                        renderPremiumAIOutput(textResult, resultEl);
-                        if(downloadContainer) downloadContainer.classList.remove('hidden');
-                    } else {
-                        // Provide a more specific error if blocked by safety
-                        if (candidate?.finishReason === 'SAFETY') {
-                           throw new Error("Respons diblokir karena kebijakan keamanan. Coba dengan pertanyaan yang berbeda.");
+                        if (response.ok && textResult != null && textResult.trim() !== '') {
+                            renderPremiumAIOutput(textResult, resultEl);
+                            if(downloadContainer) downloadContainer.classList.remove('hidden');
+                            loaderEl.classList.add('hidden');
+                            resultEl.classList.remove('hidden');
+                            return; // SUCCESS, exit function
+                        } else {
+                            // Log the error but don't stop the loop or show a UI error
+                            console.error(`API attempt ${retryCount + 1} failed for ${prefix}:`, response.status, result?.error?.message || 'Invalid response or empty content');
+                            retryCount++;
                         }
-                        throw new Error("Respons dari API tidak valid atau kosong. Ini bisa terjadi karena kunci API telah mencapai batas penggunaan atau masalah jaringan.");
+                    } catch (error) {
+                        // Log the network/fetch error and continue to the next key
+                        console.error(`API attempt ${retryCount + 1} failed with network error for ${prefix}:`, error);
+                        retryCount++;
                     }
-                } catch (error) {
-                    console.error("Error calling Gemini API:", error);
-                    resultEl.innerHTML = `<div class="error-state p-6 rounded-2xl border-2"><strong>Error:</strong> ${error.message}</div>`;
-                } finally {
-                    loaderEl.classList.add('hidden');
-                    resultEl.classList.remove('hidden');
                 }
+
+                // After the loop, if no key worked
+                loaderEl.classList.add('hidden');
+                resultEl.innerHTML = `<div class="error-state p-6 rounded-2xl border-2"><strong>Maaf:</strong> Gagal terhubung dengan server AI. Silakan coba lagi.</div>`;
+                resultEl.classList.remove('hidden');
             }
             // [MODIFIED] Enhanced batch API calling function
             async function callPremiumGeminiApiForBatch(promptParts) {
-                const apiKey = getNextApiKey();
-                if (!apiKey) {
-                    return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> API Key tidak tersedia.</div>`;
-                }
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                 const payload = {
-                    contents: [{ parts: promptParts }],
-                    generationConfig: {
-                        "temperature": 0.7,
-                        "topP": 0.95,
-                        "maxOutputTokens": 4096,
-                    },
-                    tools: [{ "google_search": {} }],
-                    safetySettings: [
-                        { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
-                    ]
-                };  
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error.message || `HTTP error! Status: ${response.status}`);
-                    }
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-                    const textResult = candidate?.content?.parts?.[0]?.text;
+                const maxRetries = apiKeys.length;
+                let retryCount = 0;
+                
+                while (retryCount < maxRetries) {
+                     const apiKey = getNextApiKey();
+                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                     const payload = {
+                         contents: [{ parts: promptParts }],
+                         generationConfig: {
+                             "temperature": 0.7,
+                             "topP": 0.95,
+                             "maxOutputTokens": 4096,
+                         },
+                         tools: [{ "google_search": {} }],
+                         safetySettings: [
+                             { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
+                             { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
+                             { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
+                             { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+                         ]
+                     };
+                     try {
+                         const response = await fetch(apiUrl, {
+                             method: 'POST',
+                             headers: { 'Content-Type': 'application/json' },
+                             body: JSON.stringify(payload)
+                         });
+                         const result = await response.json();
+                         const candidate = result.candidates?.[0];
+                         const textResult = candidate?.content?.parts?.[0]?.text;
 
-                    if (textResult != null) {
-                        return textResult;
-                    } else {
-                         if (candidate?.finishReason === 'SAFETY') {
-                           throw new Error("Respons diblokir oleh kebijakan keamanan.");
-                        }
-                        throw new Error("Respons API tidak valid atau kosong.");
-                    }
-                } catch (error) {
-                    console.error("Error in batch API call:", error);
-                    return `<div class="error-state p-4 rounded-lg"><strong>Error:</strong> ${error.message}</div>`;
+                         if (response.ok && textResult != null && textResult.trim() !== '') {
+                             return textResult; // SUCCESS, return result
+                         } else {
+                             console.error(`Batch attempt ${retryCount + 1} failed:`, response.status, result?.error?.message || 'Invalid response or empty content');
+                             retryCount++;
+                         }
+                     } catch (error) {
+                         console.error(`Batch attempt ${retryCount + 1} failed with network error:`, error);
+                         retryCount++;
+                     }
                 }
+                // After the loop
+                return `<div class="error-state p-4 rounded-lg"><strong>Maaf:</strong> Seluruh API key gagal. Silakan coba lagi.</div>`;
             }
             
             // --- Premium Event Listeners ---
@@ -2503,6 +2493,7 @@
     </script>
 </body>
 </html>
+
 
 
 
